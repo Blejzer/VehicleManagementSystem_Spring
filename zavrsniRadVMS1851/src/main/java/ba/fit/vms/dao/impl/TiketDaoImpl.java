@@ -8,32 +8,49 @@ import ba.fit.vms.pojo.Tiket;
 
 public class TiketDaoImpl implements TiketDao {
 	
-	// Dodajemo Entity Managera
+	// Dodajemo EntityManagera
 	@PersistenceContext
 	private EntityManager entityManager;
-
+	
+	
 	@Override
 	public Tiket create(Tiket tiket) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			entityManager.persist(tiket);
+			return tiket;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
-	public void update(Tiket tiket) {
-		// TODO Auto-generated method stub
-
+	public Tiket update(Tiket tiket) {
+		try {
+			entityManager.merge(tiket);
+			return tiket;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
-	public void delete(Tiket tiket) {
-		// TODO Auto-generated method stub
-
+	public Tiket delete(Tiket tiket) {
+		try {
+			entityManager.remove(tiket);
+			entityManager.flush();
+			return tiket;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
-	public Tiket read() {
-		// TODO Auto-generated method stub
-		return null;
+	public Tiket read(Long id) {
+		try {
+			return entityManager.find(Tiket.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

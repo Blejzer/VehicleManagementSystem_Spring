@@ -6,8 +6,8 @@ public interface TiketDao {
 
 
 	public Tiket create(Tiket tiket);
-	public void update(Tiket tiket);
-	public void delete(Tiket tiket);
-	public Tiket read();
+	public Tiket update(Tiket tiket);
+	public Tiket delete(Tiket tiket);
+	public Tiket read(Long id);
 
 }
