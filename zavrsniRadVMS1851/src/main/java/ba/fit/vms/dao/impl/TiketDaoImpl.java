@@ -3,16 +3,17 @@ package ba.fit.vms.dao.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+
 import ba.fit.vms.dao.TiketDao;
 import ba.fit.vms.pojo.Tiket;
 
-public class TiketDaoImpl implements TiketDao {
+@Repository
+public class TiketDaoImpl implements TiketDao {
 	
-	// Dodajemo EntityManagera
 	@PersistenceContext
 	private EntityManager entityManager;
-	
-	
+
 	@Override
 	public Tiket create(Tiket tiket) {
 		try {
