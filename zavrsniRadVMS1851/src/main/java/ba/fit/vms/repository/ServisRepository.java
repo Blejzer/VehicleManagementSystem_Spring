@@ -22,6 +22,11 @@ public class ServisRepository {
 	//*												*
 	//***********************************************
 	
+	/**
+	 * Metoda vraca pronadjeni Servis
+	 * @param id
+	 * @return
+	 */
 	public Servis read(Long id){
 		try {
 			return entityManager.find(Servis.class, id);
@@ -30,6 +35,11 @@ public class ServisRepository {
 		}
 	}
 	
+	/**
+	 * Metoda azurira izmjenjeni Servis
+	 * @param servis
+	 * @return
+	 */
 	@Transactional
 	public Servis edit(Servis servis){
 		try {
@@ -40,6 +50,11 @@ public class ServisRepository {
 		}
 	}
 	
+	/**
+	 * Metoda snima novi Servis
+	 * @param servis
+	 * @return
+	 */
 	@Transactional
 	public Servis save(Servis servis){
 		try {
@@ -50,6 +65,11 @@ public class ServisRepository {
 		}
 	}
 		
+	/**
+	 * Metoda brise odabrani servis
+	 * @param id
+	 * @return
+	 */
 	public Servis delete(Long id){
 		try {
 			Servis zaBrisati = this.read(id);

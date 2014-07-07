@@ -45,7 +45,8 @@ public class RegistracijaRepository {
 	}
 	
 	/**
-	 * Metoda dodaje novu registraciju
+	 * Metoda provjerava da li postoji trenutno aktivna registracija i da li je datum nove registracije uredan.
+	 * Metoda dodaje novu registraciju.
 	 * @param registracija
 	 * @return
 	 */
@@ -69,7 +70,7 @@ public class RegistracijaRepository {
 			}
 			if(testReg.getJeAktivno()!=null){
 				if(testReg.getRegOd().before(registracija.getRegOd())){
-					zaSnimitiNova.setVozilo(voziloRepository.findByVin(registracija.getVozilo().getVin()));
+					zaSnimitiNova.setVozilo(voziloRepository.read(registracija.getVozilo().getVin()));
 					zaSnimitiNova.setOsigOd(registracija.getOsigOd());
 					zaSnimitiNova.setOsigDo(registracija.getOsigDo());
 					zaSnimitiNova.setRegDo(registracija.getRegDo());
@@ -84,7 +85,7 @@ public class RegistracijaRepository {
 					return registracija;
 				}else{
 					if(testReg.getRegOd().after(registracija.getRegOd()) && !registracija.getJeAktivno()){
-						zaSnimitiNova.setVozilo(voziloRepository.findByVin(registracija.getVozilo().getVin()));
+						zaSnimitiNova.setVozilo(voziloRepository.read(registracija.getVozilo().getVin()));
 						zaSnimitiNova.setOsigOd(registracija.getOsigOd());
 						zaSnimitiNova.setOsigDo(registracija.getOsigDo());
 						zaSnimitiNova.setJeAktivno(registracija.getJeAktivno());
@@ -100,7 +101,7 @@ public class RegistracijaRepository {
 					}
 				}
 			}else{
-				zaSnimitiNova.setVozilo(voziloRepository.findByVin(registracija.getVozilo().getVin()));
+				zaSnimitiNova.setVozilo(voziloRepository.read(registracija.getVozilo().getVin()));
 				zaSnimitiNova.setOsigOd(registracija.getOsigOd());
 				zaSnimitiNova.setOsigDo(registracija.getOsigDo());
 				zaSnimitiNova.setJeAktivno(registracija.getJeAktivno());
@@ -114,7 +115,7 @@ public class RegistracijaRepository {
 			}
 
 		}else{
-			zaSnimitiNova.setVozilo(voziloRepository.findByVin(registracija.getVozilo().getVin()));
+			zaSnimitiNova.setVozilo(voziloRepository.read(registracija.getVozilo().getVin()));
 			zaSnimitiNova.setOsigOd(registracija.getOsigOd());
 			zaSnimitiNova.setOsigDo(registracija.getOsigDo());
 			zaSnimitiNova.setJeAktivno(registracija.getJeAktivno());
@@ -151,7 +152,7 @@ public class RegistracijaRepository {
 			if(tester){
 				return null;
 			}else{
-				zaSnimitiStara.setVozilo(voziloRepository.findByVin(registracija.getVozilo().getVin()));
+				zaSnimitiStara.setVozilo(voziloRepository.read(registracija.getVozilo().getVin()));
 				zaSnimitiStara.setOsigOd(registracija.getOsigOd());
 				zaSnimitiStara.setOsigDo(registracija.getOsigDo());
 				zaSnimitiStara.setJeAktivno(registracija.getJeAktivno());
@@ -165,7 +166,7 @@ public class RegistracijaRepository {
 				return registracija;
 			}
 		}else{
-			zaSnimitiStara.setVozilo(voziloRepository.findByVin(registracija.getVozilo().getVin()));
+			zaSnimitiStara.setVozilo(voziloRepository.read(registracija.getVozilo().getVin()));
 			zaSnimitiStara.setOsigOd(registracija.getOsigOd());
 			zaSnimitiStara.setOsigDo(registracija.getOsigDo());
 			zaSnimitiStara.setJeAktivno(registracija.getJeAktivno());

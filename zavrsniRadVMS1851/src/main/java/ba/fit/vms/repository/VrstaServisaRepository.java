@@ -90,6 +90,10 @@ public class VrstaServisaRepository {
 	//*												*
 	//***********************************************
 	
+	/**
+	 * Metoda vraca sve vrste servisa
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<VrstaServisa> getSveVrsteServisa(){
 		try {
