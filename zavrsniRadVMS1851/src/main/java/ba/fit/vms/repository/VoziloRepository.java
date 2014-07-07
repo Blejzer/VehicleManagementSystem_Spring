@@ -119,5 +119,20 @@ public class VoziloRepository {
 				return new ArrayList<Vozilo>();
 			}
 		}
+		
+		/**
+		 * Metoda vraca listu neregistrovanih vozila
+		 * @return
+		 */
+		@SuppressWarnings("unchecked")
+		public List<Vozilo> getSvaNeRegVozila(){
+			try {
+				Query upit = entityManager.createQuery("select v from Vozilo v where "
+						+ "v.vin not in (select vozilo.vin from Registracija)");
+				return upit.getResultList();
+			} catch (PersistenceException e) {
+				return new ArrayList<Vozilo>();
+			}
+		}
 
 }
