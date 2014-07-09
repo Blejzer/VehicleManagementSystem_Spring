@@ -38,7 +38,7 @@ public class KorisnikRepository {
 	 */
 	public Korisnik readByEmail(String email){
 		try {
-			return entityManager.createNamedQuery(Korisnik.FIND_BY_EMAIL, Korisnik.class)
+			return entityManager.createNamedQuery(Korisnik.READ_BY_EMAIL, Korisnik.class)
 					.setParameter("email", email)
 					.getSingleResult();
 		} catch (PersistenceException e) {

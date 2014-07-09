@@ -1,28 +1,38 @@
 package ba.fit.vms.pojo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.HashSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "korisnik")
-@NamedQuery(name = Korisnik.FIND_BY_EMAIL, query = "select k from Korisnik k where k.email = :email")
+@NamedQuery(name = Korisnik.READ_BY_EMAIL, query = "select k from Korisnik k where k.email = :email")
 public class Korisnik implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final String FIND_BY_EMAIL = "Korisnik.findByEmail";
+	public static final String READ_BY_EMAIL = "Korisnik.findByEmail";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -45,6 +55,15 @@ public class Korisnik implements Serializable{
 	private String lozinka;
 
 	private String rola = "ROLE_USER";
+	
+	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(name="korisnik_vozilo",
+                joinColumns={@JoinColumn(name="korisnik_id")},
+                inverseJoinColumns={@JoinColumn(name="vozilo_vin")})
+	private Set<Vozilo> vozila = new HashSet<Vozilo>();
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "korisnik")
+	private List<Tiket> tiketi = new ArrayList<Tiket>();
 
 	
 	//***********************************************
@@ -52,10 +71,8 @@ public class Korisnik implements Serializable{
 	//*                    							*
 	// **********************************************
 	
-	public Korisnik(Long id, String email, String ime, String prezime,
+	public Korisnik(String email, String ime, String prezime,
 			Boolean jeAktivan, String lozinka, String rola) {
-		super();
-		this.id = id;
 		this.email = email;
 		this.ime = ime;
 		this.prezime = prezime;
@@ -79,13 +96,6 @@ public class Korisnik implements Serializable{
 	 */
 	public Long getId() {
 		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**
@@ -172,11 +182,40 @@ public class Korisnik implements Serializable{
 		this.rola = rola;
 	}
 
-	
+	/**
+	 * @return lista vozila
+	 */
+	public Set<Vozilo> getVozila() {
+		return this.vozila;
+	}
+
+	/**
+	 * @param vozila
+	 */
+	public void setVozila(Set<Vozilo> vozila) {
+		this.vozila = vozila;
+	}
+
+	/**
+	 * @return lista tiketa
+	 */
+	public List<Tiket> getTiketi() {
+		return this.tiketi;
+	}
+
+	public void setTiketi(List<Tiket> tiketi) {
+		this.tiketi = tiketi;
+	}
+
 	//***********************************************
 	//*  			Override equals 				*
 	//*                    							*
 	// **********************************************
+	
+	/**
+	 * Na ovaj nacin radimo override klasicnog poredjenja 
+	 * te kreiramo sopstveno poredjenje koje nam treba
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
