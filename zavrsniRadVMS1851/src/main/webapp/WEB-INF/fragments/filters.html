@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      
+<div id="vehiclesList" th:fragment="vehiclesList">
+<section id="filterForm">
+
+  <div class="page-header">
+    <p class="lead" data-toggle="collapse" data-target="#filter">Vehicles filter <i class="fright glyphicon glyphicon-circle-arrow-down"></i></p>
+  </div>
+  
+  <div id="filter" class="collapse">
+        <form action="#" th:action="@{/vehicles/search}" th:object="${search}" method="post" class="form-inline well">
+        <div class="col-md-3">
+          	<input type="text" name="regPlate" class="form-control" placeholder="Registration" th:field="*{regPlate}" />
+        </div>
+        <div class="col-md-3">
+        	<input type="text" name="vin" class="form-control" placeholder="VIN" th:field="*{vin}" />
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" /> Assigned
+          </label>
+        </div>
+        <div class="col-md-3">
+		    <select th:field="*{accounts}" class="form-control">
+				<option value="" th:text="#{common.select.prompt}"></option>
+				<option th:each="account : *{accounts}" th:value="${account.email}" th:text="${account.email}">ACCOUNT</option>
+			</select>
+		</div>
+        <button type="submit" class="btn btn-info">Search</button>
+        <a class="btn btn-warning" th:href="@{/vehicles}">Reset</a>
+      </form>
+
+  </div>
+</section>
+</div>
+
+<div id="driversList" th:fragment="driversList">
+<section id="filterForm">
+
+  <div class="page-header">
+    <p class="lead" data-toggle="collapse" data-target="#filter">Users filter <i class="fright glyphicon glyphicon-circle-arrow-down"></i></p>
+  </div>
+
+<div id="filter" class="collapse">
+
+<form action="#" th:action="@{/admin/users/search}" method="get" class="form-inline well">
+<div th:if="${letter}!=null"><span th:text="${letter}"></span></div>
+	<div class="btn-group">
+	  <button type="submit" name="letter" class="btn btn-default" value="A" >A</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="B" >B</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="C" >C</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="D" >D</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="E" >E</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="F" >F</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="G" >G</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="H" >H</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="I" >I</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="J" >J</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="K" >K</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="L" >L</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="M" >M</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="N" >N</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="O" >O</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="P" >P</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="Q" >Q</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="R" >R</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="S" >S</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="T" >T</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="U" >U</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="V" >V</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="X" >X</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="Y" >Y</button>
+	  <button type="submit" name="letter" class="btn btn-default" value="Z">Z</button>
+	</div>
+	</form>
+	
+	<hr/>
+	
+        <form action="#" th:action="@{/admin/users/search}" method="get" class="form-inline well">
+        <div class="col-md-3">
+          	<input th:if="${name}!=null" type="text" name="name" class="form-control" th:value="${name}" />
+          	<input th:if="${name}==null" type="text" name="name" class="form-control" placeholder="Name" />
+        </div>
+        <div class="col-md-3">
+            <div class="controls">
+              <select id="select01" name="isActive" class="form-control">
+                <option value="null">All</option>
+                <option value="true">Active</option>
+                <option value="false">Not Active</option>
+
+              </select>
+            </div>
+          </div>
+<!--         <div class="checkbox"> -->
+        	
+<!--             <input type="checkbox" name="isActive" value="true" checked="checked" /> Is Active? -->
+<!--             <input type="hidden" name="_isActive" value="false" /> -->
+<!--         </div> -->
+        
+        <button type="submit" class="btn btn-default">Search</button>
+      </form>
+
+</div>
+
+</section>
+</div>
+
+<div id="mileageReport" th:fragment="mileageReport">
+	<section id="filterForm">
+	
+	  <div class="page-header">
+	    <p th:text="#{mileage.filter.title}" class="lead" data-toggle="collapse" data-target="#filter">Mileage filter <i class="fright glyphicon glyphicon-circle-arrow-down"></i></p>
+	  </div>
+	  
+	  <div id="filter" class="collapse">
+	        <form action="#" th:action="@{/mileage/monthlyreport}" th:object="${search}" method="post" class="form-inline well">
+		          <div class="col-md-3">
+		              <select th:field="*{vin}" id="vin" name="vin" class="form-control">
+				          <option value="" th:text="#{common.select.prompt}"></option>
+				          <option th:each="vehicle : *{vehicles}" th:value="${vehicle.vin}" th:text="${vehicle.vin}">VIN</option>
+		              </select>
+		          </div>
+		          <div class="col-md-3">
+		              <select th:field="*{month}" id="month" name="month" class="form-control">
+		              	<option th:each="sopt:${search.months.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
+		              </select>
+		          </div>
+		            <div class="col-md-2">
+		              <select th:field="*{year}" id="year" name="year" class="form-control">
+		              	<option th:each="sopt:${search.years.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
+		              </select>
+		          </div>
+		        	<button type="submit" class="btn btn-info">Search</button>
+		    	    <a class="btn btn-warning" th:href="@{/mileage/monthlyreport}">Reset</a>
+	      </form>
+	  </div>
+	</section>
+</div>
+<div id="mileagePerMonthSelection" th:fragment="mileageMonthSelection">
+<section id="filterForm">
+<div class="page-header">
+<p th:text="#{mileage.filter.title2}" class="lead" data-toggle="collapse" data-target="#filter">Mileage monthly<i class="fright glyphicon glyphicon-circle-arrow-down"></i></p>
+
+</div>
+<div id="filter" class="collapse">
+	        <form action="#" th:action="@{/mileage/mileageMonth}" th:object="${search}" method="post" class="form-inline well">
+		          <div class="col-md-3">
+		              <select th:field="*{month}" id="month" name="month" class="form-control">
+		              	<option th:each="sopt:${search.months.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
+		              </select>
+		          </div>
+		            <div class="col-md-2">
+		              <select th:field="*{year}" id="year" name="year" class="form-control">
+		              	<option th:each="sopt:${search.years.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
+		              </select>
+		          </div>
+		        	<button type="submit" class="btn btn-info">Search</button>
+		    	    <a class="btn btn-warning" th:href="@{/mileage/mileageMonth}">Reset</a>
+	      </form>
+	  </div>
+</section>
+</div>
+<div id="servisReport" th:fragment="servisReport">
+	<section id="filterForm">
+	
+	  <div class="page-header">
+	    <p th:text="#{servis.filter.title}" class="lead" data-toggle="collapse" data-target="#filter">Vehicle servis<i class="fright glyphicon glyphicon-circle-arrow-down"></i></p>
+	  </div>
+	  
+	  <div id="filter" class="collapse">
+	        <form action="#" th:action="@{/admin/servisi/listAllServis}" th:object="${searchAttribute}" method="post" class="form-inline well">
+		          <div class="col-md-3">
+		              <select th:field="*{vin}" id="vin" name="vin" class="form-control">
+				          <option value="" th:text="#{common.select.prompt}"></option>
+				          <option th:each="vehicle : *{vehicles}" th:value="${vehicle.vin}" th:text="${vehicle.licensePlate}">VIN</option>
+		              </select>
+		          </div>
+		          <div class="col-md-3">
+		              <select th:field="*{month}" id="month" name="month" class="form-control">
+		              	<option th:each="sopt:${searchAttribute.months.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
+		              </select>
+		          </div>
+		            <div class="col-md-2">
+		              <select th:field="*{year}" id="year" name="year" class="form-control">
+		              	<option th:each="sopt:${searchAttribute.years.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
+		              </select>
+		          </div>
+		        	<button type="submit" class="btn btn-info">Search</button>
+		    	    <a class="btn btn-warning" th:href="@{/admin/servisi/listAllServis}">Reset</a>
+	      </form>
+	  </div>
+	</section>
+</div>
+
+</html>

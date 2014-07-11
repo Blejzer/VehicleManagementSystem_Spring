@@ -22,7 +22,7 @@ public class WebAppInitializer  implements WebApplicationInitializer {
 	public void onStartup(ServletContext servletContext) throws ServletException {
 
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.setConfigLocation("us.icitap.vms.config");
+		context.setConfigLocation("ba.fit.vms.config");
 		
 		FilterRegistration.Dynamic securityFilter = servletContext.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"));
 		securityFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");

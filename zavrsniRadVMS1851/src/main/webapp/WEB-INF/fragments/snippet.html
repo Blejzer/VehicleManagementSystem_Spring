@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragments/common :: headFragment" />
+<body>
+
+<div th:include="fragments/common :: headerFragment"></div>
+
+<div class="container">
+
+<h1>Snippet Template</h1>
+<p class="lead">A Full Featured Example - čćšđž ČŠĐŽ</p>
+
+
+<!-- Typography
+================================================== -->
+<section id="typography">
+  <div class="page-header">
+  </div>
+
+  <!-- Headings & Paragraph Copy -->
+  <div class="row">
+
+    <div class="col-lg-6">
+      <div class="well">
+        <h1>h1. Bootstrap 3</h1>
+        <h2>h2. Heading 2</h2>
+        <h3>h3. Heading 3</h3>
+        <h4>h4. Heading 4</h4>
+        <h5>h5. Heading 5</h5>
+        <h6>h6. Heading 6</h6>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <h3>Bootstrap Framework</h3>
+      <p>In simple terms, a responsive web design figures out what resolution of device it's being served on. Flexible grids then size correctly to fit the screen.</p>
+      <p>The new Bootstrap 3 promises to be a smaller build. The separate Bootstrap base and responsive.css files have now been merged into one. There is no more fixed grid, only fluid.</p>
+      <hr/>
+       <blockquote class="pull-right">
+        <p>Have you ever had a project where you thought it would be so much better to just throw everything out and start over? I believe that’s what’s happening with BS3.</p>
+        <small><cite title="Source Title">Quasipickle</cite></small>
+      </blockquote>
+      
+    </div>
+  </div>
+</section>
+
+<div th:include="fragments/common :: footerFragment"></div>
+
+</div><!-- /.container -->
+
+<div th:include="fragments/common :: jsFragment"></div>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragments/common :: headFragment" />
+<body>
+
+	<div th:include="fragments/common :: headerFragment"></div>
+
+	<!-- Marketing messaging and featurettes
+	================================================== -->
+	<!-- Wrap the rest of the page in another container to center all the content. -->
+
+	<div class="container">
+
+		<!-- /* Handle the flash message */-->
+		<th:block th:if="${message != null}">
+			<div
+				th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
+		</th:block>
+
+		<div class="featurette">
+			<h2 class="featurette-heading">
+				Vehicle Management. <span class="text-muted">It'll blow your
+					mind.</span>
+			</h2>
+			<p class="lead"></p>
+		</div>
+
+		<form class="form-narrow form-horizontal" method="post"
+			th:action="@{/signup}" th:object="${signupForm}">
+			<!-- /* Show general error message when form contains errors */ -->
+			<th:block th:if="${#fields.hasErrors('${signupForm.*}')}">
+				<div
+					th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+			</th:block>
+			<fieldset>
+				<legend>Please Sign Up</legend>
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('email')}? 'has-error'">
+					<label for="email" class="col-lg-2 control-label">Email</label>
+					<div class="col-lg-10">
+						<input type="email" class="form-control" id="email"
+							placeholder="Email address" th:field="*{email}" /> <span
+							class="help-block" th:if="${#fields.hasErrors('email')}"
+							th:errors="*{email}">Incorrect email</span>
+					</div>
+				</div>
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('password')}? 'has-error'">
+					<label for="password" class="col-lg-2 control-label">Password</label>
+					<div class="col-lg-10">
+						<input type="password" class="form-control" id="password"
+							placeholder="Password" th:field="*{password}" /> <span
+							class="help-block" th:if="${#fields.hasErrors('password')}"
+							th:errors="*{password}">Incorrect password</span>
+					</div>
+				</div>
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('firstName')}? 'has-error'">
+					<label for="firstName" class="col-lg-2 control-label">First
+						Name</label>
+					<div class="col-lg-10">
+						<input type="text" class="form-control" id="firstName"
+							placeholder="First Name" th:field="*{firstName}" /> <span
+							class="help-block" th:if="${#fields.hasErrors('firstName')}"
+							th:errors="*{firstName}">Check First Name</span>
+					</div>
+				</div>
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('lastName')}? 'has-error'">
+					<label for="lastName" class="col-lg-2 control-label">Last
+						Name</label>
+					<div class="col-lg-10">
+						<input type="text" class="form-control" id="lastName"
+							placeholder="lastName" th:field="*{lastName}" /> <span
+							class="help-block" th:if="${#fields.hasErrors('lastName')}"
+							th:errors="*{lastName}">Check Last Names</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-10">
+						<select th:field="*{isActive}" class="form-control">
+							<option th:value="${true}" th:selected="selected">Active</option>
+							<option th:value="${false}">Not Active</option>
+						</select> <span class="help-block" th:if="${#fields.hasErrors('isActive')}"
+							th:errors="*{isActive}">Check Last Names</span>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="col-lg-offset-2 col-lg-10">
+						<button type="submit" class="btn btn-default">Sign up</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-offset-2 col-lg-10">
+						<p>
+							Already have an account? <a href="signin" th:href="@{/signin}">Sign
+								In</a>
+						</p>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+
+		<!-- START THE FEATURETTES -->
+
+		<div class="featurette">
+			<p class="lead">In simple terms, a responsive web design figures
+				out what resolution of device it's being served on. Flexible grids
+				then size correctly to fit the screen.</p>
+		</div>
+
+		<!-- /END THE FEATURETTES -->
+
+		<div th:include="fragments/common :: footerFragment"></div>
+
+	</div>
+	<!-- /.container -->
+
+	<div th:include="fragments/common :: jsFragment"></div>
+
+</body>
+</html>
