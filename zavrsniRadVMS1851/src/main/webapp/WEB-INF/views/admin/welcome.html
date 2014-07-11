@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragments/common :: headFragment" />
+<body>
+
+	<div th:include="fragments/common :: adminHeaderFragment"></div>
+
+
+	<!-- Marketing messaging and featurettes
+================================================== -->
+	<!-- Wrap the rest of the page in another container to center all the content. -->
+
+	<div class="container">
+
+		<!-- START THE FEATURETTES -->
+
+		<div class="featurette">
+			<h2 class="featurette-heading">
+				Welcome <span th:text="${user}">user</span>
+			</h2>
+
+			<p class="lead">In simple terms, a responsive web design figures
+				out what resolution of device it's being served on. Flexible grids
+				then size correctly to fit the screen.</p>
+		</div>
+
+		<hr class="featurette-divider" />
+
+		<!-- /END THE FEATURETTES -->
+
+		<!-- Navs
+  ================================================== -->
+
+<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center"
+				sec:authorize="hasRole('ROLE_ADMIN')">
+
+				<h3 id="tabs">Summary</h3>
+				<ul class="nav nav-tabs">
+					<li class="active disabled"><a href="#TEST" data-toggle="tab"><i class="glyphicon glyphicon-arrow-right"></i></a></li>
+					<li><a href="#A" data-toggle="tab">Assigned vehicles</a></li>
+					<li><a href="#B" data-toggle="tab">Registration</a></li>
+					<li><a href="#C" data-toggle="tab"><span th:text="${#dates.monthName(#dates.createNow())} + ' mileage report'"></span></a></li>
+					<li><a href="#D" data-toggle="tab">Service</a></li>
+<!-- 					<li><a href="#E" data-toggle="tab">Support</a></li> -->
+				</ul>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="TEST">
+							<h1 class="center">Select the tab to open desired summary!</h1>
+						</div>
+						<div class="tab-pane" id="A">
+							<table th:if="${not #lists.isEmpty(mileageAttribute)}"
+								class="table table-bordered table-striped table-hover">
+								<thead>
+									<tr class="success">
+										<th th:text="#{registrationList.vehicle}">Vehicle tag</th>
+										<th th:text="#{consultantVehicle.consultant}">Consultant</th>
+										<th th:text="#{mileageList.mileage}">Mileage</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:if="${mileage.vehicle}"
+										th:each="mileage : ${mileageAttribute}">
+										<td th:text="${mileage.vehicle.licensePlate}">License
+											Plate</td>
+										<td
+											th:text="${mileage.consultant.firstName} + ' ' + ${mileage.consultant.lastName}">Consultant
+											Name</td>
+										<td th:text="${mileage.mileage}">Mileage</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" id="B">
+							<table th:if="${not #lists.isEmpty(registrationAttribute)}"
+								class="table table-bordered table-striped table-hover">
+								<thead>
+									<tr class="success">
+										<th th:text="#{registrationList.vehicle}">Vehicle tag</th>
+										<th th:text="#{registrationList.regDue}">Reg due</th>
+										<th th:text="#{registrationList.insDue}">Ins due</th>
+										<th th:text="#{actions.title}">Available actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:if="${registration}"
+										th:each="registration : ${registrationAttribute}">
+										<td th:text="${registration.vehicle.licensePlate}">License
+											Plate</td>
+										<td
+											th:text="${#dates.format(registration.regDue, 'dd/MM/yyyy')}"
+											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.regDue)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.regDue)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDue)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.regDue)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDue)} ? 'danger' : 'warning')))  : ''"></td>
+										<td
+											th:text="${#dates.format(registration.insDue, 'dd/MM/yyyy')}"
+											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.insDue)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.insDue)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.insDue)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.insDue)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.insDue)} ? 'danger' : 'warning')))  : ''"></td>
+										<td><a class="btn btn-primary btn-sm" th:href="@{/admin/registrations/list(id=${registration.vehicle.vin})}"><i class="glyphicon glyphicon-edit"></i> <span	th:text="#{actions.detail}">Edit action</span></a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" id="C">
+							<table th:if="${not #lists.isEmpty(monthlyAttribute)}"
+								class="table table-bordered table-striped table-hover">
+								<thead>
+									<tr class="success">
+										<th>License Plate</th>
+										<th>Assigned to</th>
+										<th>Last update</th>
+										<th>Mileage</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:if="${mileage}" th:each="mileage : ${monthlyAttribute}">
+										<td th:text="${mileage.vehicle.licensePlate}"></td>
+										<td th:text="${mileage.consultant.firstName} + ' ' + ${mileage.consultant.lastName}"></td> 
+										<td th:text="${#dates.format(mileage.mileDate, 'dd/MM/yyyy')}"></td>
+										<td th:text="${mileage.mileage}"></td>
+									</tr>
+									<tr>
+										<td colspan="3">Please notice that if the vehicle does
+											not appear in the list, it means it does not have updated
+											mileage log</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" id="D">
+							<div th:if="${report}" th:each="servisi : ${report}">
+								<table class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr class="success">
+											<th class="col-md-6 text-center h3" colspan="2" th:text="${servisi.key.licensePlate}">Vehicle</th>
+											<th class="col-md-6 text-center h3" colspan="2" ><a
+												class="btn btn-success btn-sm btn-large right"
+												th:href="@{/admin/servisi/addServis(id=${servisi.key.vin})}">Add
+													new Servis</a></th>
+										</tr>
+										<tr>
+											<th class="text-center h4">Completed?</th>
+											<th class="text-center h4">Date</th>
+											<th class="text-center h4">Service Type</th>
+											<th class="text-center h4">Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="servis : ${servisi.value}">
+											<td class="col-md-3" th:switch="${servis.completed}">
+												<p th:case="true">
+													<i class="glyphicon glyphicon-ok"></i>
+												</p>
+												<p th:case="false">
+													<i class="glyphicon glyphicon-minus"></i>
+												</p>
+											</td>
+											<td class="col-md-3"
+												th:text="${#calendars.format(servis.serviceDate,'dd MMMM yyyy')}">date</td>
+											<td class="col-md-3" th:text="${servis.serviceType.name}">Type</td>
+											<td class="col-md-3"><a class="btn btn-info btn-sm"
+												th:href="@{/admin/servisi/showServis(id=${servis.id})}"><i
+													class="glyphicon glyphicon-list-alt"></i> <span
+													th:text="#{actions.show}">Show action</span></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div th:if="${report !=null}">
+								<div th:if="${report.isEmpty()}">
+
+									<span>
+										<h3>
+											No Services recorded in <span
+												th:text="${#calendars.monthName(#calendars.createToday())}"></span>
+										</h3>
+									</span>
+
+								</div>
+							</div>
+						</div>
+<!-- 						<div class="tab-pane" id="E"> -->
+<!-- 							<table th:if="${not #lists.isEmpty(pager.pageList)}" -->
+<!-- 								class="table table-bordered table-striped table-hover"> -->
+<!-- 								<thead> -->
+<!-- 									<tr class="success"> -->
+<!-- 										<th class="center" th:text="#{ticketList.ticketDate}">Date</th> -->
+<!-- 										<th class="center" th:text="#{ticketList.solvedDate}">Date</th> -->
+<!-- 										<th class="center" th:text="#{ticketList.subject}">Subject</th> -->
+<!-- 										<th class="center" th:text="#{ticketList.completed}">Y/N</th> -->
+<!-- 										<th class="center" th:text="#{actions.title}">Actions</th> -->
+<!-- 									</tr> -->
+<!-- 								</thead> -->
+
+<!-- 								<tbody> -->
+<!-- 									<tr th:each="ticket : ${pager.pageList}"> -->
+<!-- 										<td -->
+<!-- 											th:text="${ticket.ticketDate} ? ${#dates.format(ticket.ticketDate, 'dd/MM/yyyy')} : ''">Ticket -->
+<!-- 											Date</td> -->
+<!-- 										<td -->
+<!-- 											th:text="${ticket.solvedDate} ? ${#dates.format(ticket.solvedDate, 'dd/MM/yyyy')} : ''">Solved -->
+<!-- 											Date</td> -->
+<!-- 										<td th:text="${ticket.subject}">Ticket Subject</td> -->
+<!-- 										<td th:switch="${ticket.isCompleted}"> -->
+<!-- 											<p th:case="true"> -->
+<!-- 												<i class="glyphicon glyphicon-ok"></i> -->
+<!-- 											</p> -->
+<!-- 											<p th:case="false"> -->
+<!-- 												<i class="glyphicon glyphicon-minus"></i> -->
+<!-- 											</p> -->
+<!-- 										</td> -->
+<!-- 										<td><a sec:authorize="hasRole('ROLE_USER')" -->
+<!-- 											class="btn btn-info btn-sm" -->
+<!-- 											th:href="@{/support/show(id=${ticket.id})}"><span -->
+<!-- 												th:text="#{actions.show}">Show action</span></a> <a -->
+<!-- 											sec:authorize="hasRole('ROLE_ADMIN')" -->
+<!-- 											class="btn btn-warning btn-sm" -->
+<!-- 											th:href="@{/support/edit(id=${ticket.id})}"><i -->
+<!-- 												class="glyphicon glyphicon-edit"></i> <span -->
+<!-- 												th:text="#{actions.edit}">Edit action</span></a></td> -->
+<!-- 									</tr> -->
+<!-- 								</tbody> -->
+<!-- 							</table> -->
+<!-- 						</div> -->
+					</div>
+				</div>
+				<!-- /tabbable -->
+			</div>
+		</div>
+		</div>
+
+
+		<div th:include="fragments/common :: footerFragment"></div>
+
+	</div>
+	<!-- /.container -->
+
+	<div th:include="fragments/common :: jsFragment"></div>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragments/common :: headFragment" />
+<body>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:include="fragments/common :: adminHeaderFragment"></div>
+<div sec:authorize="hasRole('ROLE_USER')" th:include="fragments/common :: headerFragment"></div>
+
+    
+<!-- Marketing messaging and featurettes
+================================================== -->
+<!-- Wrap the rest of the page in another container to center all the content. -->
+
+<div class="container">
+
+
+  <!-- START THE FEATURETTES -->
+
+  <div class="featurette">
+    <h2 class="featurette-heading">Welcome <span th:text="${user}">user</span>,</h2>
+    <p class="lead">Use the menu above to navigate through your vehicles and support requests.</p>
+  </div>
+
+  <hr class="featurette-divider" />
+
+  <div class="featurette" th:if="${vehicles}">
+    <h1>Your vehicles:</h1>
+    <table class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th th:text="#{vehicleList.vin}">VIN</th>
+        <th th:text="#{vehicleList.plates}">License Plate</th>
+        <th th:text="#{vehicleList.make}">Make</th>
+        <th th:text="#{vehicleList.model}">Model</th>
+        <th th:text="#{vehicleList.year}">Year</th>
+        <th th:text="#{vehicleList.color}">Color</th>
+        <th th:text="#{actions.title}">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+	    <tr th:each="vehicle : ${vehicles}">
+	    	<td th:text="${vehicle.vin}">WVWZZZ857E58T7R</td>
+	    	<td th:text="${vehicle.licensePlate}">99-A-999</td>
+	    	<td th:text="${vehicle.make}">Ford</td>
+	    	<td th:text="${vehicle.model}">Mondeo</td>
+			<td th:text="${vehicle.year}">2005</td>
+			<td th:text="${vehicle.color}">Black</td>
+			<td>
+				<a class="btn btn-info btn-sm" th:href="@{/vehicles/show(id=${vehicle.vin})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{actions.show}">Show action</span></a>
+				<a class="btn btn-info btn-sm" th:href="@{/mileage(id=${vehicle.vin})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{actions.mileage}">Mileage action</span></a>
+			    <!-- <a class="btn btn-primary btn-sm" th:href="@{/registrations/list(id=${vehicle.vin})}"><i class="glyphicon glyphicon-certificate"></i> Registration</a>  -->
+			</td>
+		</tr>
+    </tbody>
+  </table>
+  </div>
+  
+    <!-- /END THE FEATURETTES -->
+  
+<div th:include="fragments/common :: footerFragment"></div>
+
+</div><!-- /.container -->
+
+<div th:include="fragments/common :: jsFragment"></div>
+
+</body>
+</html>
