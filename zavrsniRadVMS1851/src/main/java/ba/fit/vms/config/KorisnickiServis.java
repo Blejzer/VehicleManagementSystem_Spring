@@ -25,13 +25,13 @@ public class KorisnickiServis implements UserDetailsService {
 	
 	@PostConstruct	
 	protected void initialize() {
-		/*
-		Account adminAccount = new Account("admin", "Admin", "User", true, "123123", "ROLE_ADMIN");
-		Account userAccount = new Account("user", "Regular", "User", true, "123123", "ROLE_USER");
 		
-		accountRepository.saveAccount(adminAccount);
-		accountRepository.saveAccount(userAccount);
-		*/
+		Korisnik korisnikAdmin = new Korisnik("root", "Admin", "User", true, "toor", "ROLE_ADMIN");
+		Korisnik korisnikRegular = new Korisnik("korisnik", "Regular", "User", true, "korisnik", "ROLE_USER");
+		
+		korisnikRepository.save(korisnikAdmin);
+		korisnikRepository.save(korisnikRegular);
+		
 	}
 
 	@Override

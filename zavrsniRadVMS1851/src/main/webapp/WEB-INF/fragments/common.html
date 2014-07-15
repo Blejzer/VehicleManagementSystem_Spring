@@ -1,28 +1,34 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head id="headFragment" th:fragment="headFragment">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Vehicle Management System</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/resources/css/bootstrap.css" th:href="@{/resources/css/bootstrap.css}" />
-    <link rel="stylesheet" href="/resources/css/bootstrap-glyphicons.css" th:href="@{/resources/css/bootstrap-glyphicons.css}" />
-	<!--  Additional css styles -->
-    <link rel="stylesheet" href="/resources/css/vms.css" th:href="@{/resources/css/vms.css}" />
-    
-    <script src="/resources/js/jquery.js" th:src="@{/resources/js/jquery.min.js}" />
-    <script src="/resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Sistem Upravljanja Voznim Parkom</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/resources/css/bootstrap.css"
+	th:href="@{/resources/css/bootstrap.css}" />
+<link rel="stylesheet" href="/resources/css/bootstrap-glyphicons.css"
+	th:href="@{/resources/css/bootstrap-glyphicons.css}" />
+<!--  Additional css styles -->
+<link rel="stylesheet" href="/resources/css/vms.css"
+	th:href="@{/resources/css/vms.css}" />
 
-    <!-- JavaScript jQuery code -->
-    <script type='text/javascript'>
-      	$(document).ready(function() {
-    });
-    </script>
+<script src="/resources/js/jquery.js"
+	th:src="@{/resources/js/jquery.min.js}" />
+<script src="/resources/js/bootstrap.min.js"
+	th:src="@{/resources/js/bootstrap.min.js}" />
+
+<!-- JavaScript jQuery code -->
+<script type='text/javascript'>
+	$(document).ready(function() {
+	});
+</script>
 </head>
 <body>
 
-<header id="headerFragment" th:fragment="adminHeaderFragment">
+	<header id="headerFragment" th:fragment="adminHeaderFragment">
 		<div class="navbar-wrapper">
 			<div class="container">
 				<div class="navbar navbar-inverse navbar-static-top">
@@ -31,47 +37,52 @@
 						<a class="navbar-toggle" data-toggle="collapse"
 							data-target=".nav-collapse"> <span class="icon-bar"></span> <span
 							class="icon-bar"></span> <span class="icon-bar"></span>
-						</a> <a class="navbar-brand" th:href="@{/}"><img class="info" height="21" width="21" th:src="@{/resources/img/logo.png}" /> VMS ADMIN PANEL</a>
+						</a> <a class="navbar-brand" th:href="@{/}"><img class="info"
+							height="21" width="21" th:src="@{/resources/img/main-auto.png}" />
+							SUVP ADMIN PANEL</a>
 					</div>
 					<div class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
-							<li class="active"><a th:href="@{/}">Home page</a></li>
+							<li class="active"><a th:href="@{/}">Pocetna</a></li>
 							<li th:if="${#authorization.expression('isAuthenticated()')}">
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown">Vehicles <b class="caret"></b></a>
+								data-toggle="dropdown">Vozila <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li><a th:href="@{/admin/vehicles}">Vehicles List</a></li>
+									<li><a th:href="@{/admin/vehicles}">Lista vozila</a></li>
 									<li class="divider"></li>
-									<li><a th:href="@{/admin/vehicles/add}">Add new vehicle</a></li>
+									<li><a th:href="@{/admin/vehicles/add}">Dodaj novo
+											vozilo</a></li>
 								</ul></li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown">Users <b class="caret"></b></a>
+								data-toggle="dropdown">Korisnici <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li><a th:href="@{/admin/users}">Users list</a></li>
+									<li><a th:href="@{/admin/users}">Lista korisnika</a></li>
 									<li class="divider"></li>
-									<li><a th:href="@{/admin/users/add}">Add new user</a></li>
+									<li><a th:href="@{/admin/users/add}">Dodaj novog
+											korisnika</a></li>
 								</ul></li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown">Mileage<b class="caret"></b></a>
+								data-toggle="dropdown">Kilometraza<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-								<li><a th:href="@{/mileage/monthlyreport}">Report</a></li>
-								<li><a th:href="@{/mileage/mileageMonth}">Monthly</a></li>
-								</ul>
-								</li>
+									<li><a th:href="@{/mileage/monthlyreport}">Izvjestaj</a></li>
+									<li><a th:href="@{/mileage/mileageMonth}">Mjesecni</a></li>
+								</ul></li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown">Service<b class="caret"></b></a>
+								data-toggle="dropdown">Servis<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-								<li><a th:href="@{/admin/servisi/listAllServis}">Service search</a></li>
-								<li><a th:href="@{/admin/part/listPart}">List Parts</a></li>
-								<li><a th:href="@{/admin/servisType/listServisType}">List Service Types</a></li>
-								</ul>
-								</li>
-<!--             				<li class="dropdown"><a href="#" class="dropdown-toggle" -->
-<!-- 								data-toggle="dropdown">Support <b class="caret"></b></a> -->
-<!-- 								<ul class="dropdown-menu"> -->
-<!-- 									<li><a th:href="@{/support}">Pending requests</a></li> -->
-<!-- 								</ul> -->
-<!-- 							</li> -->
+									<li><a th:href="@{/admin/servisi/listAllServis}">Pretraga
+											servisa</a></li>
+									<li><a th:href="@{/admin/part/listPart}">Lista
+											dijelova</a></li>
+									<li><a th:href="@{/admin/servisType/listServisType}">Lista
+											vrsta servisa</a></li>
+								</ul></li>
+							<!--             				<li class="dropdown"><a href="#" class="dropdown-toggle" -->
+							<!-- 								data-toggle="dropdown">Support <b class="caret"></b></a> -->
+							<!-- 								<ul class="dropdown-menu"> -->
+							<!-- 									<li><a th:href="@{/support}">Pending requests</a></li> -->
+							<!-- 								</ul> -->
+							<!-- 							</li> -->
 							</li>
 							<ul class="nav navbar-nav navbar-right">
 								<li th:if="${#authorization.expression('!isAuthenticated()')}"><a
@@ -90,94 +101,72 @@
 
 		<hr class="featurette-divider" />
 	</header>
-	
-	
-<header id="headerFragment" th:fragment="headerFragment">
-<div class="navbar-wrapper">
-  <div class="container">
-    <div class="navbar navbar-inverse navbar-static-top">
-      
-        <div class="navbar-header">
-	    <a class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-	      <span class="icon-bar"></span>
-	      <span class="icon-bar"></span>
-	      <span class="icon-bar"></span>
-	    </a>
-        <a class="navbar-brand" th:href="@{/}"><img class="info" height="21" width="21" th:src="@{/resources/img/logo.png}" />  VMS</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a th:href="@{/}">Home</a></li>
-            <li th:if="${#authorization.expression('isAuthenticated()')}">
-			<!-- <li><a th:href="@{/vehicle}">Vehicle</a></li>  -->
-            <li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown">Support <b class="caret"></b></a>
+
+
+	<header id="headerFragment" th:fragment="headerFragment">
+		<div class="navbar-wrapper">
+			<div class="container">
+				<div class="navbar navbar-inverse navbar-static-top">
+
+					<div class="navbar-header">
+						<a class="navbar-toggle" data-toggle="collapse"
+							data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span>
+						</a> <a class="navbar-brand" th:href="@{/}"><img class="info"
+							height="21" width="21" th:src="@{/resources/img/main-auto.png}" />
+							SUVP</a>
+					</div>
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li class="active"><a th:href="@{/}">Pocetna</a></li>
+							<li th:if="${#authorization.expression('isAuthenticated()')}">
+								<!-- <li><a th:href="@{/vehicle}">Vehicle</a></li>  -->
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown">Podrska <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li><a th:href="@{/support/pending}">Pending requests</a></li>
-									<li><a th:href="@{/support/solved}">Solved issues</a></li>
+									<li><a th:href="@{/support/pending}">Zahtjevi na
+											cekanju</a></li>
+									<li><a th:href="@{/support/solved}">Rijeseni zahtjevi</a></li>
 									<li class="divider"></li>
-									<li><a th:href="@{/support/add}">New request</a></li>
-								</ul>
+									<li><a th:href="@{/support/add}">Novi zahtjev</a></li>
+								</ul></li>
 							</li>
-            </li>
-			<ul class="nav navbar-nav navbar-right">
-                <li class="active" th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/signin" th:href="@{/signin}">Sign in</a></li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
-            </ul>
-          </ul>
-        </div>
+							<ul class="nav navbar-nav navbar-right">
+								<li class="active"
+									th:if="${#authorization.expression('!isAuthenticated()')}"><a
+									href="/signin" th:href="@{/signin}">Sign in</a></li>
+								<li th:if="${#authorization.expression('isAuthenticated()')}"><a
+									href="/logout" th:href="@{/logout}">Logout</a></li>
+							</ul>
+						</ul>
+					</div>
 
-    </div>
-  </div><!-- /container -->
-</div><!-- /navbar wrapper -->
+				</div>
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /navbar wrapper -->
 
-<hr class="featurette-divider" />
-</header>
+		<hr class="featurette-divider" />
+	</header>
 
-<div class="container">
-</div>
-	
-<footer id="footer" th:fragment="footerFragment">
-  <!-- FOOTER -->
-  <footer>
-    <hr/>
-    <p class="pull-right"><a href="#">Back to top</a></p>
-    <p>© 2014 Nikola Kujaca · <a href="#">Terms of use</a> · <a href="#">Privacy policy</a> · <a href="#">Help</a></p>
-	<hr/>
-  </footer>
-</footer>
+	<div class="container"></div>
 
-<div th:fragment="jsFragment">
-</div>
+	<!-- FOOTER -->
+	<footer id="footer" th:fragment="footerFragment">
 
-  <!-- 
-	<div th:fragment='paginationbar'>
-	  <div class='pagination pagination-centered'>
-	    <ul>
-	      <li th:class='${page.firstPage}? 'disabled' : '''>
-	        <span th:if='${page.firstPage}'>← First</span>
-	        <a th:if='${not page.firstPage}' th:href='@{${page.url}(page.page=1,page.size=${page.size})}'>← First</a>
-	      </li>
-	      <li th:class='${page.hasPreviousPage}? '' : 'disabled''>
-	        <span th:if='${not page.hasPreviousPage}'>«</span>
-	        <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page.page=${page.number-1},page.size=${page.size})}' title='Go to previous page'>«</a>
-	      </li>
-	      <li th:each='item : ${page.items}' th:class='${item.current}? 'active' : '''>
-	        <span th:if='${item.current}' th:text='${item.number}'>1</span>
-	        <a th:if='${not item.current}' th:href='@{${page.url}(page.page=${item.number},page.size=${page.size})}'><span th:text='${item.number}'>1</span></a>
-	      </li>
-	      <li th:class='${page.hasNextPage}? '' : 'disabled''>
-	        <span th:if='${not page.hasNextPage}'>»</span>
-	        <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page.page=${page.number+1},page.size=${page.size})}' title='Go to next page'>»</a>
-	      </li>
-	      <li th:class='${page.lastPage}? 'disabled' : '''>
-	        <span th:if='${page.lastPage}'>Last →</span>
-	        <a th:if='${not page.lastPage}' th:href='@{${page.url}(page.page=${page.totalPages},page.size=${page.size})}'>Last →</a>
-	      </li>
-	    </ul>
-	  </div>
-	</div>
-   -->
-   
+		<hr />
+		<p class="pull-right">
+			<a href="#">Natrag na vrh</a>
+		</p>
+		<p>
+			© 2014 Nikola Kujaca · <a href="#">Uslovi koristenja</a> · <a
+				href="#">Politika privatnosti</a> · <a href="#">Pomoc</a>
+		</p>
+		<hr />
+	</footer>
+
+	<div th:fragment="jsFragment"></div>
+
 </body>
 </html>
