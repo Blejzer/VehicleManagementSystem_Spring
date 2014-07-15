@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:include="fragments/common :: headFragment" />
+<head th:include="../fragments/common :: headFragment" />
 <body>
 
-<div th:include="fragments/common :: headerFragment"></div>
+<div th:include="../fragments/common :: headerFragment"></div>
 
     
 <!-- Marketing messaging and featurettes
@@ -21,8 +21,8 @@
   <!-- START THE FEATURETTES -->
 
   <div class="featurette">
-    <h2 class="featurette-heading text-center">Vehicle Management System</h2>
-    <p class="lead"><span class="text-muted"><a th:href="@{/signin}">Please sign in here</a></span>. If you do not have account please contact your Vehicle Pool Manager or System Administrator.</p>
+    <h2 class="featurette-heading text-center">Sistem Upravljanja Voznim Parkom</h2>
+    <p class="lead"><span class="text-muted"><a th:href="@{/signin}">Molimo, logirajte se ovdje</a></span>. Ukoliko nemate korisnicki nalog, molimo kontaktirajte Vaseg rukovodioca voznog parka ili sistemskog administratora.</p>
   </div>
 
   <hr class="featurette-divider" />
@@ -37,8 +37,8 @@
       <!-- <p><a class="btn btn-default" href="#">View details »</a></p>  -->
     </div>
     <div class="col-md-4 text-center">
-      <img class="img-circle" height="140" width="140" th:src="@{/resources/img/usdoj.png}" />
-      <h2>V. M. S.</h2>
+      <img class="img-rounded" height="240" width="240" th:src="@{/resources/img/main-auto.png}" />
+      <h2>S.U.V.P.</h2>
       <p></p>
     </div>
     <div class="col-md-4 text-center">
@@ -48,14 +48,14 @@
     
   </div><!-- /.row -->
   <div class="col-md-12 text-center">
-  <h2>Vehicle Management System supporting ICITAP Bosnia fleet</h2>
+  <h2>Sistem Upravljanja Voznim Parkom - S.U.V.P.</h2>
   </div>
 
-<div th:include="fragments/common :: footerFragment"></div>
+<div th:include="../fragments/common :: footerFragment"></div>
 
 </div><!-- /.container -->
 
-<div th:include="fragments/common :: jsFragment"></div>
+<div th:include="../fragments/common :: jsFragment"></div>
 
 </body>
 </html>
