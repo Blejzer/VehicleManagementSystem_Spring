@@ -36,13 +36,12 @@ public class HomeController {
 		}else{
 			return "auth/index";
 		}
-		// return principal != null ? "auth/welcome" : "auth/index";
 		return "auth/index";
 	}
 	
 	@RequestMapping(value = "/template", method = RequestMethod.GET)
 	public String template() {
-		return "fragments/bootstrap-template";
+		return "../fragments/bootstrap-template";
 	}
 
 }

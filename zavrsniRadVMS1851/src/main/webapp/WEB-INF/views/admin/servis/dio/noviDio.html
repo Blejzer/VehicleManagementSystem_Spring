@@ -1,0 +1,57 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Novi dio</title>
+</head>
+<body>
+
+<div th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+
+<div class="container">
+
+<section id="object">
+  <div class="page-header">
+    <h1>Dodaj novi dio</h1>
+  </div>
+
+<div class="row">
+    
+	<form action="#" th:object="${dioAtribut}"
+		th:action="@{/admin/dio/noviDio}" method="post" class="form-horizontal well">
+    
+          <div class="form-group" th:class="${#fields.hasErrors('serijskiBroj')} ? 'form-group has-error' : 'form-group'">
+          <label for="serijskiBroj" class="col-lg-2 control-label">Serijski Broj: </label>
+            <div class="col-lg-10">
+              <input type="text" th:field="*{serijskiBroj}" class="form-control input-xlarge" placeholder="Serijski Broj" />
+              <p th:if="${#fields.hasErrors('serijskiBroj')}" class="label label-danger" th:errors="*{serijskiBroj}">neispravan Serijski Broj</p>
+            </div>
+          </div>
+          <div class="form-group" th:class="${#fields.hasErrors('naziv')} ? 'form-group has-error' : 'form-group'">
+          <label for="naziv" class="col-lg-2 control-label">Naziv: </label>
+            <div class="col-lg-10">
+              <input type="text" th:field="*{naziv}" class="form-control input-xlarge" placeholder="Naziv" />
+              <p th:if="${#fields.hasErrors('naziv')}" class="label label-danger" th:errors="*{naziv}">neispravan naziv</p>
+            </div>
+          </div>
+		<hr/>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Dodaj dio</button>
+            <a class="btn btn-default" th:href="@{/admin/dio/}">Odustani</a>
+          </div>
+	</form>
+	
+</div>
+</section>
+
+<div class="row right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/dio/}">Natrag na listu</a>
+</div> 
+
+<div th:include="dodaci/sabloni :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>

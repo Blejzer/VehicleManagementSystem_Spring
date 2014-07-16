@@ -1,4 +1,4 @@
-package ba.fit.vms.signup;
+package ba.fit.vms.controllers;
 
 import javax.validation.Valid;
 
@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ba.fit.vms.config.KorisnickiServis;
 import ba.fit.vms.pojo.Korisnik;
 import ba.fit.vms.repository.KorisnikRepository;
+import ba.fit.vms.signup.SignupForm;
 import ba.fit.vms.support.web.PorukaHelper;
 
 @Controller

@@ -10,7 +10,7 @@ public class ZabranjenPristupController {
      * Procesuiranje exceptiona zabrane pristupa
      * @return
      */
-    @RequestMapping(value = "/auth/denied")
+    @RequestMapping(value = "/auth/zabranjenPristup")
     public String processZabranjenPristupException(){
         return "redirect:/securityAccessDeniedView";
     }
@@ -22,7 +22,7 @@ public class ZabranjenPristupController {
      */
     @RequestMapping(value = "/securityAccessDeniedView")
     public String prikaziZabranjenPristupView(){
-        return "/auth/denied";
+        return "/auth/zabranjenPristup";
     }
 
 }

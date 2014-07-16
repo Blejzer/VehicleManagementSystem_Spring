@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:include="../fragments/common :: headFragment" />
+<head th:include="dodaci/sabloni :: headFragment" />
 <body>
 
-<div th:include="../fragments/common :: headerFragment"></div>
+<div th:include="dodaci/sabloni :: headerFragment"></div>
 
     
 <!-- Marketing messaging and featurettes
@@ -15,7 +15,7 @@
 
 	<!-- /* Handle the flash message */-->
     <th:block th:if="${message != null}">
-        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
+        <div th:replace="dodaci/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
     </th:block>
     
   <div class="featurette">
@@ -69,11 +69,11 @@
 	 -->
 <!-- /END THE FEATURETTES -->
 
-<div th:include="../fragments/common :: footerFragment"></div>
+<div th:include="dodaci/sabloni :: footerFragment"></div>
 
 </div><!-- /.container -->
 
-<div th:include="../fragments/common :: jsFragment"></div>
+<div th:include="dodaci/sabloni :: jsFragment"></div>
 
 </body>
 </html>
