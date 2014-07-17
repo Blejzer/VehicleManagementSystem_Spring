@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,15 +27,15 @@ public class DioController {
 	
 	
 	/**
-	 * Mapiramo listu svih dijelova na adresi /admin/dio/ i /admin/dio/listaDijelova
-	 * stvarna lokacija html fajla nije vidljiva u address baru, a nalazi se na /admin/servis/dio/listaDijelova.html
+	 * Mapiramo listu svih dijelova na adresi /admin/dio/ i /admin/dio/lista
+	 * stvarna lokacija html fajla nije vidljiva u address baru, a nalazi se na /admin/servis/dio/lista.html
 	 * @param request
 	 * @param response
 	 * @param model
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value={"/admin/dio/", "/admin/dio/listaDijelova"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/admin/dio/", "/admin/dio/lista"}, method = RequestMethod.GET)
 	public String getSviDijelovi(HttpServletRequest request, HttpServletResponse response, Model model){
 		
 		if(request.getParameter("page")==null)
@@ -44,7 +45,7 @@ public class DioController {
 			request.getSession().setAttribute("DioController_dijelovi", dijelovi);
 			model.addAttribute("pager", dijelovi);
 			
-			return "/admin/servis/dio/listaDijelova";
+			return "/admin/servis/dio/lista";
 		}
 		else 
 		{
@@ -59,7 +60,7 @@ public class DioController {
 				dijelovi.setPage(Integer.parseInt(page));
 				model.addAttribute("pager", dijelovi);
 			}
-			return "/admin/servis/dio/listaDijelova";
+			return "/admin/servis/dio/lista";
 		}
 	}
 	
@@ -133,6 +134,30 @@ public class DioController {
 	
 		dioRepository.update(dio);
 		return "redirect:/admin/dio/";
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value="/admin/dio/izbrisi", method = RequestMethod.GET)
+	public String getIzbrisiDio(@RequestParam(value="id", required=true) Long id, HttpServletRequest request, HttpServletResponse response, Model model){
+		try {
+			dioRepository.delete(id);
+			return "redirect:/admin/dio/";
+		} catch (DataIntegrityViolationException ex) {
+
+			String page = request.getParameter("page");
+			PagedListHolder dijelovi = (PagedListHolder) request.getSession().getAttribute("DioController_dijelovi");
+			if (dijelovi == null) 
+			{
+				throw new SessionException("Vasa sesija je istekla, molimo pokusajte ponovo");
+			}
+			else
+			{
+				dijelovi.setPage(Integer.parseInt(page));
+				model.addAttribute("pager", dijelovi);
+				model.addAttribute("error", ex.getLocalizedMessage());
+			}
+			return "/admin/servis/dio/lista";
+		}
 	}
 	
 

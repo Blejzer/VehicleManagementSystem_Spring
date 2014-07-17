@@ -84,7 +84,7 @@
 										<th th:text="#{registrationList.vehicle}">Vehicle tag</th>
 										<th th:text="#{registrationList.regDue}">Reg due</th>
 										<th th:text="#{registrationList.insDue}">Ins due</th>
-										<th th:text="#{actions.title}">Available actions</th>
+										<th th:text="#{rad.na}">Available actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -98,7 +98,7 @@
 										<td
 											th:text="${#dates.format(registration.insDue, 'dd/MM/yyyy')}"
 											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.insDue)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.insDue)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.insDue)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.insDue)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.insDue)} ? 'danger' : 'warning')))  : ''"></td>
-										<td><a class="btn btn-primary btn-sm" th:href="@{/admin/registrations/list(id=${registration.vehicle.vin})}"><i class="glyphicon glyphicon-edit"></i> <span	th:text="#{actions.detail}">Edit action</span></a></td>
+										<td><a class="btn btn-primary btn-sm" th:href="@{/admin/registrations/list(id=${registration.vehicle.vin})}"><i class="glyphicon glyphicon-edit"></i> <span	th:text="#{rad.izm}">Edit action</span></a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -163,7 +163,7 @@
 											<td class="col-md-3"><a class="btn btn-info btn-sm"
 												th:href="@{/admin/servisi/showServis(id=${servis.id})}"><i
 													class="glyphicon glyphicon-list-alt"></i> <span
-													th:text="#{actions.show}">Show action</span></a></td>
+													th:text="#{rad.prk}">Show action</span></a></td>
 										</tr>
 									</tbody>
 								</table>

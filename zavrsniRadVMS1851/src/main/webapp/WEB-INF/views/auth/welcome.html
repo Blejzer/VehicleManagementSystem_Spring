@@ -35,7 +35,7 @@
         <th th:text="#{vehicleList.model}">Model</th>
         <th th:text="#{vehicleList.year}">Year</th>
         <th th:text="#{vehicleList.color}">Color</th>
-        <th th:text="#{actions.title}">Actions</th>
+        <th th:text="#{rad.na}">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -47,8 +47,8 @@
 			<td th:text="${vehicle.year}">2005</td>
 			<td th:text="${vehicle.color}">Black</td>
 			<td>
-				<a class="btn btn-info btn-sm" th:href="@{/vehicles/show(id=${vehicle.vin})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{actions.show}">Show action</span></a>
-				<a class="btn btn-info btn-sm" th:href="@{/mileage(id=${vehicle.vin})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{actions.mileage}">Mileage action</span></a>
+				<a class="btn btn-info btn-sm" th:href="@{/vehicles/show(id=${vehicle.vin})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
+				<a class="btn btn-info btn-sm" th:href="@{/mileage(id=${vehicle.vin})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.klm}">Mileage action</span></a>
 			    <!-- <a class="btn btn-primary btn-sm" th:href="@{/registrations/list(id=${vehicle.vin})}"><i class="glyphicon glyphicon-certificate"></i> Registration</a>  -->
 			</td>
 		</tr>

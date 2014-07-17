@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name = "dio")
 public class Dio implements Serializable{
@@ -26,10 +28,13 @@ public class Dio implements Serializable{
 	private Long id;
 	
 	@Column(name="naziv")
-	@NotNull(message= "Naziv dijela ne moze biti prazan")
+	@NotNull
+	@NotEmpty
 	private String naziv;
 	
 	@Column(name="serijski")
+	@NotNull
+	@NotEmpty
 	private String serijskiBroj;
 
 	

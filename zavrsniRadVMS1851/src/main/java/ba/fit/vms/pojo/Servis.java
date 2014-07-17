@@ -46,7 +46,7 @@ public class Servis implements Serializable{
 	private Vozilo vozilo;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "servis_part", joinColumns = { 
+	@JoinTable(name = "servis_dio", joinColumns = { 
 			@JoinColumn(name = "servis_id", nullable = false, updatable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "dio_id", 
 					nullable = false, updatable = false) })
