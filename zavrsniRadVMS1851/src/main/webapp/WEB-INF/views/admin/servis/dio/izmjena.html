@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head th:include="dodaci/sabloni :: headFragment">
-<title>Add new Vehicle</title>
+<title>Izmjena - Dio</title>
 </head>
 <body>
 
@@ -12,7 +12,7 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Edit part</h1>
+    <h1>Izmjena - Dio</h1>
   </div>
 
 <div class="row">
@@ -22,19 +22,19 @@
 
   
     <div class="form-group" th:class="${#fields.hasErrors('id')} ? 'form-group has-error' : 'form-group'">
-    <input type="hidden" th:field="*{id}" class="form-control input-xlarge" placeholder="Serijski broj" />
+    <input type="hidden" th:field="*{id}" class="form-control input-xlarge" placeholder="Dio ID" />
     </div>
           <div class="form-group" th:class="${#fields.hasErrors('serijskiBroj')} ? 'form-group has-error' : 'form-group'">
           <label for="serijskiBroj" class="col-lg-2 control-label">Serijski broj</label>
             <div class="col-lg-10">
-              <input type="text" th:field="*{serijskiBroj}" class="form-control input-xlarge" placeholder="Serial No." />
+              <input type="text" th:field="*{serijskiBroj}" class="form-control input-xlarge" placeholder="Serijski broj" />
               <p th:if="${#fields.hasErrors('serijskiBroj')}" class="label label-danger" th:errors="*{serijskiBroj}">Neispravan serijski broj</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('naziv')} ? 'form-group has-error' : 'form-group'">
           <label for="naziv" class="col-lg-2 control-label">Naziv dijela</label>
             <div class="col-lg-10">
-              <input type="text" th:field="*{naziv}" class="form-control input-xlarge" placeholder="Part name" />
+              <input type="text" th:field="*{naziv}" class="form-control input-xlarge" placeholder="Naziv dijela" />
               <p th:if="${#fields.hasErrors('naziv')}" class="label label-danger" th:errors="*{naziv}">Neispravan naziv dijela</p>
             </div>
           </div>
@@ -49,7 +49,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/part/listPart}">Back to list</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/dio/}">Natrag na listu</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

@@ -1,0 +1,54 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Izmjena - Vrsta servisa</title>
+</head>
+<body>
+
+<div th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+
+<div class="container">
+
+<section id="object">
+  <div class="page-header">
+    <h1>Izmjena - Vrsta servisa</h1>
+  </div>
+
+<div class="row">
+    
+	<form action="#" th:object="${vsAtribut}"
+		th:action="@{/admin/vrstaServisa/izmjena}" method="post" class="form-horizontal well">
+
+  
+    <div class="form-group" th:class="${#fields.hasErrors('id')} ? 'form-group has-error' : 'form-group'">
+    <input type="hidden" th:field="*{id}" class="form-control input-xlarge" placeholder="Vrsta servisa ID" />
+    </div>
+          <div class="form-group" th:class="${#fields.hasErrors('naziv')} ? 'form-group has-error' : 'form-group'">
+          <label for="naziv" class="col-lg-2 control-label">Naziv vrste servisa</label>
+            <div class="col-lg-10">
+              <input type="text" th:field="*{naziv}" class="form-control input-xlarge" placeholder="Naziv vrste servisa" />
+              <p th:if="${#fields.hasErrors('naziv')}" class="label label-danger" th:errors="*{naziv}">Neispravan naziv vrste servisa</p>
+            </div>
+          </div>
+		<hr/>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Zapamti izmjene</button>
+            <a class="btn btn-default" th:href="@{/admin/vrstaServisa/}">Odustani</a>
+          </div>
+	</form>
+	
+</div>
+</section>
+
+<div class="row right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vrstaServisa/}">Natrag na listu</a>
+</div> 
+
+<div th:include="dodaci/sabloni :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>

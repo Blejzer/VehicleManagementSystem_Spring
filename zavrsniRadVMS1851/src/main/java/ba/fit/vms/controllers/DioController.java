@@ -65,33 +65,33 @@ public class DioController {
 	}
 	
 	/**
-	 * Mapiramo otvaranje forme za dodavanje novog dijela na adresi /admin/dio/noviDio
-	 * stvarna adresa je na adresi /admin/servis/dio/noviDio
+	 * Mapiramo otvaranje forme za dodavanje novog dijela na adresi /admin/dio/novi
+	 * stvarna adresa je na adresi /admin/servis/dio/novi
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value={"/admin/dio/noviDio"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/admin/dio/novi"}, method = RequestMethod.GET)
 	public String getDodajDio(Model model){
 		
 		model.addAttribute("dioAtribut", new Dio());
-		return "/admin/servis/dio/noviDio";
+		return "/admin/servis/dio/novi";
 	}
 	
 	
 	/**
-	 * Mapiramo snimanje podataka o novom dijelu dobivenih iz forme na adresi /admin/dio/noviDio
+	 * Mapiramo snimanje podataka o novom dijelu dobivenih iz forme na adresi /admin/dio/novi
 	 * ukoliko Dio nije validan, vraca na formu i ukazuje na gresku
 	 * snimamo dio i preusmjeravamo na listu dijelova
 	 * @param dio
 	 * @param rezultat
 	 * @return
 	 */
-	@RequestMapping(value="/admin/dio/noviDio", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/dio/novi", method = RequestMethod.POST)
 	public String postDodajDio(@ModelAttribute("dioAtribut") @Valid Dio dio, BindingResult rezultat){
 		
 		if (rezultat.hasErrors()) 
 		{		
-			return "/admin/servis/dio/noviDio";
+			return "/admin/servis/dio/novi";
 		}
 		
 		dioRepository.save(dio);
@@ -136,6 +136,14 @@ public class DioController {
 		return "redirect:/admin/dio/";
 	}
 	
+	/**
+	 * Mapiramo zahtjev za brisanjem odabranog dijela na adresi /admin/dio/izbrisi
+	 * @param id
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/admin/dio/izbrisi", method = RequestMethod.GET)
 	public String getIzbrisiDio(@RequestParam(value="id", required=true) Long id, HttpServletRequest request, HttpServletResponse response, Model model){
