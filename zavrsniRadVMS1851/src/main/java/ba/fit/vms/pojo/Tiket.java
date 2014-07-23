@@ -49,9 +49,6 @@ public class Tiket implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date rijesenDatum;
 	
-	@Column(name = "rijesen", nullable=false)
-	private Boolean jeRrijesen;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "korisnik_id", nullable = true)
 	private Korisnik korisnik;
@@ -107,14 +104,6 @@ public class Tiket implements Serializable{
 
 	public void setRijesenDatum(Date rijesenDatum) {
 		this.rijesenDatum = rijesenDatum;
-	}
-
-	public Boolean getJeRrijesen() {
-		return jeRrijesen;
-	}
-
-	public void setJeRrijesen(Boolean jeRrijesen) {
-		this.jeRrijesen = jeRrijesen;
 	}
 
 	public Korisnik getKorisnik() {

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:include="../fragments/common :: headFragment" />
+<head th:include="dodaci/sabloni :: headFragment" />
 <body>
 
-<div sec:authorize="hasRole('ROLE_ADMIN')" th:include="../fragments/common :: adminHeaderFragment"></div>
-<div sec:authorize="hasRole('ROLE_USER')" th:include="../fragments/common :: headerFragment"></div>
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+<div sec:authorize="hasRole('ROLE_USER')" th:include="dodaci/sabloni :: headerFragment"></div>
 
 <div class="container">
     <p th:text="${errorMessage}">Error has occured</p>
-    <div th:include="../fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+    <div th:include="dodaci/footer :: footer">&copy; 2014 The Static Templates</div>
 
-	<div th:include="../fragments/common :: footerFragment"></div>
+	<div th:include="dodaci/sabloni :: footerFragment"></div>
 
 </div><!-- /.container -->
 
-<div th:include="../fragments/common :: jsFragment"></div>
+<div th:include="dodaci/sabloni :: jsFragment"></div>
 
 </body>
 </html>

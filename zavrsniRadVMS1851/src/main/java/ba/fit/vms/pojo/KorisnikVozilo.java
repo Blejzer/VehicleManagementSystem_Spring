@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,8 +18,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="kilometraza")
-public class Kilometraza implements Serializable{
+@Table(name="korisnik_vozilo")
+public class KorisnikVozilo implements Serializable{
 
 	/**
 	 * 
@@ -26,55 +27,39 @@ public class Kilometraza implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="kilometri")
-	@NotNull(message= "Trenutna kilometraza ne moze biti prazna")
-	private Long kilometraza;
-	
-	@Column(name = "datum")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@NotNull
-	private Date datum;
-	
-	@ManyToOne( cascade = {CascadeType.REMOVE}, fetch=FetchType.EAGER )
-	@JoinColumn(nullable=false)
-	@NotNull
+	@ManyToOne( cascade = {CascadeType.PERSIST}, fetch=FetchType.EAGER )
+	@JoinColumn(nullable=false, updatable=false)
 	private Vozilo vozilo;
 	
-	@ManyToOne( cascade = {CascadeType.REMOVE}, fetch=FetchType.EAGER )
+	@ManyToOne( cascade = {CascadeType.PERSIST}, fetch=FetchType.EAGER )
 	@JoinColumn(nullable=false, updatable=false)
-	@NotNull
 	private Korisnik korisnik;
-
-	//***********************************************
-	//*  			Getteri i Setteri 				*
-	//*                    							*
-	// **********************************************
+	
+	@Column(name = "dodijeljeno")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@NotNull
+	private Date dodijeljeno;
+	
+	@Column(name = "vraceno")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	private Date vraceno;
+	
+	
+	/************************************************
+	/*  			Getteri i Setteri 				*
+	/*                    							*
+	/***********************************************/
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getKilometraza() {
-		return kilometraza;
-	}
-
-	public void setKilometraza(Long kilometraza) {
-		this.kilometraza = kilometraza;
-	}
-
-	public Date getDatum() {
-		return datum;
-	}
-
-	public void setDatum(Date datum) {
-		this.datum = datum;
 	}
 
 	public Vozilo getVozilo() {
@@ -92,4 +77,21 @@ public class Kilometraza implements Serializable{
 	public void setKorisnik(Korisnik korisnik) {
 		this.korisnik = korisnik;
 	}
+
+	public Date getDodijeljeno() {
+		return dodijeljeno;
+	}
+
+	public void setDodijeljeno(Date dodijeljeno) {
+		this.dodijeljeno = dodijeljeno;
+	}
+
+	public Date getVraceno() {
+		return vraceno;
+	}
+
+	public void setVraceno(Date vraceno) {
+		this.vraceno = vraceno;
+	}
+
 }

@@ -41,7 +41,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/template", method = RequestMethod.GET)
 	public String template() {
-		return "../fragments/bootstrap-template";
+		return "dodaci/bootstrap-template";
 	}
 
 }

@@ -15,16 +15,9 @@
 <link rel="stylesheet" href="/resources/css/vms.css"
 	th:href="@{/resources/css/vms.css}" />
 
-<script src="/resources/js/jquery.js"
-	th:src="@{/resources/js/jquery.min.js}" />
-<script src="/resources/js/bootstrap.min.js"
-	th:src="@{/resources/js/bootstrap.min.js}" />
-
-<!-- JavaScript jQuery code -->
-<script type='text/javascript'>
-	$(document).ready(function() {
-	});
-</script>
+<script th:src="@{/resources/js/jquery.min.js}" />
+<script th:src="@{/resources/js/bootstrap.min.js}" />
+<script th:src="@{/resources/js/bootbox.min.js}" />
 </head>
 <body>
 
@@ -48,9 +41,9 @@
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
 								data-toggle="dropdown">Vozila <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li><a th:href="@{/admin/vehicles}">Lista vozila</a></li>
+									<li><a th:href="@{/admin/vozila/}">Lista vozila</a></li>
 									<li class="divider"></li>
-									<li><a th:href="@{/admin/vehicles/add}">Dodaj novo
+									<li><a th:href="@{/admin/vozila/novi}">Dodaj novo
 											vozilo</a></li>
 								</ul></li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
