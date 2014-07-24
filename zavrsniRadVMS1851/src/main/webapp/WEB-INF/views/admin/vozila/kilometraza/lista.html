@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head th:include="dodaci/sabloni :: headFragment">
-<title>Vozila</title>
+<title>Dijelovi</title>
 </head>
 <body>
 
@@ -18,7 +18,7 @@
  	function deleteObject(id) {
 		bootbox.confirm("Da li ste sigurni?", function(result) {
 			if (result) {
-				var url = /*[[ @{'/admin/vozila/izbrisi?vin='} ]]*/ "genericUrl";
+				var url = /*[[ @{'/admin/dio/izbrisi?id='} ]]*/ "genericUrl";
 				url = url+id;
 				document.location = url;
 			}
@@ -27,8 +27,8 @@
 </script>
 
   <div class="page-header">
-    <h1>Vozila</h1>
-	<a class="btn btn-primary btn-large right" th:href="@{/admin/vozila/novi}">Dodaj novo vozilo</a>
+    <h1>Dijelovi</h1>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/dio/novi}">Dodaj novi dio</a>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
@@ -43,24 +43,20 @@
   <table th:if="${not #lists.isEmpty(pager.pageList)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
-        <th th:text="#{voz.vin}">VIN broj</th>
-        <th th:text="#{voz.mar}">Make</th>
-        <th th:text="#{voz.mod}">Model</th>
-        <th th:text="#{voz.boj}">Color</th>
-        <th th:text="#{voz.god}">Year</th>
-        <th th:text="#{rad.na}">Actions</th>
+        <th th:text="#{dioTekst.id}">Identifikacijski broj</th>
+        <th th:text="#{dioTekst.naziv}">Naziv dijela</th>
+        <th th:text="#{dioTekst.sb}">Serijski broj</th>
+        <th th:text="#{rad.na}">Radnja</th>
         </tr>
     </thead>
     <tbody>
-	    <tr th:each="vozilo : ${pager.pageList}">
-	    	<td th:text="${vozilo.vin}">123456</td>
-	    	<td th:text="${vozilo.marka}">Gefufna</td>
-	    	<td th:text="${vozilo.model}">GE123</td>
-	    	<td th:text="${vozilo.boja}">GE123</td>
-	    	<td th:text="${vozilo.godina}">GE123</td>
+	    <tr th:each="dio : ${pager.pageList}">
+	    	<td th:text="${dio.id}">123456</td>
+	    	<td th:text="${dio.naziv}">Gefufna</td>
+	    	<td th:text="${dio.serijskiBroj}">GE123</td>
 			<td>
-				<a class="btn btn-warning btn-sm" th:href="@{/admin/vozila/izmjena(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Rednja - izmjeni</span></a>
-				<a class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${vozilo.vin} + '\');'"><i class="glyphicon glyphicon-remove"></i><span th:text="#{rad.obr}">Radnja - izbrisi</span></a>
+				<a class="btn btn-warning btn-sm" th:href="@{/admin/dio/izmjena(id=${dio.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Rednja - izmjeni</span></a>
+				<a class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${dio.id} + '\');'"><i class="glyphicon glyphicon-remove"></i><span th:text="#{rad.obr}">Radnja - izbrisi</span></a>
 			</td>
 		</tr>
     </tbody>

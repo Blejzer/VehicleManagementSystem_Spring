@@ -8,11 +8,11 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -127,15 +127,32 @@ public class VoziloController {
 
 	}
 	
+	
+	/**
+	 * Mapiramo otvaranje forme za izmjenu podataka postojeceg vozila
+	 * podatak koji se ne moze mijenjati je VIN broj vozila
+	 * @param vin
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/admin/vozila/izmjena", method = RequestMethod.GET)
 	public String getIzmjenaVozila(@RequestParam(value="vin", required=true) String vin, Model model){
-		
+
 		model.addAttribute("voziloAtribut", voziloRepository.read(vin));
 		
 		return "/admin/vozila/izmjena";
 	}
 	
 	
+	/**
+	 * Mapiramo snimanje podataka o izmjenama dobivenih iz forme
+	 * ukoliko podaci nisu validni, vracamo na formu i ukazujemo na greske
+	 * snimamo promjene i preusmjeravamo na listu vozila
+	 * @param vozilo
+	 * @param rezultat
+	 * @param status
+	 * @return
+	 */
 	@RequestMapping(value="/admin/vozila/izmjena", method = RequestMethod.POST)
 	public String postIzmjenaVozila(@ModelAttribute("voziloAtribut") @Valid Vozilo vozilo, BindingResult rezultat, SessionStatus status){
 		
@@ -145,7 +162,40 @@ public class VoziloController {
 		
 		voziloRepository.edit(vozilo);
 		
-		return "redirect: /admin/vozila";
+		return "redirect:/admin/vozila/";
+	}
+	
+	
+	/**
+	 * Mapiramo zahtjev za brisanjem odabranog vozila
+	 * @param vin
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value="/admin/vozila/izbrisi", method=RequestMethod.GET)
+	public String getIzbrisiVozilo(@RequestParam(value="vin", required=true) String vin, HttpServletRequest request, HttpServletResponse response, Model model){
+
+		try {
+			voziloRepository.delete(vin);
+			return "redirect:/admin/vozila/";
+		} catch (DataIntegrityViolationException e) {
+			String page = request.getParameter("page");
+			PagedListHolder vozlia = (PagedListHolder) request.getSession().getAttribute("VoziloController_vozila");
+			if (vozlia == null) 
+			{
+				throw new SessionException("Vasa sesija je istekla, molimo pokusajte ponovo");
+			}
+			else
+			{
+				vozlia.setPage(Integer.parseInt(page));
+				model.addAttribute("pager", vozlia);
+				model.addAttribute("error", e.getLocalizedMessage());
+			}
+			return "/admin/vozila/";
+		}
 	}
 
 }
