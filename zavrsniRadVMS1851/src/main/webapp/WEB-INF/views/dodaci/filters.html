@@ -36,16 +36,16 @@
 </section>
 </div>
 
-<div id="driversList" th:fragment="driversList">
+<div id="korisnikLista" th:fragment="korisnikLista">
 <section id="filterForm">
 
   <div class="page-header">
-    <p class="lead" data-toggle="collapse" data-target="#filter">Users filter <i class="fright glyphicon glyphicon-circle-arrow-down"></i></p>
+    <p class="lead" data-toggle="collapse" data-target="#filter">Filter korisnika <i class="fright glyphicon glyphicon-circle-arrow-down"></i></p>
   </div>
 
 <div id="filter" class="collapse">
 
-<form action="#" th:action="@{/admin/users/search}" method="get" class="form-inline well">
+<form action="#" th:action="@{/admin/korisnici/pretraga}" method="get" class="form-inline well">
 <div th:if="${letter}!=null"><span th:text="${letter}"></span></div>
 	<div class="btn-group">
 	  <button type="submit" name="letter" class="btn btn-default" value="A" >A</button>
@@ -78,7 +78,7 @@
 	
 	<hr/>
 	
-        <form action="#" th:action="@{/admin/users/search}" method="get" class="form-inline well">
+        <form action="#" th:action="@{/admin/korisnici/pretraga}" method="get" class="form-inline well">
         <div class="col-md-3">
           	<input th:if="${name}!=null" type="text" name="name" class="form-control" th:value="${name}" />
           	<input th:if="${name}==null" type="text" name="name" class="form-control" placeholder="Name" />
@@ -86,20 +86,15 @@
         <div class="col-md-3">
             <div class="controls">
               <select id="select01" name="isActive" class="form-control">
-                <option value="null">All</option>
-                <option value="true">Active</option>
-                <option value="false">Not Active</option>
+                <option value="null">Svi</option>
+                <option value="true">Aktivni</option>
+                <option value="false">Nisu aktivni</option>
 
               </select>
             </div>
           </div>
-<!--         <div class="checkbox"> -->
-        	
-<!--             <input type="checkbox" name="isActive" value="true" checked="checked" /> Is Active? -->
-<!--             <input type="hidden" name="_isActive" value="false" /> -->
-<!--         </div> -->
         
-        <button type="submit" class="btn btn-default">Search</button>
+        <button type="submit" class="btn btn-default">Pretraga</button>
       </form>
 
 </div>
