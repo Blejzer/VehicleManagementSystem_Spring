@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -19,18 +20,20 @@ import ba.fit.vms.pojo.Korisnik;
 @Repository
 @Transactional(readOnly = true)
 public class KorisnikRepository {
-	
+
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
+	protected static Logger logger = Logger.getLogger("controller");
+
 	@Inject
 	private PasswordEncoder passwordEncoder;
-	
+
 	//***********************************************
 	//*					REST METODE					*
 	//*												*
 	//***********************************************
-	
+
 	/**
 	 * Metoda vraca korisnika sa odabranim email-om
 	 * @param email
@@ -45,7 +48,7 @@ public class KorisnikRepository {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Metoda vraca korisnika sa odabranim id-em
 	 * @param id
@@ -58,7 +61,7 @@ public class KorisnikRepository {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Metoda snima novog korisnika u bazu
 	 * @param korisnik
@@ -74,7 +77,7 @@ public class KorisnikRepository {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Metoda vraca editovanog korisnika
 	 * @param korisnik
@@ -82,31 +85,41 @@ public class KorisnikRepository {
 	 */
 	@Transactional
 	public Korisnik edit(Korisnik korisnik){
-		
-		Korisnik stari = this.readById(korisnik.getId());
-		
+		logger.debug(korisnik.getEmail());
+		logger.debug(korisnik.getId());
+		logger.debug(korisnik.getLozinka());
+		Korisnik stari = this.readByEmail(korisnik.getEmail());
 		// Enkripcija lozinke
 		if(korisnik.getLozinka().length()>0){
 			korisnik.setLozinka(passwordEncoder.encode(korisnik.getLozinka()));
 		} else {
 			korisnik.setLozinka(stari.getLozinka());
+			logger.debug(stari.getLozinka().length());
 		}
-		
-		/*
-		entityManager.merge(account);
-		entityManager.flush();
-		return account;
-		*/
+/*		try {
+			logger.debug(korisnik.getId());
+			entityManager.merge(korisnik);
+			entityManager.flush();
+			return korisnik;
+		} catch (Exception e) {
+			logger.debug("Exception on edit page: ");
+			return null;
+		}*/
+
+
 		// editovanje se moze uraditi i ovako, medjutim da bi smo bili sigurni da su
 		// svi podaci pravilno preneseni, korisnicemo BeanUtils copy opciju
 		// koja ce kopirati sadrzaj polja iz jednog korisnika u drugog.
-		
+
 		BeanUtils.copyProperties(korisnik, stari);
-		
+
+		logger.debug(korisnik.getLozinka().length());
+		logger.debug(stari.getId());
 		try {
 			entityManager.merge(stari);
 			return stari;
 		} catch (PersistenceException e) {
+			logger.debug("Exception on edit page: ");
 			return null;
 		}
 	}
@@ -118,7 +131,7 @@ public class KorisnikRepository {
 	 */
 	@Transactional
 	public Korisnik delete(String email){
-		
+
 		Korisnik zaBrisati = this.readByEmail(email);
 		try {
 			entityManager.remove(zaBrisati);
@@ -128,7 +141,7 @@ public class KorisnikRepository {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Metoda brise korisnika izbrisanog po id-u
 	 * @param email
@@ -136,7 +149,7 @@ public class KorisnikRepository {
 	 */
 	@Transactional
 	public Korisnik deleteById(Long id){
-		
+
 		Korisnik zaBrisati = this.readById(id);
 		try {
 			entityManager.remove(zaBrisati);
@@ -146,12 +159,12 @@ public class KorisnikRepository {
 			return null;
 		}
 	}
-	
+
 	//***********************************************
 	//*					LIST METODE					*
 	//*												*
 	//***********************************************
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Korisnik> getSviKorisnici(){

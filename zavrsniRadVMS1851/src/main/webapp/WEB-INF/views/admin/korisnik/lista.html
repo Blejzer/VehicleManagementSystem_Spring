@@ -19,7 +19,7 @@
  	function deleteObject(id) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
-				var url = /*[[ @{'/admin/korisnici/delete?email='} ]]*/ "genericUrl";
+				var url = /*[[ @{'/admin/korisnici/delete?id='} ]]*/ "genericUrl";
 				url = url+id;
 				document.location = url;
 			}
@@ -71,9 +71,9 @@
 	        </td>
 
 			<td>
-				<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-warning btn-sm" th:href="@{/admin/korisnici/edit(id=${korisnik.email})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Edit action</span></a>
+				<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-warning btn-sm" th:href="@{/admin/korisnici/izmjeni(id=${korisnik.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Edit action</span></a>
 			    <!-- <a class="btn btn-danger btn-sm delete" th:href="@{/vehicles/delete(id=${vehicle.vin})}"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>  -->
-				<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${korisnik.email} + '\');'"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a> 
+				<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${korisnik.id} + '\');'"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a> 
 				<a class="btn btn-info btn-sm" th:href="@{/admin/korisnici/show(email=${korisnik.email})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
 			</td>
 		</tr>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head th:include="dodaci/sabloni :: headFragment">
-<title>Unos novog korisnika</title>
+<title>Izmjena - Korisnik</title>
 </head>
 <body>
 
@@ -12,16 +12,19 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Unos novog korisika</h1>
+    <h1>Izmjena - Korisnik</h1>
   </div>
-
-<div class="row">
+    
+	<div class="row">
     
 	<form action="#" th:object="${korisnikAtribut}"
-		th:action="@{/admin/korisnici/novi}" method="post" class="form-horizontal well">
+		th:action="@{/admin/korisnici/izmjeni}" method="post" class="form-horizontal well">
+
     
+    	<input type="text" th:field="*{id}" />
+    	
           <div class="form-group" th:class="${#fields.hasErrors('ime')} ? 'form-group has-error' : 'form-group'">
-          <label for="ime" class="col-lg-2 control-label">Ime: </label>
+          <label for="ime" class="col-lg-2 control-label">First Name</label>
             <div class="col-lg-10">
               <input type="text" th:field="*{ime}" class="form-control input-xlarge" placeholder="Ime" />
               <p th:if="${#fields.hasErrors('ime')}" class="label label-danger" th:errors="*{ime}">Neispravno ime</p>
@@ -29,7 +32,7 @@
           </div>
 
 		<div class="form-group" th:class="${#fields.hasErrors('prezime')} ? 'form-group has-error' : 'form-group'">
-          <label for="prezime" class="col-lg-2 control-label">Prezime: </label>
+          <label for="Prezime" class="col-lg-2 control-label">Last Name</label>
             <div class="col-lg-10">
               <input type="text" th:field="*{prezime}" class="form-control input-xlarge" placeholder="Prezime" />
               <p th:if="${#fields.hasErrors('prezime')}" class="label label-danger" th:errors="*{prezime}">Neispravno prezime</p>
@@ -37,23 +40,23 @@
         </div>
         
         <div class="form-group" th:class="${#fields.hasErrors('email')} ? 'form-group has-error' : 'form-group'">
-          <label for="vin" class="col-lg-2 control-label">Email adresa: </label>
+          <label for="email" class="col-lg-2 control-label">Email address</label>
             <div class="col-lg-10">
               <input type="text" th:field="*{email}" class="form-control input-xlarge" placeholder="Email address" />
-              <p th:if="${#fields.hasErrors('email')}" class="label label-danger" th:errors="*{email}">Neispravna email adresa</p>
+              <p th:if="${#fields.hasErrors('email')}" class="label label-danger" th:errors="*{email}">Incorrect Email address</p>
         	</div>
         </div>
         
         <div class="form-group" th:class="${#fields.hasErrors('lozinka')} ? 'form-group has-error' : 'form-group'">
-          <label for="lozinka" class="col-lg-2 control-label">Lozinka: </label>
+          <label for="lozinka" class="col-lg-2 control-label">Password</label>
             <div class="col-lg-10">
-              <input type="password" th:field="*{lozinka}" class="form-control input-xlarge" placeholder="Lozinka" />
-              <p th:if="${#fields.hasErrors('lozinka')}" class="label label-danger" th:errors="*{lozinka}">Neispravna lozinka</p>
+              <input type="lozinka" th:field="*{lozinka}" class="form-control input-xlarge" placeholder="Lozinka" />
+              <p th:if="${#fields.hasErrors('lozinka')}" class="label label-danger" th:errors="*{lozinka}">Incorrect password</p>
         	</div>
         </div>
         
         <div class="form-group" th:class="${#fields.hasErrors('rola')} ? 'form-group has-error' : 'form-group'">
-          <label for="rola" class="col-lg-2 control-label">Rola: </label>
+          <label for="rola" class="col-lg-2 control-label">Rola</label>
             <div class="col-lg-4">
               <select th:field="*{rola}" class="form-control">
                 <option value="ROLE_USER">User</option>
@@ -73,7 +76,7 @@
         
 		<hr/>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Unesi korisnika</button>
+            <button type="submit" class="btn btn-primary">Izmijeni korisnika</button>
             <a class="btn btn-default" th:href="@{/admin/korisnici/}">Odustani</a>
           </div>
 	</form>
@@ -82,7 +85,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/korisnici/}">Nazad na listu</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/korisnici/}">Natrag na listu</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

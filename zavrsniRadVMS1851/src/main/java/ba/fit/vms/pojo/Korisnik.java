@@ -20,8 +20,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "korisnik")
@@ -40,12 +42,18 @@ public class Korisnik implements Serializable{
 	private Long id;
 
 	@Column(unique = true, nullable = false)
+	@NotNull
+	@NotEmpty
 	private String email;
 
 	@Column
+	@NotNull
+	@NotEmpty
 	private String ime;
 
 	@Column
+	@NotNull
+	@NotEmpty
 	private String prezime;
 
 	@Column
@@ -96,6 +104,10 @@ public class Korisnik implements Serializable{
 	 */
 	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	/**
