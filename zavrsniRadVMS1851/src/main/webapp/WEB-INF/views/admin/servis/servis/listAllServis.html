@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragments/common :: headFragment">
+<title>Services</title>
+</head>
+<body>
+
+	<div th:include="fragments/common :: adminHeaderFragment"></div>
+
+	<div class="container">
+
+		<div th:include="fragments/filters :: servisReport"></div>
+
+		<section id="tables">
+
+			<script src="/resources/bootstrap/js/bootbox.min.js"
+				th:src="@{/resources/js/bootbox.min.js}"></script>
+
+			<script th:inline="javascript">
+				function deleteObject(id) {
+					bootbox
+							.confirm(
+									"Are you sure?",
+									function(result) {
+										if (result) {
+											var url = /*[[ @{'/admin/servis/deleteServis?id='} ]]*/"genericUrl";
+											url = url + id;
+											document.location = url;
+										}
+									});
+				};
+			</script>
+
+			<div th:if="${vehicleVin!=null}" class="page-header">
+				<h1>Services for all vehicles</h1>
+				<a class="btn btn-primary btn-large right"
+					th:href="@{/admin/servisi/addServis(id=${vehicleVin})}">Add new
+					Servis</a>
+			</div>
+
+			<div class="alert alert-danger alert-dismissable"
+				th:if="${error != null}">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-hidden="true">&times;</button>
+				<h1>Error</h1>
+				<h4>
+					An unexpected error occurred, <a href="#" class="alert-link">please
+						contact the support team</a>.
+				</h4>
+				<div class="alert alert-warning">
+					<p th:text="${error}">error</p>
+				</div>
+			</div>
+
+			<div th:if="${report}" th:each="servisi : ${report}">
+				<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<tr class="success">
+							<th class="text-center h3" colspan="2"
+								th:text="${servisi.key.licensePlate}">Vehicle</th>
+							<th class="text-center h3" colspan="2"><a
+								class="btn btn-success btn-sm btn-large right"
+								th:href="@{/admin/servisi/addServis(id=${servisi.key.vin})}">Add
+									new Servis</a></th>
+						</tr>
+						<tr>
+							<th class="text-center h4">Completed?</th>
+							<th class="text-center h4">Date</th>
+							<th class="text-center h4">Service Type</th>
+							<th class="text-center h4">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="servis : ${servisi.value}">
+							<td class="col-md-3" th:switch="${servis.completed}">
+								<p th:case="true">
+									<i class="glyphicon glyphicon-ok"></i>
+								</p>
+								<p th:case="false">
+									<i class="glyphicon glyphicon-minus"></i>
+								</p>
+							</td>
+							<td class="col-md-3"
+								th:text="${#calendars.format(servis.serviceDate,'dd MMMM yyyy')}">date</td>
+							<td class="col-md-3" th:text="${servis.serviceType.name}">Type</td>
+							<td class="col-md-3 center"><a class="btn btn-info btn-sm"
+								th:href="@{/admin/servisi/showServis(id=${servis.id})}"><i
+									class="glyphicon glyphicon-list-alt"></i> <span
+									th:text="#{actions.show}">Show action</span></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div th:if="${report !=null}">
+				<div th:if="${report.isEmpty()}">
+
+					<span>
+						<h3>No Services recorded for selected search</h3>
+					</span>
+
+				</div>
+			</div>
+
+
+
+		</section>
+
+		<div th:include="fragments/common :: footerFragment"></div>
+	</div>
+	<!-- /.container -->
+	<div th:include="fragments/common :: jsFragment"></div>
+
+</body>
+</html>

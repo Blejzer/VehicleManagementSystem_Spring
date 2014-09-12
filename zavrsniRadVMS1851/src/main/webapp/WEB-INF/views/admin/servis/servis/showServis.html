@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragments/common :: headFragment">
+<title>Services</title>
+</head>
+<body>
+
+<div th:include="fragments/common :: adminHeaderFragment"></div>
+
+<div class="container"> 
+ 
+<section id="tables">
+
+  <div class="page-header">
+    <h1>Services for all vehicles </h1>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/servisi/addServis(id=${servisAttribute.vehicle.vin})}">Add new Servis</a>
+	<a class="btn btn-primary btn-large left" th:href="@{/admin/servisi/listServis(id=${servisAttribute.vehicle.vin})}">Back</a>
+  </div>
+  
+  <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h1>Error</h1>
+     <h4>An unexpected error occurred, <a href="#" class="alert-link">please contact the support team</a>.</h4>
+     <div class="alert alert-warning">
+     	<p th:text="${error}">error</p>
+     </div>
+    </div>
+  <table class="table table-bordered table-striped table-hover">
+    <thead>
+
+    </thead>
+    <tbody>
+	    <tr>
+	    	<td>Vehicle License Plate:</td>
+	    	<td colspan="3" th:text="${servisAttribute.vehicle.licensePlate}">WVWZZZ857E58T7R</td>
+	    </tr>
+	    <tr>
+	    	<td>Is service completed?</td>
+	    	<td colspan="3" th:text="${servisAttribute.completed} ? 'Yes' : 'No'">completed?</td>
+	    </tr>
+	    <tr>
+	    	<td>Service Date:</td>
+	    	<td colspan="3" th:text="${#calendars.format(servisAttribute.serviceDate,'dd MMMM yyyy')}">date</td>
+	    </tr>
+	    <tr>
+	    	<td>Service Type:</td>
+	    	<td colspan="3" th:text="${servisAttribute.serviceType.name}">Focus</td>
+	    </tr>
+	    <tr>
+	    	<td>Parts</td>
+	    	<td colspan="3">Part name / serial number</td></tr>
+	    <tr th:each="part : ${servisAttribute.parts}">
+	    	<td/>
+	    	<td th:text="${part.name}">Color:</td>
+	    	<td th:text="${part.serial}">White</td>
+	    </tr>
+    </tbody>
+  </table>
+  
+  
+</section>
+
+<div th:include="fragments/common :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="fragments/common :: jsFragment"></div>
+
+</body>
+</html>
