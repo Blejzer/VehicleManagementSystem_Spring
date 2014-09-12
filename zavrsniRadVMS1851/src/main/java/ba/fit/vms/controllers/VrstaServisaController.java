@@ -4,10 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,34 +34,22 @@ public class VrstaServisaController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value={"/admin/vrstaServisa/", "/admin/vrstaServisa/lista"}, method = RequestMethod.GET)
-	public String getSveVrsteServisa(HttpServletRequest request, HttpServletResponse response, Model model){
+	@RequestMapping(value="/admin/vrstaServisa/", method = RequestMethod.GET)
+	public String getSveVrsteServisa(Model model, HttpServletRequest request){
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
+		}
 		
-		if(request.getParameter("page")==null)
-		{
-			PagedListHolder vrsteServisa = new PagedListHolder(vrstaServisaRepository.getSveVrsteServisa());
-			vrsteServisa.setPageSize(5); // Podesavamo koliko dijelova zelimo po stranici
-			request.getSession().setAttribute("VSController_vrsteServisa", vrsteServisa);
-			model.addAttribute("pager", vrsteServisa);
-			
-			return "/admin/servis/vrstaServisa/lista";
-		}
-		else 
-		{
-			String page = request.getParameter("page");
-			PagedListHolder dijelovi = (PagedListHolder) request.getSession().getAttribute("VSController_vrsteServisa");
-			if (dijelovi == null) 
-			{
-				throw new SessionException("Vasa sesija je istekla, molimo ponovite Vasu pretragu");
-			}
-			else
-			{
-				dijelovi.setPage(Integer.parseInt(page));
-				model.addAttribute("pager", dijelovi);
-			}
-			return "/admin/servis/vrstaServisa/lista";
-		}
+	    int pageSize = 4;
+
+	    Pageable pageable = new PageRequest(page, pageSize);
+		model.addAttribute("pager", vrstaServisaRepository.findAll(pageable));
+		
+		return "/admin/servis/vrstaServisa/lista";
+		
 	}
 	
 	/**
@@ -109,7 +97,7 @@ public class VrstaServisaController {
 	@RequestMapping(value="/admin/vrstaServisa/izmjena", method = RequestMethod.GET)
 	public String getIzmjenaVrsteServisa(@RequestParam(value="id", required=true) Long id, Model model){
 	
-		model.addAttribute("vsAtribut", vrstaServisaRepository.read(id));
+		model.addAttribute("vsAtribut", vrstaServisaRepository.findOne(id));
 		
 		return "/admin/servis/vrstaServisa/izmjena";
 	}
@@ -129,7 +117,7 @@ public class VrstaServisaController {
 			return "/admin/servis/vrstaServisa/izmjena";
 		}
 	
-		vrstaServisaRepository.update(vrstaServisa);
+		vrstaServisaRepository.save(vrstaServisa);
 		return "redirect:/admin/vrstaServisa/";
 	}
 	
@@ -141,7 +129,6 @@ public class VrstaServisaController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/admin/vrstaServisa/izbrisi", method = RequestMethod.GET)
 	public String izbrisiVrstuServisa(@RequestParam(value="id", required=true) Long id, HttpServletRequest request, HttpServletResponse response, Model model){
 		try {
@@ -149,18 +136,18 @@ public class VrstaServisaController {
 			return "redirect:/admin/vrstaServisa/";
 		} catch (DataIntegrityViolationException ex) {
 
-			String page = request.getParameter("page");
-			PagedListHolder dijelovi = (PagedListHolder) request.getSession().getAttribute("VSController_vrsteServisa");
-			if (dijelovi == null) 
-			{
-				throw new SessionException("Vasa sesija je istekla, molimo pokusajte ponovo");
+int page;
+			
+			if(request.getParameter("page")==null){
+				page=0;
+			} else{
+				page = Integer.parseInt(request.getParameter("page"));
 			}
-			else
-			{
-				dijelovi.setPage(Integer.parseInt(page));
-				model.addAttribute("pager", dijelovi);
-				model.addAttribute("error", ex.getLocalizedMessage());
-			}
+
+			int pageSize = 4;
+
+			Pageable pageable = new PageRequest(page, pageSize);
+			model.addAttribute("pager", vrstaServisaRepository.findAll(pageable));
 			return "/admin/servis/vrstaServisa/lista";
 		}
 	}

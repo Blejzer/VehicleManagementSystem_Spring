@@ -1,13 +1,12 @@
 package ba.fit.vms.controllers;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,11 +20,11 @@ import ba.fit.vms.repository.DioRepository;
 
 @Controller
 public class DioController {
-	
+
 	@Autowired
 	DioRepository dioRepository;
-	
-	
+
+
 	/**
 	 * Mapiramo listu svih dijelova na adresi /admin/dio/ i /admin/dio/lista
 	 * stvarna lokacija html fajla nije vidljiva u address baru, a nalazi se na /admin/servis/dio/lista.html
@@ -34,36 +33,23 @@ public class DioController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value={"/admin/dio/", "/admin/dio/lista"}, method = RequestMethod.GET)
-	public String getSviDijelovi(HttpServletRequest request, HttpServletResponse response, Model model){
-		
-		if(request.getParameter("page")==null)
-		{
-			PagedListHolder dijelovi = new PagedListHolder(dioRepository.getSviDijelovi());
-			dijelovi.setPageSize(5); // Podesavamo koliko dijelova zelimo po stranici
-			request.getSession().setAttribute("DioController_dijelovi", dijelovi);
-			model.addAttribute("pager", dijelovi);
-			
-			return "/admin/servis/dio/lista";
+	public String getSviDijelovi(Model model, HttpServletRequest request){
+
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
 		}
-		else 
-		{
-			String page = request.getParameter("page");
-			PagedListHolder dijelovi = (PagedListHolder) request.getSession().getAttribute("DioController_dijelovi");
-			if (dijelovi == null) 
-			{
-				throw new SessionException("Vasa sesija je istekla, molimo ponovite Vasu pretragu");
-			}
-			else
-			{
-				dijelovi.setPage(Integer.parseInt(page));
-				model.addAttribute("pager", dijelovi);
-			}
-			return "/admin/servis/dio/lista";
-		}
+
+		int pageSize = 4;
+
+		Pageable pageable = new PageRequest(page, pageSize);
+		model.addAttribute("pager", dioRepository.findAll(pageable));
+		return "/admin/servis/dio/lista";
 	}
-	
+
 	/**
 	 * Mapiramo otvaranje forme za dodavanje novog dijela na adresi /admin/dio/novi
 	 * stvarna adresa je na adresi /admin/servis/dio/novi
@@ -72,12 +58,12 @@ public class DioController {
 	 */
 	@RequestMapping(value={"/admin/dio/novi"}, method = RequestMethod.GET)
 	public String getDodajDio(Model model){
-		
+
 		model.addAttribute("dioAtribut", new Dio());
 		return "/admin/servis/dio/novi";
 	}
-	
-	
+
+
 	/**
 	 * Mapiramo snimanje podataka o novom dijelu dobivenih iz forme na adresi /admin/dio/novi
 	 * ukoliko Dio nije validan, vraca na formu i ukazuje na gresku
@@ -88,17 +74,17 @@ public class DioController {
 	 */
 	@RequestMapping(value="/admin/dio/novi", method = RequestMethod.POST)
 	public String postDodajDio(@ModelAttribute("dioAtribut") @Valid Dio dio, BindingResult rezultat){
-		
+
 		if (rezultat.hasErrors()) 
 		{		
 			return "/admin/servis/dio/novi";
 		}
-		
+
 		dioRepository.save(dio);
 		return "redirect:/admin/dio/";
 	}
-	
-	
+
+
 	/**
 	 * Mapiramo otvaranje forme za izmjenu podataka postojeceg dijela na adresi admin/dio/izmjena
 	 * stvarna adresa je admin/servis/dio/izmjena
@@ -109,13 +95,13 @@ public class DioController {
 	 */
 	@RequestMapping(value="/admin/dio/izmjena", method = RequestMethod.GET)
 	public String getIzmjenaDijela(@RequestParam(value="id", required=true) Long id, Model model){
-	
-		model.addAttribute("dioAtribut", dioRepository.read(id));
-		
+
+		model.addAttribute("dioAtribut", dioRepository.findOne(id));
+
 		return "/admin/servis/dio/izmjena";
 	}
-	
-	
+
+
 	/**
 	 * Mapiramo snimanje podataka o izmjenama dobivenih iz forme na adresi /admin/dio/izmjena
 	 * ukoliko podaci nisu validni, vracamo na formu i ukazujemo na greske
@@ -126,16 +112,15 @@ public class DioController {
 	 */
 	@RequestMapping(value="/admin/dio/izmjena", method = RequestMethod.POST)
 	public String postIzmjenaDijela(@ModelAttribute("dioAtribut") @Valid Dio dio, BindingResult rezultat){
-		
+
 		if(rezultat.hasErrors())
 		{
 			return "/admin/servis/dio/izmjena";
 		}
-	
-		dioRepository.update(dio);
+		dioRepository.save(dio);
 		return "redirect:/admin/dio/";
 	}
-	
+
 	/**
 	 * Mapiramo zahtjev za brisanjem odabranog dijela na adresi /admin/dio/izbrisi
 	 * @param id
@@ -144,29 +129,28 @@ public class DioController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/admin/dio/izbrisi", method = RequestMethod.GET)
-	public String getIzbrisiDio(@RequestParam(value="id", required=true) Long id, HttpServletRequest request, HttpServletResponse response, Model model){
+	public String getIzbrisiDio(@RequestParam(value="id", required=true) Long id, HttpServletRequest request, Model model){
 		try {
 			dioRepository.delete(id);
 			return "redirect:/admin/dio/";
 		} catch (DataIntegrityViolationException ex) {
 
-			String page = request.getParameter("page");
-			PagedListHolder dijelovi = (PagedListHolder) request.getSession().getAttribute("DioController_dijelovi");
-			if (dijelovi == null) 
-			{
-				throw new SessionException("Vasa sesija je istekla, molimo pokusajte ponovo");
+			int page;
+			
+			if(request.getParameter("page")==null){
+				page=0;
+			} else{
+				page = Integer.parseInt(request.getParameter("page"));
 			}
-			else
-			{
-				dijelovi.setPage(Integer.parseInt(page));
-				model.addAttribute("pager", dijelovi);
-				model.addAttribute("error", ex.getLocalizedMessage());
-			}
+
+			int pageSize = 4;
+
+			Pageable pageable = new PageRequest(page, pageSize);
+			model.addAttribute("pager", dioRepository.findAll(pageable));
 			return "/admin/servis/dio/lista";
 		}
 	}
-	
+
 
 }

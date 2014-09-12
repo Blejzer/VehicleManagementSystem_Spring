@@ -28,6 +28,8 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 
 import ba.fit.vms.util.DioFormater;
 
+/*import ba.fit.vms.util.DioFormater;*/
+
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 	

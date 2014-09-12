@@ -1,4 +1,4 @@
-package ba.fit.vms.controllers;
+/*package ba.fit.vms.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,13 +34,13 @@ public class VoziloController {
 	private VoziloValidatorForme voziloValidatorForme;
 
 
-	/**
+	*//**
 	 * Mapiramo listu svih vozila na adresi /admin/vozila/
 	 * @param request
 	 * @param response
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/admin/vozila/", method = RequestMethod.GET)
 	public String getVozila(HttpServletRequest request, HttpServletResponse response, Model model){
@@ -74,11 +74,11 @@ public class VoziloController {
 	}
 
 
-	/**
+	*//**
 	 * Mapiramo otvaranje forme za dodavanje novog vozila
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="/admin/vozila/novi", method = RequestMethod.GET)
 	public String getDodajVozilo(Model model){
 
@@ -88,7 +88,7 @@ public class VoziloController {
 	}
 	
 	
-	/**
+	*//**
 	 * Mapiramo snimanje podataka o novom vozilu dobivenih iz forme
 	 * ukoliko Vozilo nije validan, vraca na formu i ukazuje na gresku
 	 * Ukoliko su podaci u redu, proslijedjujemo VIN vozila i preusmjeravamo 
@@ -97,7 +97,7 @@ public class VoziloController {
 	 * @param rezultat
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="/admin/vozila/novi", method = RequestMethod.POST)
 	public String postRegTest(@ModelAttribute("voziloAtribut") @Valid Vozilo vozilo, BindingResult rezultat, Model model){
 		voziloValidatorForme.validate(vozilo, rezultat);
@@ -112,12 +112,12 @@ public class VoziloController {
 
 	}
 	
-	/**
+	*//**
 	 * Mapiramo provjeru da li je vozilo registrovano ili nije 
 	 * @param vozilo
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="/admin/vozila/regtest", method = RequestMethod.GET)
 	public String getRegTest(@ModelAttribute("voziloAtribut") Vozilo vozilo, Model model){
 		
@@ -128,13 +128,13 @@ public class VoziloController {
 	}
 	
 	
-	/**
+	*//**
 	 * Mapiramo otvaranje forme za izmjenu podataka postojeceg vozila
 	 * podatak koji se ne moze mijenjati je VIN broj vozila
 	 * @param vin
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="/admin/vozila/izmjena", method = RequestMethod.GET)
 	public String getIzmjenaVozila(@RequestParam(value="vin", required=true) String vin, Model model){
 
@@ -144,7 +144,7 @@ public class VoziloController {
 	}
 	
 	
-	/**
+	*//**
 	 * Mapiramo snimanje podataka o izmjenama dobivenih iz forme
 	 * ukoliko podaci nisu validni, vracamo na formu i ukazujemo na greske
 	 * snimamo promjene i preusmjeravamo na listu vozila
@@ -152,7 +152,7 @@ public class VoziloController {
 	 * @param rezultat
 	 * @param status
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="/admin/vozila/izmjena", method = RequestMethod.POST)
 	public String postIzmjenaVozila(@ModelAttribute("voziloAtribut") @Valid Vozilo vozilo, BindingResult rezultat, SessionStatus status){
 		
@@ -166,14 +166,14 @@ public class VoziloController {
 	}
 	
 	
-	/**
+	*//**
 	 * Mapiramo zahtjev za brisanjem odabranog vozila
 	 * @param vin
 	 * @param request
 	 * @param response
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/admin/vozila/izbrisi", method=RequestMethod.GET)
 	public String getIzbrisiVozilo(@RequestParam(value="vin", required=true) String vin, HttpServletRequest request, HttpServletResponse response, Model model){
@@ -199,3 +199,4 @@ public class VoziloController {
 	}
 
 }
+*/

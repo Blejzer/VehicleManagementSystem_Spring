@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -14,12 +15,11 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories
-public class JpaConfig implements TransactionManagementConfigurer {
+@EnableJpaRepositories("ba.fit.vms")
+public class JpaConfig { // implements TransactionManagementConfigurer
 	
 	@Value("${dataSource.driverClassName}")
     private String driver;
@@ -34,6 +34,10 @@ public class JpaConfig implements TransactionManagementConfigurer {
     @Value("${hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
     
+    public JpaConfig(){
+    	super();
+    }
+    
     
     @Bean
     public DataSource configureDataSource() {
@@ -46,7 +50,7 @@ public class JpaConfig implements TransactionManagementConfigurer {
     }
     
     @Bean
-    public LocalContainerEntityManagerFactoryBean configureEntityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(configureDataSource());
         entityManagerFactoryBean.setPackagesToScan("ba.fit.vms");
@@ -63,8 +67,16 @@ public class JpaConfig implements TransactionManagementConfigurer {
     
 
     @Bean
-    public PlatformTransactionManager annotationDrivenTransactionManager() {
-        return new JpaTransactionManager();
+    public PlatformTransactionManager transactionManager() {
+        final JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+
+        return transactionManager;
+    }
+    
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+        return new PersistenceExceptionTranslationPostProcessor();
     }
 
 }

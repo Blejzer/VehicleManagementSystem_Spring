@@ -1,14 +1,10 @@
 package ba.fit.vms.repository;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,76 +12,14 @@ import ba.fit.vms.pojo.Servis;
 
 @Repository
 @Transactional(readOnly = true)
-public class ServisRepository {
+public interface ServisRepository  extends JpaRepository<Servis, Long> {
 	
-	// Dodajemo Entity Managera
-	@PersistenceContext
-	private EntityManager entityManager;
+	List<Servis> findByZavrsenTrue(Pageable pageable);
+	Page<Servis> findByZavrsenFalse(Pageable pageable);
 	
-	//***********************************************
-	//*					REST METODE					*
-	//*												*
-	//***********************************************
-	
-	/**
-	 * Metoda vraca pronadjeni Servis
-	 * @param id
-	 * @return
-	 */
-	public Servis read(Long id){
-		try {
-			return entityManager.find(Servis.class, id);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	/**
-	 * Metoda azurira izmjenjeni Servis
-	 * @param servis
-	 * @return
-	 */
-	@Transactional
-	public Servis edit(Servis servis){
-		try {
-			entityManager.merge(servis);
-			return servis;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	/**
-	 * Metoda snima novi Servis
-	 * @param servis
-	 * @return
-	 */
-	@Transactional
-	public Servis save(Servis servis){
-		try {
-			entityManager.merge(servis);
-			return servis;
-		} catch (PersistenceException e) {
-			return null;
-		}
-	}
-		
-	/**
-	 * Metoda brise odabrani servis
-	 * @param id
-	 * @return
-	 */
-	public Servis delete(Long id){
-		try {
-			Servis zaBrisati = this.read(id);
-			entityManager.remove(zaBrisati);
-			entityManager.flush();
-			return zaBrisati;
-		} catch (Exception e) {
-			return null;
-		}
-	}
 
+}
+/*	
 	//***********************************************
 	//*					LIST METODE					*
 	//*												*
@@ -95,24 +29,12 @@ public class ServisRepository {
 	//===============================================
 	//=					GLOBALNE					=
 	//===============================================
-	/**
-	 * Metoda vraca listu svih servisa
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Servis> getSviServisi(){
-		try {
-			Query upit = entityManager.createQuery("from Servis");
-			return upit.getResultList();
-		} catch (PersistenceException e) {
-			return new ArrayList<Servis>();
-		}
-	}
+
 	
-	/**
+	*//**
 	 * Metoda vraca listu svih odradjenih servisa
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviOdradjeniServisi(){
 		try {
@@ -124,10 +46,10 @@ public class ServisRepository {
 		}
 	}
 	
-	/**
+	*//**
 	 * Metoda vraca listu svih zakazanih servisa
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviZakazaniServisi(){
 		try {
@@ -139,11 +61,11 @@ public class ServisRepository {
 		}
 	}
 	
-	/**
+	*//**
 	 * Metoda vraca sve servise u datoj godini
 	 * @param date
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviServisiPoGodini(Date date){
 		try {
@@ -156,11 +78,11 @@ public class ServisRepository {
 		}
 	}
 	
-	/**
+	*//**
 	 * Metoda vraca sve servise u datom mjesecu
 	 * @param date
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviServisiPoMjesecu(Date date){
 		try {
@@ -179,11 +101,11 @@ public class ServisRepository {
 	//=					INDIVIDUALNE				=
 	//===============================================
 	
-	/**
+	*//**
 	 * Metoda vraca listu svih servisa za odabrano vozilo (VIN)
 	 * @param vin
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviServisiPoVIN(String vin){
 		try {
@@ -195,10 +117,10 @@ public class ServisRepository {
 		}
 	}
 	
-	/**
+	*//**
 	 * Metoda vraca listu svih zakazanih servisa za dato vozilo
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviZakazaniServisiZaVozilo(String vin){
 		try {
@@ -211,10 +133,10 @@ public class ServisRepository {
 		}
 	}
 	
-	/**
+	*//**
 	 * Metoda vraca listu svih odradjenih servisa za dato vozilo
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviOdradjeniServisiZaVozilo(String vin){
 		try {
@@ -227,11 +149,11 @@ public class ServisRepository {
 		}
 	}
 	
-	/**
+	*//**
 	 * Metoda vraca sve servise u datoj godini za odabrano vozilo
 	 * @param date
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviServisiPoGodiniZaVozilo(Date date, String vin){
 		try {
@@ -246,11 +168,11 @@ public class ServisRepository {
 		}
 	}
 	
-	/**
+	*//**
 	 * Metoda vraca sve servise u datom mjesecu za odabrano vozilo
 	 * @param date
 	 * @return
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<Servis> getSviServisiPoMjesecuZaVozilo(Date date, String vin){
 		try {
@@ -266,3 +188,4 @@ public class ServisRepository {
 	}
 	
 }
+*/
