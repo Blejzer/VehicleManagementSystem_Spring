@@ -22,7 +22,7 @@ import ba.fit.vms.repository.DioRepository;
 public class DioController {
 
 	@Autowired
-	DioRepository dioRepository;
+	private DioRepository dioRepository;
 
 
 	/**

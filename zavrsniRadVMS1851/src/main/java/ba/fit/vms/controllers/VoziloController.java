@@ -1,4 +1,4 @@
-/*package ba.fit.vms.controllers;
+package ba.fit.vms.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +9,8 @@ import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,51 +36,36 @@ public class VoziloController {
 	private VoziloValidatorForme voziloValidatorForme;
 
 
-	*//**
+	/**
 	 * Mapiramo listu svih vozila na adresi /admin/vozila/
 	 * @param request
 	 * @param response
 	 * @param model
 	 * @return
-	 *//*
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	 */
 	@RequestMapping(value = "/admin/vozila/", method = RequestMethod.GET)
-	public String getVozila(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String getVozila(HttpServletRequest request, Model model){
 
-		if(request.getParameter("page")==null)
-		{
-			PagedListHolder vozila = new PagedListHolder(voziloRepository.getSvaVozila());
-			vozila.setPageSize(5);
-			request.getSession().setAttribute("VoziloController_vozila", vozila);
-			model.addAttribute("pager", vozila);
-			//model.addAttribute("search", new VehicleSearch());
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
+		}
 
-			return "/admin/vozila/lista";
-		}
-		else 
-		{
-			String page = request.getParameter("page");
-			PagedListHolder vozila = (PagedListHolder) request.getSession().getAttribute("VoziloController_vozila");
-			if (vozila == null) 
-			{
-				throw new SessionException("Vasa sesija je istekla, molimo ponovite Vasu pretragu");
-			}
-			else
-			{
-				vozila.setPage(Integer.parseInt(page));
-				model.addAttribute("pager", vozila);
-				//model.addAttribute("search", new VehicleSearch());
-			}
-			return "/admin/vozila/lista";
-		}
+		int pageSize = 4;
+
+		Pageable pageable = new PageRequest(page, pageSize);
+		model.addAttribute("pager", voziloRepository.findAll(pageable));
+		return "/admin/vozila/lista";
 	}
 
 
-	*//**
+	/**
 	 * Mapiramo otvaranje forme za dodavanje novog vozila
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="/admin/vozila/novi", method = RequestMethod.GET)
 	public String getDodajVozilo(Model model){
 
@@ -88,7 +75,7 @@ public class VoziloController {
 	}
 	
 	
-	*//**
+	/**
 	 * Mapiramo snimanje podataka o novom vozilu dobivenih iz forme
 	 * ukoliko Vozilo nije validan, vraca na formu i ukazuje na gresku
 	 * Ukoliko su podaci u redu, proslijedjujemo VIN vozila i preusmjeravamo 
@@ -97,7 +84,7 @@ public class VoziloController {
 	 * @param rezultat
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="/admin/vozila/novi", method = RequestMethod.POST)
 	public String postRegTest(@ModelAttribute("voziloAtribut") @Valid Vozilo vozilo, BindingResult rezultat, Model model){
 		voziloValidatorForme.validate(vozilo, rezultat);
@@ -112,12 +99,12 @@ public class VoziloController {
 
 	}
 	
-	*//**
+	/**
 	 * Mapiramo provjeru da li je vozilo registrovano ili nije 
 	 * @param vozilo
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="/admin/vozila/regtest", method = RequestMethod.GET)
 	public String getRegTest(@ModelAttribute("voziloAtribut") Vozilo vozilo, Model model){
 		
@@ -128,23 +115,23 @@ public class VoziloController {
 	}
 	
 	
-	*//**
+	/**
 	 * Mapiramo otvaranje forme za izmjenu podataka postojeceg vozila
 	 * podatak koji se ne moze mijenjati je VIN broj vozila
 	 * @param vin
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="/admin/vozila/izmjena", method = RequestMethod.GET)
 	public String getIzmjenaVozila(@RequestParam(value="vin", required=true) String vin, Model model){
 
-		model.addAttribute("voziloAtribut", voziloRepository.read(vin));
+		model.addAttribute("voziloAtribut", voziloRepository.findOne(vin));
 		
 		return "/admin/vozila/izmjena";
 	}
 	
 	
-	*//**
+	/**
 	 * Mapiramo snimanje podataka o izmjenama dobivenih iz forme
 	 * ukoliko podaci nisu validni, vracamo na formu i ukazujemo na greske
 	 * snimamo promjene i preusmjeravamo na listu vozila
@@ -152,7 +139,7 @@ public class VoziloController {
 	 * @param rezultat
 	 * @param status
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="/admin/vozila/izmjena", method = RequestMethod.POST)
 	public String postIzmjenaVozila(@ModelAttribute("voziloAtribut") @Valid Vozilo vozilo, BindingResult rezultat, SessionStatus status){
 		
@@ -160,20 +147,20 @@ public class VoziloController {
 			return "/admin/vozila/izmjena";
 		}
 		
-		voziloRepository.edit(vozilo);
+		voziloRepository.save(vozilo);
 		
 		return "redirect:/admin/vozila/";
 	}
 	
 	
-	*//**
+	/**
 	 * Mapiramo zahtjev za brisanjem odabranog vozila
 	 * @param vin
 	 * @param request
 	 * @param response
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/admin/vozila/izbrisi", method=RequestMethod.GET)
 	public String getIzbrisiVozilo(@RequestParam(value="vin", required=true) String vin, HttpServletRequest request, HttpServletResponse response, Model model){
@@ -199,4 +186,3 @@ public class VoziloController {
 	}
 
 }
-*/

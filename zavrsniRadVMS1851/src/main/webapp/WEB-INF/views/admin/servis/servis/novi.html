@@ -18,7 +18,7 @@
 <div class="row">
     
 	<form action="#" th:object="${servisAttribute}"
-		th:action="@{/admin/servisi/addServis}" method="post" class="form-horizontal well">
+		th:action="@{/admin/servisi/novi}" method="post" class="form-horizontal well">
 		
 		<input type="hidden" th:field="*{vehicle.vin}" class="form-control input-xlarge" />
           <div class="form-group" th:class="${#fields.hasErrors('vehicle.vin')} ? 'form-group has-error' : 'form-group'">
