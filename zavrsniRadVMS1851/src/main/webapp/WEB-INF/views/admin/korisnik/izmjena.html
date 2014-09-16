@@ -50,7 +50,7 @@
         <div class="form-group" th:class="${#fields.hasErrors('lozinka')} ? 'form-group has-error' : 'form-group'">
           <label for="lozinka" class="col-lg-2 control-label">Password</label>
             <div class="col-lg-10">
-              <input type="lozinka" th:field="*{lozinka}" class="form-control input-xlarge" placeholder="Lozinka" />
+              <input type="password" th:field="*{lozinka}" class="form-control input-xlarge" placeholder="Lozinka" />
               <p th:if="${#fields.hasErrors('lozinka')}" class="label label-danger" th:errors="*{lozinka}">Incorrect password</p>
         	</div>
         </div>

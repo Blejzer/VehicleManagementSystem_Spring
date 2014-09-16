@@ -22,13 +22,13 @@ public class HomeController {
 		{
 			if(principal.isUserInRole("ROLE_ADMIN")){
 				String name = principal.getRemoteUser(); // kupimo logiranog korisnika
-				Korisnik trenutni = korisnikRepository.readByEmail(name);
+				Korisnik trenutni = korisnikRepository.find(name);
 				model.addAttribute("user", trenutni.getIme() + " " + trenutni.getPrezime());
 				return "admin/welcome";
 			}else{
 				if(principal.isUserInRole("ROLE_USER")){
 					String name = principal.getRemoteUser(); // kupimo logiranog korisnika
-					Korisnik trenutni = korisnikRepository.readByEmail(name);
+					Korisnik trenutni = korisnikRepository.find(name);
 					model.addAttribute("user", trenutni.getIme() + " " + trenutni.getPrezime());
 					return "auth/welcome";
 				}

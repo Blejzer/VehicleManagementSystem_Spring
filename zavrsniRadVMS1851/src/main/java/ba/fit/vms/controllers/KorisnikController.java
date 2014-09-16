@@ -29,7 +29,7 @@ public class KorisnikController {
 	@ResponseBody
 	public Korisnik korisnici(UserDetails userDetails){
 		LOG.info("Korisnicki podaci: "+userDetails.toString());
-		return korisnikRepository.readByEmail(userDetails.getUsername());
+		return korisnikRepository.find(userDetails.getUsername());
 	}
 
 }

@@ -25,7 +25,7 @@
   
 	<form class="form-narrow form-horizontal" th:action="@{/j_spring_security_check}" method="post">
 	<div th:if="${param['error']}" class="alert alert-error">
-		Sign in greska. Molimo pokusajte ponovo.
+		<span th:text="${param['error.message']}"></span>Sign in greska. Molimo pokusajte ponovo.
 	</div>
         <legend>Molimo unesite svoje podatke</legend>
         <div class="form-group">

@@ -43,7 +43,7 @@ public class SignupController {
 		Korisnik korisnik = korisnikRepository.save(signupForm.kreirajKorisnika());
 		korisnickiServis.signin(korisnik);
 		
-		PorukaHelper.addSuccessAttribute(ra, "Congratulations! You have successfully signed up.");
+		PorukaHelper.addSuccessAttribute(ra, "Cestitamo! Registracija je uspjesna.");
 		
 		return "redirect:/";
 	}

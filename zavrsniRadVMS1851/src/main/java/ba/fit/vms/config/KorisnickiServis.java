@@ -37,7 +37,7 @@ public class KorisnickiServis implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email)
 			throws UsernameNotFoundException {
-		Korisnik korisnik = korisnikRepository.readByEmail(email);
+		Korisnik korisnik = korisnikRepository.find(email);
 		
 		if(korisnik == null) {
 			throw new UsernameNotFoundException("korisnik nije pronadjen!");

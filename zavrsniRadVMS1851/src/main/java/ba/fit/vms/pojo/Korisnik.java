@@ -223,7 +223,7 @@ public class Korisnik implements Serializable{
 	//*  			Override equals 				*
 	//*                    							*
 	// **********************************************
-	
+
 	/**
 	 * Na ovaj nacin radimo override klasicnog poredjenja 
 	 * te kreiramo sopstveno poredjenje koje nam treba

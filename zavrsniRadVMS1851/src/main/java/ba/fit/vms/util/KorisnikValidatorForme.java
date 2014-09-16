@@ -27,7 +27,7 @@ public class KorisnikValidatorForme implements Validator{
 		if(!korisnik.getEmail().isEmpty()){
 			String email = korisnik.getEmail();
 			
-			Korisnik postoji = korisnikRepository.readByEmail(email);
+			Korisnik postoji = korisnikRepository.find(email);
 			
 			if (postoji !=null) {
 				errors.rejectValue("email", "email.alreadyExist",

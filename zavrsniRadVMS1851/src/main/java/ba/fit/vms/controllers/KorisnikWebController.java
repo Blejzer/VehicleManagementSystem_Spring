@@ -1,5 +1,8 @@
 package ba.fit.vms.controllers;
 
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -9,6 +12,7 @@ import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +29,9 @@ import ba.fit.vms.util.KorisnikValidatorForme;
 @Controller
 public class KorisnikWebController {
 
+	@Inject
+	private PasswordEncoder passwordEncoder;
+	
 	protected static Logger logger = Logger.getLogger("controller");
 	@Autowired
 	private KorisnikRepository korisnikRepository;
@@ -76,6 +83,7 @@ public class KorisnikWebController {
 	public String postNoviKorisnik(@ModelAttribute("korisnikAtribut") @Valid Korisnik korisnik, BindingResult rezultat, SecurityContextHolderAwareRequestWrapper request){
 		if(request.isUserInRole("ROLE_ADMIN")){
 
+			System.out.println("usao u save");
 			/*
 			 * Override validacije koristeci validaciju koju smo napravili
 			 * provjeravamo da li postoji korisnik sa istim email-om
@@ -87,6 +95,8 @@ public class KorisnikWebController {
 			{
 				return "/admin/korisnik/novi";
 			}
+			korisnik.setLozinka(passwordEncoder.encode(korisnik.getLozinka()));
+			
 			korisnikRepository.save(korisnik);
 			return "redirect:/admin/korisnici/";
 
@@ -98,8 +108,7 @@ public class KorisnikWebController {
 	@RequestMapping(value="/admin/korisnici/delete", method = RequestMethod.GET)
 	public String getIzbrisiKorisnika(@RequestParam(value="id", required=true) Long id, HttpServletRequest request, HttpServletResponse response, Model model){
 		try {
-			Korisnik test = korisnikRepository.readById(id);
-			korisnikRepository.delete(test.getEmail());
+			korisnikRepository.delete(id);
 			return "redirect:/admin/korisnici/";
 		} catch (DataIntegrityViolationException ex) {
 			String page = request.getParameter("page");
@@ -122,8 +131,9 @@ public class KorisnikWebController {
 	@RequestMapping(value="/admin/korisnici/izmjeni", method = RequestMethod.GET)
 	public String getIzmjeniKorisnika(@RequestParam(value="id", required=true) Long id, HttpServletRequest request, HttpServletResponse response, Model model){
 
-		Korisnik korisnik = korisnikRepository.readById(id);
+		Korisnik korisnik = korisnikRepository.findOne(id);
 		korisnik.setId(id);
+		korisnik.setLozinka(null);
 		model.addAttribute("korisnikAtribut", korisnik);
 
 		return "/admin/korisnik/izmjena";
@@ -133,17 +143,28 @@ public class KorisnikWebController {
 	public String postIzmjeniKorisnika(@ModelAttribute("korisnikAtribut") @Valid Korisnik korisnik, BindingResult rezultat, SecurityContextHolderAwareRequestWrapper request){
 		if(request.isUserInRole("ROLE_ADMIN")){
 			
-			Korisnik stari = korisnikRepository.readById(korisnik.getId());
+			System.out.println("lozinka u orginalu: " + korisnik.getLozinka());
+			System.out.println("lozinka u orginalu: " + korisnik.getLozinka().isEmpty());
+			
+			Korisnik stari = korisnikRepository.findOne(korisnik.getId());
 			if(!(stari.getEmail().equals(korisnik.getEmail()))){
 				korisnikValidatorForme.validate(korisnik, rezultat);
 			}
+			
 
 			if (rezultat.hasErrors()) 
 			{
 				return "/admin/korisnik/izmjena";
 			}
-			
-			korisnikRepository.edit(korisnik);
+			if(korisnik.getLozinka()==null || korisnik.getLozinka().isEmpty()){
+				korisnik.setLozinka(stari.getLozinka());
+				System.out.println("lozinka nije enkodirana. stara lozinka je: " + stari.getLozinka());
+			}else{
+				korisnik.setLozinka(passwordEncoder.encode(korisnik.getLozinka()));
+				System.out.println("lozinka enkodirana u: " + korisnik.getLozinka());
+				
+			}
+			korisnikRepository.save(korisnik);
 
 			return "redirect:/admin/korisnici/";
 
@@ -164,7 +185,7 @@ public class KorisnikWebController {
 
 		if(request.getParameter("page")==null)
 		{
-			PagedListHolder korisnici = new PagedListHolder(korisnikRepository.getSviKorisnici());
+			PagedListHolder korisnici = new PagedListHolder((List) korisnikRepository.findAll());
 			korisnici.setPageSize(10);
 			request.getSession().setAttribute("KorisnikWebController_korisnici", korisnici);
 			model.addAttribute("pager", korisnici);
