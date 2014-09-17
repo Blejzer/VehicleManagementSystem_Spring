@@ -1,7 +1,5 @@
 package ba.fit.vms.controllers;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +10,8 @@ import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
@@ -179,34 +179,21 @@ public class KorisnikWebController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = {"/admin/korisnici/", "/admin/korisnici/lista"}, method = RequestMethod.GET)
-	public String getSviKorisnici(HttpServletRequest request, HttpServletResponse response, Model model){
-
-		if(request.getParameter("page")==null)
-		{
-			PagedListHolder korisnici = new PagedListHolder((List) korisnikRepository.findAll());
-			korisnici.setPageSize(10);
-			request.getSession().setAttribute("KorisnikWebController_korisnici", korisnici);
-			model.addAttribute("pager", korisnici);
-
-			return "/admin/korisnik/lista";
-		}	
-		else 
-		{
-			String page = request.getParameter("page");
-			PagedListHolder consultants = (PagedListHolder) request.getSession().getAttribute("KorisnikWebController_korisnici");
-			if (consultants == null) 
-			{
-				throw new SessionException("Vasa sesija je istekla, molimo ponovite Vasu pretragu");
-			}
-			else
-			{
-				consultants.setPage(Integer.parseInt(page));
-				model.addAttribute("pager", consultants);
-			}
-			return "/admin/korisnik/lista";
+	public String getSviKorisnici(HttpServletRequest request, Model model){
+		
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
 		}
+
+		int pageSize = 4;
+
+		Pageable pageable = new PageRequest(page, pageSize);
+		model.addAttribute("pager", korisnikRepository.findAll(pageable));
+		return "/admin/korisnik/lista";
 	}
 
 }

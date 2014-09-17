@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragments/common :: headFragment">
+<title>Vehicles</title>
+</head>
+<body>
+
+<div th:include="fragments/common :: adminHeaderFragment"></div>
+
+<div class="container"> 
+
+<section id="tables">
+
+<script src="/resources/bootstrap/js/bootbox.min.js" th:src="@{/resources/js/bootbox.min.js}"></script>
+		
+<script th:inline="javascript">
+ 	function deleteObject(id) {
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				var url = /*[[ @{'/admin/vehicles/remove?id='} ]]*/ "genericUrl";
+				url = url+id;
+				document.location = url;
+			}
+		}); 
+	};
+</script>
+
+  <div class="page-header">
+    <h1 class="table table-bordered table-striped table-hover alert alert-info">Vehicle <span th:text="${currentAssign.vehicle.vin} ? ${currentAssign.vehicle.licensePlate} : ''"></span> is currently assigned to <span th:text="${currentAssign.consultant.firstName} + ' ' + ${currentAssign.consultant.lastName}"></span></h1>
+  </div>
+  
+  <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h1>Error</h1>
+     <h4>An unexpected error occurred, <a href="#" class="alert-link">please contact the support team</a>.</h4>
+     <div class="alert alert-warning">
+     	<p th:text="${error}">error</p>
+     </div>
+    </div>
+    <table th:if="${currentAssign.consultant}" class="table table-bordered table-striped table-hover alert alert-info">
+    <thead>
+      <tr>
+        <th th:text="#{consultantVehicle.consultant}">Consultant</th>
+        <th th:text="#{consultantVehicle.assignedDate}">Assigned on</th>
+        <th th:text="#{consultantVehicle.returnedDate}">Returned on</th>
+
+        <th th:text="#{actions.title}">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+	    <tr>
+	    	<td th:text="${currentAssign.consultant.firstName} + ' ' + ${currentAssign.consultant.lastName}">Consultant Name</td>
+	    	<td th:text="${currentAssign.assignedDate} ? ${#dates.format(currentAssign.assignedDate, 'dd/MM/yyyy')} : ''">Assigned</td>
+	    	<td th:text="${currentAssign.returnedDate} ? ${#dates.format(currentAssign.returnedDate, 'dd/MM/yyyy')} : ''">Returned</td>
+			<td>
+			<a class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${currentAssign.vehicle.vin} + '\');'"><i class="glyphicon glyphicon-remove"></i> Remove</a>
+<!-- 				<a class="btn btn-warning btn-sm" th:href="@{/admin/vehicles/remove(id=${currentAssign.vehicle.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{actions.remove}">Remove action</span></a> -->
+			</td>
+		</tr>
+    </tbody>
+  </table>
+  <p th:if="not ${currentAssign}" th:text="'Vehicle is not assigned!'" class="label label-success"/>
+  
+  <table th:if="${not #lists.isEmpty(pager.pageList)}" class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th th:text="#{consultantVehicle.consultant}">Consultant</th>
+        <th th:text="#{consultantVehicle.assignedDate}">Assigned on</th>
+        <th th:text="#{consultantVehicle.returnedDate}">Returned on</th>
+      </tr>
+    </thead>
+    <tbody>
+	    <tr th:each="assign : ${pager.pageList}">
+	    	<td th:text="${assign.consultant.firstName} + ' ' + ${assign.consultant.lastName}">Consultant Name</td>
+	    	<td th:text="${assign.assignedDate} ? ${#dates.format(assign.assignedDate, 'dd/MM/yyyy')} : ''">Assigned</td>
+	    	<td th:text="${assign.returnedDate} ? ${#dates.format(assign.returnedDate, 'dd/MM/yyyy')} : ''">Returned</td>
+		</tr>
+    </tbody>
+  </table>
+   
+  <div class="col-lg-12 center">
+	<ul class="pagination">
+		<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
+		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.page-1)}}">«</a></li>
+		<li th:each="item : ${#numbers.sequence(1,pager.pageCount)}" th:class="${pager.page == item-1} ? 'active' : ''">
+	        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
+	     </li>
+	    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
+		<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.page+1)}}">»</a></li>
+	</ul>
+  </div>
+  
+</section>
+
+<div class="row right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vehicles}">Back to list</a>
+</div> 
+
+<div th:include="fragments/common :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="fragments/common :: jsFragment"></div>
+
+</body>
+</html>

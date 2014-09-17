@@ -39,6 +39,10 @@ public class KorisnikVozilo implements Serializable{
 	@JoinColumn(nullable=false, updatable=false)
 	private Korisnik korisnik;
 	
+	@ManyToOne( cascade = {CascadeType.REMOVE}, fetch=FetchType.EAGER )
+	@JoinColumn(nullable=false)
+	private LokacijaKilometraza lokacijaKilometraza;
+	
 	@Column(name = "dodijeljeno")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	@NotNull

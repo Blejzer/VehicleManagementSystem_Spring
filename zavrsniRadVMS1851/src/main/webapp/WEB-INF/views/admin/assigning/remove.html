@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragments/common :: headFragment">
+<title>Vehicles</title>
+</head>
+<body>
+
+<div th:include="fragments/common :: adminHeaderFragment"></div>
+
+<div class="container">
+
+<section id="object">
+  <div class="page-header">
+    <h1 class="alert alert-info">Remove <span th:text="${conveAttribute.consultant.firstName} + ' ' + ${conveAttribute.consultant.lastName}"></span> as driver of vehicle <span th:text="${conveAttribute.vehicle.vin} ? ${conveAttribute.vehicle.licensePlate} : ''"></span>? </h1>
+  </div>
+
+<div class="row">
+    
+	<form action="#" th:object="${conveAttribute}"
+		th:action="@{/admin/vehicles/remove}" method="post" class="form-horizontal well">
+
+<!-- <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+    <h1>Error</h1>
+	<p th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</p>    
+    </div>  -->
+    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{vehicle.vin}" />
+    <input type="hidden" th:field="*{consultant.id}" />
+          <div class="form-group" th:class="${#fields.hasErrors('vehicle.licensePlate')} ? 'form-group has-error' : 'form-group'">
+          <label for="vehicle.licensePlate" class="col-lg-2 control-label">License Plates</label>
+            <div class="col-lg-10">
+              	<input type="text" th:field="*{vehicle.licensePlate}" readonly="readonly"  class="form-control input-xlarge"/>
+              <p th:if="${#fields.hasErrors('vehicle.licensePlate')}" class="label label-danger" th:errors="*{vehicle.licensePlate}">Incorrect VIN</p>
+            </div>
+          </div>
+          
+          <div class="form-group" th:class="${#fields.hasErrors('consultant.firstName')} ? 'form-group has-error' : 'form-group'">
+          <label for="consultant.firstName" class="col-lg-2 control-label">Consultant</label>
+            <div class="col-lg-10">
+              	<input type="text" th:field="*{consultant.firstName}" readonly="readonly" class="form-control input-xlarge"/>
+              <p th:if="${#fields.hasErrors('consultant.firstName')}" class="label label-danger" th:errors="*{consultant.firstName}">Incorrect VIN</p>
+            </div>
+          </div>
+          <div class="form-group" th:class="${#fields.hasErrors('consultant.lastName')} ? 'form-group has-error' : 'form-group'">
+          <label for="consultant.lastName" class="col-lg-2 control-label">Consultant</label>
+            <div class="col-lg-10">
+              	<input type="text" th:field="*{consultant.lastName}" readonly="readonly" class="form-control input-xlarge"/>
+              <p th:if="${#fields.hasErrors('consultant.lastName')}" class="label label-danger" th:errors="*{consultant.lastName}">Incorrect VIN</p>
+            </div>
+          </div>
+          
+          <div class="form-group" th:class="${#fields.hasErrors('assignedDate')} ? 'form-group has-error' : 'form-group'">
+          <label for="assignedDate" class="col-lg-2 control-label">Assigned Date</label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{assignedDate}" class="form-control input-xlarge" placeholder="Registration Date" readonly="readonly" />
+              <p th:if="${#fields.hasErrors('assignedDate')}" class="label label-danger" th:errors="*{assignedDate}">Assigned Date Error</p>
+            </div>
+          </div>
+ 		  <div class="form-group" th:class="${#fields.hasErrors('returnedDate')} ? 'form-group has-error' : 'form-group'">
+ 		  <label for="returnedDate" class="col-lg-2 control-label">Returned Date</label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{returnedDate}" class="form-control input-xlarge" placeholder="Registration Due Date" />
+              <p th:if="${#fields.hasErrors('returnedDate')}" class="label label-danger" th:errors="*{returnedDate}">Returned Date Error</p>
+            </div>
+          </div>
+		<hr/>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Remove</button>
+            <a class="btn btn-default" th:href="@{/admin/vehicles}">Cancel</a>
+          </div>
+	</form>
+	
+</div>
+
+</section>
+
+<div class="row right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vehicles}">Back to list</a>
+</div> 
+
+<div th:include="fragments/common :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="fragments/common :: jsFragment"></div>
+
+</body>
+</html>

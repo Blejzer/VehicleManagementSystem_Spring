@@ -1,6 +1,9 @@
 package ba.fit.vms.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +12,14 @@ import ba.fit.vms.pojo.Vozilo;
 @Repository
 @Transactional(readOnly = true)
 public interface VoziloRepository  extends JpaRepository<Vozilo, String> {
+	
+	Vozilo findByVin(String vin);
+	
+	@Query("select v from Vozilo v where v.vin not in (select distinct r.vozilo.vin from Registracija r)")
+	List<Vozilo> getNeregistrovanaVozila();
+	
+	@Query("select v from Vozilo v where v.vin in (select distinct r.vozilo.vin from Registracija r)")
+	List<Vozilo> getRegistrovanaVozila();
 	
 }
 //package ba.fit.vms.repository;

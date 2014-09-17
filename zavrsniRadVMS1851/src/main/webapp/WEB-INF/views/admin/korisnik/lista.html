@@ -54,7 +54,7 @@
       </tr>
     </thead>
     <tbody>
-	    <tr th:each="korisnik : ${pager.pageList}">
+	    <tr th:each="korisnik : ${pager}">
 	    	<td th:text="${korisnik.id}">999</td>
 	    	<td th:text="${korisnik.email}">email@email.com</td>
 	    	<td th:text="${korisnik.ime}">John</td>
@@ -83,12 +83,12 @@
   <div class="col-lg-12 center">
 	<ul class="pagination">
 		<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
-		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.page-1)}}">«</a></li>
-		<li th:each="item : ${#numbers.sequence(1,pager.pageCount)}" th:class="${pager.page == item-1} ? 'active' : ''">
+		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
+		<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
 	        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
 	     </li>
 	    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
-		<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.page+1)}}">»</a></li>
+		<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
 	</ul>
   </div>
   
