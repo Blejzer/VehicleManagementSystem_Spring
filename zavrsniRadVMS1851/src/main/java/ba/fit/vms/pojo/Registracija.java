@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -36,18 +37,22 @@ public class Registracija implements Serializable{
 
 	@Column(name = "reg_od")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private Date regOd;
 
 	@Column(name = "reg_do")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private Date regDo;
 
 	@Column(name = "osig_od")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private Date osigOd;
 
 	@Column(name = "osig_do")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private Date osigDo;
 
 	@Column(name = "aktivno")

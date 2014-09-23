@@ -2,18 +2,26 @@ package ba.fit.vms.util;
 
 import javax.persistence.NoResultException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import ba.fit.vms.pojo.Registracija;
+import ba.fit.vms.pojo.Vozilo;
 import ba.fit.vms.repository.RegistracijaRepository;
+import ba.fit.vms.repository.VoziloRepository;
 @Component("registracijaValidator")
 public class RegistracijaValidator implements Validator {
 
+	protected static Logger logger = Logger.getLogger("repo");
+
 	@Autowired
 	private RegistracijaRepository registracijaRepository;
+	
+	@Autowired
+	private VoziloRepository voziloRepository;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -23,10 +31,20 @@ public class RegistracijaValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		Registracija registracija = (Registracija) target;
-		try {
-			@SuppressWarnings("unused")
-			Registracija aktivna = registracijaRepository.findActiveRegForVozilo(registracija.getVozilo().getVin());
-		} catch (NoResultException nre) {
+		logger.debug("poceo validate za " + registracija.getVozilo().getVin());
+		logger.debug("pokusavam naci vozilo: " + registracija.getVozilo().getVin());
+		Vozilo vozilo1 = voziloRepository.findOne(registracija.getVozilo().getVin());
+		logger.debug(vozilo1.getVin());
+		Vozilo vozilo = voziloRepository.findOne(registracija.getVozilo().getVin());
+		logger.debug(vozilo.getVin());
+		registracija.setVozilo(vozilo);
+
+		logger.debug("poceo validate za " + registracija.getVozilo().getVin());
+
+		Registracija aktivna = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(registracija.getVozilo().getVin());
+		logger.debug("provjerio u bazi");
+		if(aktivna==null){
+			logger.debug("nema ga, provjeramo jeAktivno");
 			if(!(registracija.getJeAktivno())){
 				errors.rejectValue("jeAktivno", "jeAktivno.alreadyExist",
 						"Prva registracija vozila mora biti aktivna!");
@@ -35,50 +53,59 @@ public class RegistracijaValidator implements Validator {
 		}
 	}
 
-	public Registracija obrada(Object target, Errors errors){
-		Registracija reg = (Registracija) target;
+	public Registracija obrada(Registracija registracija, Errors errors){
 		Registracija aktivna = new Registracija();
 		String vin = "";
 		try {
-			vin = reg.getVozilo().getVin();
-			aktivna = registracijaRepository.findActiveRegForVozilo(vin);
-			if (reg.getJeAktivno()) {
-				if(reg.getRegOd().after(aktivna.getRegOd())){
-					if(reg.getOsigOd().after(aktivna.getOsigOd())){
-						aktivna.setJeAktivno(false);
-						registracijaRepository.save(aktivna);
-						return reg;
+			vin = registracija.getVozilo().getVin();
+			logger.debug("pokupio vin, pokusavam naci aktivnu");
+			aktivna = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
+			if(aktivna !=null){
+				logger.debug("nasao");
+				if (registracija.getJeAktivno()) {
+					if(registracija.getRegOd().after(aktivna.getRegOd())){
+						if(registracija.getOsigOd().after(aktivna.getOsigOd())){
+							aktivna.setJeAktivno(false);
+							registracijaRepository.save(aktivna);
+							return registracija;
+						}else{
+							errors.rejectValue("osigOd", "osigOd.pogresanDatum",
+									"Datumi osiguranja ne odgovaraju!");
+							return registracija;
+						}
+
 					}else{
-						errors.rejectValue("osigOd", "osigOd.pogresanDatum",
+						errors.rejectValue("regOd", "regOd.pogresanDatum",
+								"Datumi registracije ne odgovaraju!");
+						return registracija;
+					}
+				} else{
+					if(registracija.getRegOd().after(aktivna.getRegOd()) || registracija.getOsigOd().after(aktivna.getOsigOd())){
+						errors.rejectValue("osigOd", "osigOd.alreadyExists",
 								"Datumi osiguranja ne odgovaraju!");
-						return reg;
+						return registracija;
+					}else{
+						return registracija;
 					}
 
-				}else{
-					errors.rejectValue("regOd", "regOd.pogresanDatum",
-							"Datumi registracije ne odgovaraju!");
-					return reg;
-				}
-			} else{
-				if(reg.getRegOd().after(aktivna.getRegOd()) || reg.getOsigOd().after(aktivna.getOsigOd())){
-					errors.rejectValue("osigOd", "osigOd.alreadyExists",
-							"Datumi osiguranja ne odgovaraju!");
-					return reg;
-				}else{
-					return reg;
 				}
 
+			}else{
+				logger.debug("nisam nasao");
+				if(!(registracija.getJeAktivno())){
+					errors.rejectValue("jeAktivno", "jeAktivno.alreadyExist",
+							"Prva registracija vozila mora biti aktivna!");
+					return registracija;
+				} else {
+					return registracija;
+				}
 			}
-
-		}catch (NoResultException nre) {
-			if(!(reg.getJeAktivno())){
-				errors.rejectValue("jeAktivno", "jeAktivno.alreadyExist",
-						"Prva registracija vozila mora biti aktivna!");
-				return reg;
-			} else {
-				return reg;
-			}
+		}catch(NoResultException nre){
+			logger.debug(nre.getMessage());
+			return registracija;
 		}
+			
 	}
+		
 
 }

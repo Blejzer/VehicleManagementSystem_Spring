@@ -19,11 +19,6 @@
     
 	<form action="#" th:object="${registracijaAtribut}"
 		th:action="@{/admin/registracija/novi}" method="post" class="form-horizontal well">
-
-<div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-    <h1>Error</h1>
-	<p th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</p>    
-    </div>
     
           <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
           <label for="vozilo.vin" class="col-lg-2 control-label">VIN</label>

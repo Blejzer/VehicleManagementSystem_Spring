@@ -15,8 +15,9 @@ public interface RegistracijaRepository  extends JpaRepository<Registracija, Lon
 	
 	@Query("select r from Registracija r where r.vozilo.vin =?1")
 	List<Registracija> findRegsForVozilo(String vin);
+
+	Registracija findByVozilo_VinAndJeAktivnoTrue(String vin);
 	
-	@Query("select r from Registracija r where r.vozilo.vin =?1 and r.jeAktivno=true")
-	Registracija findActiveRegForVozilo(String vin);
+	List<Registracija> findAllByVozilo_Vin(String vin);
 
 }

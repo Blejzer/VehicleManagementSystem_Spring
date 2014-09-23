@@ -29,19 +29,23 @@ public class RegistracijaController {
 	@Autowired
 	private VoziloRepository voziloRepository;
 	
+	@Autowired
 	private RegistracijaValidator val = new RegistracijaValidator();
 	
 	
 	
 	@RequestMapping(value = "/admin/registracija/novi", method = RequestMethod.GET)
-	public String getAdd(@RequestParam(value="id", required=false) String vin, Model model) {
-
+	public String getAdd(@RequestParam(value="vin", required=false) String vin, Model model) {
+		logger.debug("poceo get");
+		logger.debug(registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
 		if(vin==null){
 			model.addAttribute("registracijaAtribut", new Registracija());
 			model.addAttribute("regVehicles", voziloRepository.getNeregistrovanaVozila());
+			logger.debug("vin je null. pokupio neregistrovana vozila");
 		} else{
 			model.addAttribute("registracijaAtribut", new Registracija());
-			model.addAttribute("regVehicles", voziloRepository.findByVin(vin));
+			model.addAttribute("regVehicles", voziloRepository.findOne(vin));
+			logger.debug("Imamo vin, pokupio vozilo. " + model.toString());
 		}
 
 		return "/admin/vozila/registracija/novi";
@@ -49,15 +53,18 @@ public class RegistracijaController {
 	
 	
 	@RequestMapping(value = "/admin/registracija/novi", method = RequestMethod.POST)
-	public String postAdd(@ModelAttribute("registrationAttribute") @Valid Registracija registracija,
-			BindingResult result) {
+	public String postAdd(@ModelAttribute("registracijaAtribut") @Valid Registracija registracija,
+			BindingResult result, Model model) {
+		registracija.setVozilo(voziloRepository.findOne(registracija.getVozilo().getVin()));
 		logger.debug("poceo post");
 		val.validate(registracija, result);
 		logger.debug("uradio validaciju");
+		logger.debug("poceo obradu");
 		Registracija reg = val.obrada(registracija, result);
 		logger.debug("obradio");
 		if(result.hasErrors()){
-			return "/admin/registracija/novi?vin="+registracija.getVozilo().getVin();
+			model.addAttribute("regVehicles", registracija.getVozilo());
+			return "/admin/vozila/registracija/novi";
 		}
 		registracijaRepository.save(reg);
 		return "redirect:/admin/vozila/";
