@@ -1,0 +1,95 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Edit Registration</title>
+</head>
+<body>
+
+<div th:include="dodaci/sabloni :: headerFragment"></div>
+
+<div class="container">
+
+<section id="object">
+  <div class="page-header">
+    <h1>Edit registration <span th:text="${registracijaAtribut.tablica}">VIN NO.</span></h1>
+  </div>
+
+<div class="row">
+    
+	<form action="#" th:object="${registracijaAtribut}"
+		th:action="@{/admin/registracije/izmjena}" method="post" class="form-horizontal well">
+
+<!-- <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+    <h1>Error</h1>
+	<p th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</p>    
+    </div>  -->
+    
+    <input type="hidden" th:field="*{id}" class="form-control input-xlarge" />
+    <input type="hidden" th:field="*{vozilo.vin}" class="form-control input-xlarge" />
+          <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
+          <label for="vozilo.vin" class="col-lg-2 control-label">License Plate</label>
+            <div class="col-lg-10">
+              	<input type="text" th:field="*{tablica}" class="form-control input-xlarge" placeholder="Registarska oznaka" readonly="readonly"/>
+              <p th:if="${#fields.hasErrors('tablica')}" class="label label-danger" th:errors="*{tablica}">Incorrect VIN</p>
+            </div>
+          </div>
+          <div class="form-group" th:class="${#fields.hasErrors('jeAktivno')} ? 'form-group has-error' : 'form-group'">
+          <label for="current" class="col-lg-2 control-label">Is registration current?</label>
+            <div class="col-lg-10">
+              <select th:field="*{jeAktivno}" class="form-control">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+              <p th:if="${#fields.hasErrors('jeAktivno')}" class="label label-danger" th:errors="*{jeAktivno}">Incorrect LP</p>
+            </div>
+          </div>
+          <div class="form-group" th:class="${#fields.hasErrors('regOd')} ? 'form-group has-error' : 'form-group'">
+          <label for="regOd" class="col-lg-2 control-label">Registration Date</label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{regOd}" class="form-control input-xlarge" placeholder="Registration Date" />
+              <p th:if="${#fields.hasErrors('regOd')}" class="label label-danger" th:errors="*{regOd}">Incorrect LP</p>
+            </div>
+          </div>
+ 		  <div class="form-group" th:class="${#fields.hasErrors('regDo')} ? 'form-group has-error' : 'form-group'">
+ 		  <label for="regDo" class="col-lg-2 control-label">Registration Due</label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{regDo}" class="form-control input-xlarge" placeholder="Registration Due Date" />
+              <p th:if="${#fields.hasErrors('regDo')}" class="label label-danger" th:errors="*{regDo}">Incorrect LP</p>
+            </div>
+          </div>
+          <div class="form-group" th:class="${#fields.hasErrors('osigOd')} ? 'form-group has-error' : 'form-group'">
+          <label for="osigOd" class="col-lg-2 control-label">Insurance Date</label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{osigOd}" class="form-control input-xlarge" placeholder="Insurance Date" />
+              <p th:if="${#fields.hasErrors('osigOd')}" class="label label-danger" th:errors="*{osigOd}">Incorrect LP</p>
+            </div>
+          </div>
+          <div class="form-group" th:class="${#fields.hasErrors('osigDo')} ? 'form-group has-error' : 'form-group'">
+          <label for="osigDo" class="col-lg-2 control-label">Insurance Due</label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{osigDo}" class="form-control input-xlarge" placeholder="Insurace Due Date" />
+              <p th:if="${#fields.hasErrors('osigDo')}" class="label label-danger" th:errors="*{osigDo}">Incorrect LP</p>
+            </div>
+          </div>
+		<hr/>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Izmijeni Registraciju</button>
+            <a class="btn btn-default" th:href="@{/admin/registracije/(vin=${registracijaAtribut.vozilo.vin})}">Odustani</a>
+          </div>
+	</form>
+	
+</div>
+</section>
+
+<div class="row right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/registracije/(vin=${registracijaAtribut.vozilo.vin})}">Natrag na listu</a>
+</div> 
+
+<div th:include="dodaci/sabloni :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>

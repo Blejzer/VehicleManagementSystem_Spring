@@ -83,6 +83,7 @@ public class RegistracijaValidator implements Validator {
 					if(registracija.getRegOd().after(aktivna.getRegOd()) || registracija.getOsigOd().after(aktivna.getOsigOd())){
 						errors.rejectValue("osigOd", "osigOd.alreadyExists",
 								"Datumi osiguranja ne odgovaraju!");
+						errors.rejectValue("regOd", "regOd.pogresanDatum", "Datumi registracije ne odgovaraju!");
 						return registracija;
 					}else{
 						return registracija;

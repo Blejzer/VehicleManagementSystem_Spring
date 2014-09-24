@@ -2,6 +2,8 @@ package ba.fit.vms.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,6 @@ public interface RegistracijaRepository  extends JpaRepository<Registracija, Lon
 
 	Registracija findByVozilo_VinAndJeAktivnoTrue(String vin);
 	
-	List<Registracija> findAllByVozilo_Vin(String vin);
+	Page<Registracija> findAllByVozilo_Vin(String vin, Pageable pageable);
 
 }
