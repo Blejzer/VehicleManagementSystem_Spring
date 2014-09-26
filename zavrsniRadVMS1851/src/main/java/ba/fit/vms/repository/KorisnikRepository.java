@@ -13,7 +13,6 @@ import ba.fit.vms.pojo.Korisnik;
 public interface KorisnikRepository extends PagingAndSortingRepository<Korisnik, Long> {
 	
 	@Query("select k from Korisnik k where k.email = :email")
-    public Korisnik find(@Param("email") String email);
-	
+    public Korisnik find(@Param("email") String email);	
 
 }

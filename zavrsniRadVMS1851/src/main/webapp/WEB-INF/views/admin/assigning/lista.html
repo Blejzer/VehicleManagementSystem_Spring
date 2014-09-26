@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:include="fragments/common :: headFragment">
+<head th:include="dodaci/sabloni :: headFragment">
 <title>Vehicles</title>
 </head>
 <body>
 
-<div th:include="fragments/common :: adminHeaderFragment"></div>
+<div th:include="dodaci/sabloni :: adminHeaderFragment"></div>
 
 <div class="container"> 
 
@@ -18,7 +18,7 @@
  	function deleteObject(id) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
-				var url = /*[[ @{'/admin/vehicles/remove?id='} ]]*/ "genericUrl";
+				var url = /*[[ @{'/admin/dodjeljivanje/izbrisi?id='} ]]*/ "genericUrl";
 				url = url+id;
 				document.location = url;
 			}
@@ -27,7 +27,7 @@
 </script>
 
   <div class="page-header">
-    <h1 class="table table-bordered table-striped table-hover alert alert-info">Vehicle <span th:text="${currentAssign.vehicle.vin} ? ${currentAssign.vehicle.licensePlate} : ''"></span> is currently assigned to <span th:text="${currentAssign.consultant.firstName} + ' ' + ${currentAssign.consultant.lastName}"></span></h1>
+    <h1 class="table table-bordered table-striped table-hover alert alert-info">Vozilo <span th:text="${currentAssign.vehicle.vin} ? ${currentAssign.vehicle.licensePlate} : ''"></span> is currently assigned to <span th:text="${currentAssign.consultant.firstName} + ' ' + ${currentAssign.consultant.lastName}"></span></h1>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
@@ -97,10 +97,10 @@
   <a class="btn btn-primary btn-large" th:href="@{/admin/vehicles}">Back to list</a>
 </div> 
 
-<div th:include="fragments/common :: footerFragment"></div>
+<div th:include="dodaci/sabloni :: footerFragment"></div>
 </div>
 <!-- /.container -->
-<div th:include="fragments/common :: jsFragment"></div>
+<div th:include="dodaci/sabloni :: jsFragment"></div>
 
 </body>
 </html>

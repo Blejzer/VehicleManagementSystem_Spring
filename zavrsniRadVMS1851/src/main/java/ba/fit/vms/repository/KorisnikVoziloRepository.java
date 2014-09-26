@@ -1,5 +1,7 @@
 package ba.fit.vms.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,11 +20,19 @@ public interface KorisnikVoziloRepository extends JpaRepository<KorisnikVozilo, 
 	@Query("select distinct k.korisnik from KorisnikVozilo k")
 	List<Korisnik> findKorisnik();
 	
-	@Query("select c from Korisnik c where c.id not in (select v.korisnik.id from KorisnikVozilo v where v.returnedDate is null)")
+	@Query("select c from Korisnik c where c.id not in (select v.korisnik.id from KorisnikVozilo v where v.vraceno is null)")
 	List<Korisnik> findAllUnassigned();
 	
-	@Query("select c from Account c where c.vin not in (select c.vehicle.vin from ConsultantVehicle c)")
+	@Query("select c from Vozilo c where c.vin not in (select c.vozilo.vin from KorisnikVozilo c)")
 	List<Vozilo> findAllUnassignedV();
+	
+	List<KorisnikVozilo> findAllByVozilo_Vin(String vin);
+	
+	List<KorisnikVozilo> findAllByKorisnik_Id(Long id);
+	
+	KorisnikVozilo findByVozilo_VinAndVracenoNull(String vin);
+	
+	Page<KorisnikVozilo> findAllByVozilo_Vin(String vin, Pageable pageable);
 	
 	
 

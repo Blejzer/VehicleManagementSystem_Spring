@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Dodjela vozila</title>
+</head>
+<body>
+
+<div th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+
+<div class="container">
+
+<section id="object">
+  <div class="page-header">
+    <h1>Dodjela vozila</h1>
+  </div>
+
+<div class="row">
+    
+	<form action="#" th:object="${kvAtribut}"
+		th:action="@{/admin/dodjeljivanje/novi}" method="post" class="form-horizontal well">
+
+<!-- <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+    <h1>Error</h1>
+	<p th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</p>    
+    </div>  -->
+    
+    <input type="hidden" th:field="*{vozilo.vin}" />
+          <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
+          <label for="regAtribut.tablica" class="col-lg-2 control-label">Registarske oznake</label>
+            <div class="col-lg-10">
+              	<input type="text" th:field="${regAtribut.tablica}" readonly="readonly" />
+              <p th:if="${#fields.hasErrors('vozilo.vin')}" class="label label-danger" th:errors="${regAtribut.tablica}">Incorrect VIN</p>
+            </div>
+          </div>
+          
+          <div class="form-group" th:class="${#fields.hasErrors('korisnik.email')} ? 'form-group has-error' : 'form-group'">
+          <label for="korisnik.email" class="col-lg-2 control-label">Korisnik</label>
+            <div class="col-lg-10">
+              	<select th:field="*{korisnik.email}" class="form-control">
+  				<option th:each="korisnik : ${korisnici}" 
+  						th:value="${korisnik.email}" 
+          				th:text="${korisnik.ime} + ' ' + ${korisnik.prezime}">Korisnik</option>
+				</select>
+              <p th:if="${#fields.hasErrors('korisnik.email')}" class="label label-danger" th:errors="${korisnik.email}">email nije ispravan</p>
+            </div>
+          </div>
+          
+          <div class="form-group" th:class="${#fields.hasErrors('dodijeljeno')} ? 'form-group has-error' : 'form-group'">
+          <label for="dodijeljeno" class="col-lg-2 control-label">Datum dodjele</label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{dodijeljeno}" class="form-control input-xlarge" placeholder="Registration Date" />
+              <p th:if="${#fields.hasErrors('dodijeljeno')}" class="label label-danger" th:errors="*{dodijeljeno}">Greska kod datuma dodjele</p>
+            </div>
+          </div>
+ 		  <div class="form-group" th:class="${#fields.hasErrors('vraceno')} ? 'form-group has-error' : 'form-group'">
+ 		  <label for="vraceno" class="col-lg-2 control-label">Datum vracanja</label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{vraceno}" class="form-control input-xlarge" placeholder="Registration Due Date" />
+              <p th:if="${#fields.hasErrors('vraceno')}" class="label label-danger" th:errors="*{vraceno}">Greska kod datuma vracanja</p>
+            </div>
+          </div>
+		<hr/>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Dodijeli vozilo</button>
+            <a class="btn btn-default" th:href="@{/admin/vehicles}">Odustani</a>
+          </div>
+	</form>
+	
+</div>
+
+<table th:if="${not #lists.isEmpty(prethodni)}" class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th th:text="#{consultantVehicle.consultant}">Consultant</th>
+        <th th:text="#{consultantVehicle.assignedDate}">Assigned on</th>
+        <th th:text="#{consultantVehicle.returnedDate}">Returned on</th>
+      </tr>
+    </thead>
+    <tbody>
+	    <tr th:each="assign : ${prethodni}">
+	    	<td th:text="${assign.korisnik.ime} + ' ' + ${assign.korisnik.prezime}">Consultant Name</td>
+	    	<td th:text="${assign.dodijeljeno} ? ${#dates.format(assign.dodijeljeno, 'dd/MM/yyyy')} : ''">Assigned</td>
+	    	<td th:text="${assign.vraceno} ? ${#dates.format(assign.vraceno, 'dd/MM/yyyy')} : ''">Returned</td>
+		</tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="row right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vehicles}">Back to list</a>
+</div> 
+
+<div th:include="dodaci/sabloni :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>
