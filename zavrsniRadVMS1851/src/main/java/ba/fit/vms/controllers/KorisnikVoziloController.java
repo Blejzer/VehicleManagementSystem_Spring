@@ -48,9 +48,14 @@ public class KorisnikVoziloController {
 	@RequestMapping(value="/admin/dodjeljivanje/novi", method = RequestMethod.GET)
 	public String getDodjelaVozila(@RequestParam Map<String,String> requestParams, Model model){
 		String vin = requestParams.get("vin");
-
+		logger.debug("vozilo: "+vin);
 		if(kvRepository.findByVozilo_VinAndVracenoNull(vin)==null){
-
+			logger.debug("trazim registraciju");
+			Boolean regtest = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin)!=null;
+			logger.debug(regtest);
+			if(!regtest){
+				return "redirect:/admin/registracija/novi?vin="+vin;
+			}
 			Registracija reg = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
 			logger.debug("vozilo: "+reg.getTablica());
 			KorisnikVozilo kv = new KorisnikVozilo();
@@ -61,9 +66,10 @@ public class KorisnikVoziloController {
 			model.addAttribute("prethodni", kvRepository.findAllByVozilo_Vin(vin));
 
 		}else{
-
+			Registracija reg = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
+			model.addAttribute("regAtribut", reg);
 			model.addAttribute("vozilo", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin).getVozilo());
-			return ("redirect:/admin/dodjeljivanje/lista?vin="+vin);
+			return ("redirect:/admin/dodjeljivanje/?vin="+vin);
 		}
 		return "/admin/assigning/novi";
 
@@ -121,6 +127,20 @@ public class KorisnikVoziloController {
 			return "redirect:/admin/vozila/";
 		}
 		
+		
+	}
+	
+	@RequestMapping(value="/admin/razduzi/", method=RequestMethod.GET)
+	public String getRazduziVozilo(@RequestParam(value="id", required=true) Long id, Model model){
+		
+		KorisnikVozilo kv = kvRepository.findOne(id);
+		String vin = kv.getVozilo().getVin();
+		Registracija reg = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
+		logger.debug("vozilo: "+reg.getTablica());
+		model.addAttribute("kvAtribut", kv);
+		model.addAttribute("regAtribut", reg);
+		model.addAttribute("prethodni", kvRepository.findAllByVozilo_Vin(vin));
+		return "/admin/assigning/izmjeni";
 		
 	}
 

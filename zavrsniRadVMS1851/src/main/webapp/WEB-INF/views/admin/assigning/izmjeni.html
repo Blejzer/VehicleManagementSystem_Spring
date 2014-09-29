@@ -12,12 +12,12 @@
 
 <section id="object">
   <div class="page-header">
-    <h1 class="alert alert-info">Remove <span th:text="${conveAttribute.consultant.firstName} + ' ' + ${conveAttribute.consultant.lastName}"></span> as driver of vehicle <span th:text="${conveAttribute.vehicle.vin} ? ${conveAttribute.vehicle.licensePlate} : ''"></span>? </h1>
+    <h1 class="alert alert-info">Razduzi <span th:text="${kvAtribut.korisnik.ime} + ' ' + ${kvAtribut.korisnik.prezime}"></span> kao korisnika vozila <span th:text="${kvAtribut.vozilo.vin} ? ${regAtribut.tablice} : ''"></span>? </h1>
   </div>
 
 <div class="row">
     
-	<form action="#" th:object="${conveAttribute}"
+	<form action="#" th:object="${kvAtribut}"
 		th:action="@{/admin/vehicles/remove}" method="post" class="form-horizontal well">
 
 <!-- <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
@@ -66,8 +66,8 @@
           </div>
 		<hr/>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Remove</button>
-            <a class="btn btn-default" th:href="@{/admin/vehicles}">Cancel</a>
+            <button type="submit" class="btn btn-primary">Razduzi</button>
+            <a class="btn btn-default" th:href="@{/admin/dodijeljivanje/}">Cancel</a>
           </div>
 	</form>
 	

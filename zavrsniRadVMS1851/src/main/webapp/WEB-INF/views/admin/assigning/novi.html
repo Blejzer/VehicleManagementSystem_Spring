@@ -72,9 +72,9 @@
 <table th:if="${not #lists.isEmpty(prethodni)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
-        <th th:text="#{consultantVehicle.consultant}">Consultant</th>
-        <th th:text="#{consultantVehicle.assignedDate}">Assigned on</th>
-        <th th:text="#{consultantVehicle.returnedDate}">Returned on</th>
+        <th th:text="#{kv.kor}">Consultant</th>
+        <th th:text="#{kv.dod}">Assigned on</th>
+        <th th:text="#{kv.vra}">Returned on</th>
       </tr>
     </thead>
     <tbody>
@@ -88,7 +88,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/vehicles}">Back to list</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vehicles}">Lista vozila</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

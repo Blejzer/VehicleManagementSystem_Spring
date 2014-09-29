@@ -5,7 +5,6 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -60,10 +59,10 @@ public class RegistracijaController {
 	}
 	
 	@RequestMapping(value = "/admin/registracija/novi", method = RequestMethod.GET)
-	public String getAdd(@RequestParam(value="vin", required=false) String vin, Model model) {
+	public String getAdd(@RequestParam(value="vin", required=true) String vin, Model model) {
 		logger.debug("poceo get");
 		logger.debug(registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
-		if(vin==null){
+		if(vin==null || vin.isEmpty()){
 			model.addAttribute("registracijaAtribut", new Registracija());
 			model.addAttribute("regVehicles", voziloRepository.getNeregistrovanaVozila());
 			logger.debug("vin je null. pokupio neregistrovana vozila");
