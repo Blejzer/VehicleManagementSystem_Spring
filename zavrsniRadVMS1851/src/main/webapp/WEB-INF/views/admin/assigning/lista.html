@@ -27,7 +27,8 @@
 </script>
 
   <div class="page-header">
-    <h1 class="table table-bordered table-striped table-hover alert alert-info">Vozilo <span th:text="${currentAssign.vehicle.vin} ? ${currentAssign.vehicle.licensePlate} : ''"></span> is currently assigned to <span th:text="${currentAssign.consultant.firstName} + ' ' + ${currentAssign.consultant.lastName}"></span></h1>
+    <h1 class="table table-bordered table-striped table-hover alert alert-info">Vozilo <span th:text="${trenutnoAtribut.vozilo.vin} ? ${regAtribut.tablica} : ''"></span> <span th:text="${trenutnoAtribut.korisnik} ? ${'trenutno je zaduzeno na korisnika: '} + ${trenutnoAtribut.korisnik.ime} + ' ' + ${trenutnoAtribut.korisnik.prezime}: ${'trenutno nije zaduzeno'}"></span></h1>
+    <a class="btn btn-primary btn-large right" th:href="@{/admin/dodjeljivanje/novi(vin=${trenutnoAtribut.vozilo.vin})}">Novo zaduzenje</a>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
@@ -38,7 +39,7 @@
      	<p th:text="${error}">error</p>
      </div>
     </div>
-    <table th:if="${currentAssign.consultant}" class="table table-bordered table-striped table-hover alert alert-info">
+    <table th:if="${trenutnoAtribut.korisnik}" class="table table-bordered table-striped table-hover alert alert-info">
     <thead>
       <tr>
         <th th:text="#{consultantVehicle.consultant}">Consultant</th>
@@ -50,19 +51,19 @@
     </thead>
     <tbody>
 	    <tr>
-	    	<td th:text="${currentAssign.consultant.firstName} + ' ' + ${currentAssign.consultant.lastName}">Consultant Name</td>
-	    	<td th:text="${currentAssign.assignedDate} ? ${#dates.format(currentAssign.assignedDate, 'dd/MM/yyyy')} : ''">Assigned</td>
-	    	<td th:text="${currentAssign.returnedDate} ? ${#dates.format(currentAssign.returnedDate, 'dd/MM/yyyy')} : ''">Returned</td>
+	    	<td th:text="${trenutnoAtribut.korisnik.ime} + ' ' + ${trenutnoAtribut.korisnik.prezime}">Consultant Name</td>
+	    	<td th:text="${trenutnoAtribut.dodijeljeno} ? ${#dates.format(trenutnoAtribut.dodijeljeno, 'dd/MM/yyyy')} : ''">Assigned</td>
+	    	<td th:text="${trenutnoAtribut.vraceno} ? ${#dates.format(trenutnoAtribut.vraceno, 'dd/MM/yyyy')} : ''">Returned</td>
 			<td>
-			<a class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${currentAssign.vehicle.vin} + '\');'"><i class="glyphicon glyphicon-remove"></i> Remove</a>
-<!-- 				<a class="btn btn-warning btn-sm" th:href="@{/admin/vehicles/remove(id=${currentAssign.vehicle.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{actions.remove}">Remove action</span></a> -->
+			<a class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${trenutnoAtribut.vozilo.vin} + '\');'"><i class="glyphicon glyphicon-remove"></i> Remove</a>
 			</td>
 		</tr>
     </tbody>
   </table>
-  <p th:if="not ${currentAssign}" th:text="'Vehicle is not assigned!'" class="label label-success"/>
+  <p th:if="not ${trenutnoAtribut}" th:text="'Vozilo nije zaduzeno!'" class="label label-success"/>
   
-  <table th:if="${not #lists.isEmpty(pager.pageList)}" class="table table-bordered table-striped table-hover">
+  
+  <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
         <th th:text="#{consultantVehicle.consultant}">Consultant</th>
@@ -71,30 +72,30 @@
       </tr>
     </thead>
     <tbody>
-	    <tr th:each="assign : ${pager.pageList}">
-	    	<td th:text="${assign.consultant.firstName} + ' ' + ${assign.consultant.lastName}">Consultant Name</td>
-	    	<td th:text="${assign.assignedDate} ? ${#dates.format(assign.assignedDate, 'dd/MM/yyyy')} : ''">Assigned</td>
-	    	<td th:text="${assign.returnedDate} ? ${#dates.format(assign.returnedDate, 'dd/MM/yyyy')} : ''">Returned</td>
+	    <tr th:each="assign : ${pager}">
+	    	<td th:text="${assign.korisnik.ime} + ' ' + ${assign.korisnik.prezime}">Consultant Name</td>
+	    	<td th:text="${assign.dodijeljeno} ? ${#dates.format(assign.dodijeljeno, 'dd/MM/yyyy')} : ''">Assigned</td>
+	    	<td th:text="${assign.vraceno} ? ${#dates.format(assign.vraceno, 'dd/MM/yyyy')} : ''">Returned</td>
 		</tr>
     </tbody>
   </table>
    
   <div class="col-lg-12 center">
-	<ul class="pagination">
+	<ul th:if="${pager.totalPages}>1" class="pagination">
 		<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
-		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.page-1)}}">«</a></li>
-		<li th:each="item : ${#numbers.sequence(1,pager.pageCount)}" th:class="${pager.page == item-1} ? 'active' : ''">
+		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
+		<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
 	        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
 	     </li>
 	    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
-		<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.page+1)}}">»</a></li>
+		<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
 	</ul>
   </div>
   
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/vehicles}">Back to list</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}">Back to list</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

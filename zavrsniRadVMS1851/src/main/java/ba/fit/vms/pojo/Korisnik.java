@@ -4,19 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.HashSet;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -64,11 +57,11 @@ public class Korisnik implements Serializable{
 
 	private String rola = "ROLE_USER";
 	
-	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+	/*@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name="korisnik_vozilo",
                 joinColumns={@JoinColumn(name="korisnik_id")},
                 inverseJoinColumns={@JoinColumn(name="vozilo_vin")})
-	private Set<Vozilo> vozila = new HashSet<Vozilo>();
+	private Set<Vozilo> vozila = new HashSet<Vozilo>();*/
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "korisnik")
 	private List<Tiket> tiketi = new ArrayList<Tiket>();
@@ -192,20 +185,6 @@ public class Korisnik implements Serializable{
 	 */
 	public void setRola(String rola) {
 		this.rola = rola;
-	}
-
-	/**
-	 * @return lista vozila
-	 */
-	public Set<Vozilo> getVozila() {
-		return this.vozila;
-	}
-
-	/**
-	 * @param vozila
-	 */
-	public void setVozila(Set<Vozilo> vozila) {
-		this.vozila = vozila;
 	}
 
 	/**

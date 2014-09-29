@@ -31,17 +31,63 @@ public class LokacijaKilometraza implements Serializable{
 	@Column(name="id")
 	private Long id;
 	
-	@ManyToOne( cascade = {CascadeType.PERSIST}, fetch=FetchType.EAGER )
+	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
 	@JoinColumn(nullable=false, updatable=false)
 	private Kilometraza kilometraza;
 	
-	@ManyToOne( cascade = {CascadeType.PERSIST}, fetch=FetchType.EAGER )
+	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
 	@JoinColumn(nullable=false, updatable=false)
 	private Lokacija lokacija;
+	
+	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
+	@JoinColumn(nullable=false, updatable=false)
+	private KorisnikVozilo korisnikVozilo;
 	
 	@Column(name = "datum")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	@NotNull
 	private Date datum;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Kilometraza getKilometraza() {
+		return kilometraza;
+	}
+
+	public void setKilometraza(Kilometraza kilometraza) {
+		this.kilometraza = kilometraza;
+	}
+
+	public Lokacija getLokacija() {
+		return lokacija;
+	}
+
+	public void setLokacija(Lokacija lokacija) {
+		this.lokacija = lokacija;
+	}
+
+	public KorisnikVozilo getKorisnikVozilo() {
+		return korisnikVozilo;
+	}
+
+	public void setKorisnikVozilo(KorisnikVozilo korisnikVozilo) {
+		this.korisnikVozilo = korisnikVozilo;
+	}
+
+	public Date getDatum() {
+		return datum;
+	}
+
+	public void setDatum(Date datum) {
+		this.datum = datum;
+	}
+	
+	
 
 }

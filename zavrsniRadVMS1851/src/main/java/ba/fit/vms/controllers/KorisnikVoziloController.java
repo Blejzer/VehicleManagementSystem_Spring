@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ba.fit.vms.pojo.Korisnik;
 import ba.fit.vms.pojo.KorisnikVozilo;
 import ba.fit.vms.pojo.Registracija;
+import ba.fit.vms.pojo.Vozilo;
 import ba.fit.vms.repository.KorisnikRepository;
 import ba.fit.vms.repository.KorisnikVoziloRepository;
 import ba.fit.vms.repository.RegistracijaRepository;
@@ -73,13 +75,22 @@ public class KorisnikVoziloController {
 		
 		if(rezultat.hasErrors()){
 			model.addAttribute("korisnici", kvRepository.findAllUnassigned());
+			model.addAttribute("regAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin()));
 			model.addAttribute("prethodni", kvRepository.findAllByVozilo_Vin(kv.getVozilo().getVin()));
 			return "/admin/assigning/novi";
 		}
-		
-		kvRepository.save(kv);
+		logger.debug("nema gresaka, pokusavam snimiti dodjelu!");
+		KorisnikVozilo kV = new KorisnikVozilo();
+		Korisnik k = korisnikRepository.find(kv.getKorisnik().getEmail());
+		Vozilo v = voziloRepository.findOne(kv.getVozilo().getVin());
+		kV.setKorisnik(k);
+		logger.debug("rijesio korisnika!");
+		kV.setVozilo(v);
+		kV.setDodijeljeno(kv.getDodijeljeno());
+		kV.setVraceno(kv.getVraceno());
+		kvRepository.save(kV);
 		logger.debug("snimio dodjelu");
-		return "redirect:/admin/dodjeljivanje/lista?vin="+kv.getVozilo().getVin();
+		return "redirect:/admin/dodjeljivanje/?vin="+kV.getVozilo().getVin();
 		
 	}
 	
@@ -97,6 +108,13 @@ public class KorisnikVoziloController {
 		int pageSize = 4;
 
 		Pageable pageable = new PageRequest(page, pageSize);
+		KorisnikVozilo kv = kvRepository.findByVozilo_VinAndVracenoNull(vin);
+		if(kv==null){
+			kv = new KorisnikVozilo();
+			kv.setVozilo(voziloRepository.findOne(vin));
+		}
+		model.addAttribute("trenutnoAtribut", kv);
+		model.addAttribute("regAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
 		model.addAttribute("pager", kvRepository.findAllByVozilo_Vin(vin, pageable));
 		return "/admin/assigning/lista";
 		}else{

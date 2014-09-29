@@ -31,25 +31,21 @@ public class KorisnikVozilo implements Serializable{
 	@Column(name="id")
 	private Long id;
 	
-	@ManyToOne( cascade = {CascadeType.PERSIST}, fetch=FetchType.EAGER )
-	@JoinColumn(nullable=false, updatable=false)
+	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
+	@JoinColumn(name="vozilo_vin", nullable=false)
 	private Vozilo vozilo;
 	
-	@ManyToOne( cascade = {CascadeType.PERSIST}, fetch=FetchType.EAGER )
-	@JoinColumn(nullable=false, updatable=false)
+	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
+	@JoinColumn(name="korisnik_id", nullable=false)
 	private Korisnik korisnik;
 	
-	@ManyToOne( cascade = {CascadeType.REMOVE}, fetch=FetchType.EAGER )
-	@JoinColumn(nullable=false)
-	private LokacijaKilometraza lokacijaKilometraza;
-	
 	@Column(name = "dodijeljeno")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull
 	private Date dodijeljeno;
 	
 	@Column(name = "vraceno")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date vraceno;
 	
 	

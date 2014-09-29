@@ -40,7 +40,7 @@ public class Servis implements Serializable{
 	@NotNull
 	private Date datum;
 	
-	@ManyToOne( cascade = {CascadeType.REMOVE}, fetch=FetchType.EAGER )
+	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
 	@JoinColumn(nullable=false)
 	@NotNull
 	private Vozilo vozilo;
@@ -52,7 +52,7 @@ public class Servis implements Serializable{
 					nullable = false, updatable = false) })
 	private List<Dio> djelovi = new ArrayList<Dio>();
 	
-	@ManyToOne( cascade = {CascadeType.REMOVE}, fetch=FetchType.EAGER )
+	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
 	@JoinColumn(nullable=false)
 	@NotNull
 	private VrstaServisa vrstaServisa;

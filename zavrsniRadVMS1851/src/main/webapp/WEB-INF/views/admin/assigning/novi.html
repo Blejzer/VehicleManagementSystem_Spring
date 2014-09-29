@@ -29,8 +29,8 @@
           <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
           <label for="regAtribut.tablica" class="col-lg-2 control-label">Registarske oznake</label>
             <div class="col-lg-10">
-              	<input type="text" th:field="${regAtribut.tablica}" readonly="readonly" />
-              <p th:if="${#fields.hasErrors('vozilo.vin')}" class="label label-danger" th:errors="${regAtribut.tablica}">Incorrect VIN</p>
+              	<label th:text="${regAtribut.tablica}" ></label>
+<!--               <p th:if="${#fields.hasErrors('vozilo.vin')}" class="label label-danger" th:errors="${regAtribut.tablica}">Incorrect VIN</p> -->
             </div>
           </div>
           

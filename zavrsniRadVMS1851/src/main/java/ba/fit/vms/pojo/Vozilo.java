@@ -1,13 +1,9 @@
 package ba.fit.vms.pojo;
 
 import java.io.Serializable;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
@@ -54,8 +50,8 @@ public class Vozilo implements Serializable{
 	@Pattern(regexp="[a-z]*", flags = Pattern.Flag.CASE_INSENSITIVE)
 	private String boja;
 	
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "vozila")
-	private Set<Korisnik> vozaci;
+	/*@ManyToMany(fetch = FetchType.EAGER, mappedBy = "vozila")
+	private Set<Korisnik> vozaci;*/
 	
 	
 	//***********************************************
@@ -130,22 +126,6 @@ public class Vozilo implements Serializable{
 	 */
 	public void setBoja(String boja) {
 		this.boja = boja;
-	}
-
-	/**
-	 * @return the vozaci
-	 */
-	public Set<Korisnik> getVozaci() {
-		return vozaci;
-	}
-
-	/**
-	 * @param vozaci the vozaci to set
-	 */
-	public void setVozaci(Set<Korisnik> vozaci) {
-		this.vozaci = vozaci;
-	}
-	
-	
+	}	
 
 }
