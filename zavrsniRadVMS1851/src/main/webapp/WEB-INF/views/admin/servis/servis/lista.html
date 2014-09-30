@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Services</title>
+</head>
+<body>
+
+<div th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+
+<div class="container"> 
+ 
+<section id="tables">
+	
+<script src="/resources/bootstrap/js/bootbox.min.js" th:src="@{/resources/js/bootbox.min.js}"></script>
+		
+<script th:inline="javascript">
+ 	function deleteObject(id) {
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				var url = /*[[ @{'/admin/servis/izbrisi?id='} ]]*/ "genericUrl";
+				url = url+id;
+				document.location = url;
+			}
+		}); 
+	};
+</script>
+
+  <div class="page-header">
+    <h1>Servisi za vozilo <span th:text="${rAtribut.tablica}"></span></h1>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/servis/novi(vin=${rAtribut.vozilo.vin})}">Dodaj novi servis</a>
+  </div>
+  
+  <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h1>Error</h1>
+     <h4>An unexpected error occurred, <a href="#" class="alert-link">please contact the support team</a>.</h4>
+     <div class="alert alert-warning">
+     	<p th:text="${error}">error</p>
+     </div>
+    </div>
+  
+  <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th th:text="#{s.id}">111111</th>
+        <th th:text="#{s.za}">Part name</th>
+        <th th:text="#{s.dat}">Serial No.</th>
+        <th th:text="#{s.st}">111111</th>
+        <th th:text="#{rad.na}">ACTIONS</th>
+        </tr>
+    </thead>
+    <tbody>
+	    <tr th:each="servis : ${pager}" th:class="${servis.zavrsen} ? '' : 'danger'">
+	    	<td th:text="${servis.id}">WVWZZZ857E58T7R</td>
+	    	<td th:switch="${servis.zavrsen}">
+				    <p th:case="true"><i class="glyphicon glyphicon-ok"></i></p>
+	    			<p th:case="false"><i class="glyphicon glyphicon-minus"></i></p>
+				</td>
+	    	<td th:text="${#dates.format(servis.datum, 'dd/MM/yyyy')}">Ford</td>
+	    	<td th:text="${servis.vrstaServisa.naziv}">Ford</td>
+			<td>
+				<a class="btn btn-warning btn-sm" th:href="@{/admin/servis/izmjeni(id=${servis.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Edit action</span></a>
+				<a class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${servis.id} + '\');'"><i class="glyphicon glyphicon-remove"></i> Delete</a>
+			</td>
+		</tr>
+    </tbody>
+  </table>
+   
+  <div class="col-lg-12 center">
+	<ul th:if="${pager.totalPages}>1" class="pagination">
+		<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
+		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
+		<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
+	        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
+	     </li>
+	    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
+		<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
+	</ul>
+  </div>
+  
+</section>
+
+<div th:include="dodaci/sabloni :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>

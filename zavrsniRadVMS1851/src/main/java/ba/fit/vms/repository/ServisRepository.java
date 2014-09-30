@@ -17,6 +17,8 @@ public interface ServisRepository  extends JpaRepository<Servis, Long> {
 	List<Servis> findByZavrsenTrue(Pageable pageable);
 	Page<Servis> findByZavrsenFalse(Pageable pageable);
 	
+	Page<Servis> findAllByVozilo_Vin(String vin, Pageable pageable);
+	
 
 }
 /*	

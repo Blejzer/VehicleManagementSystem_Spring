@@ -1,73 +1,71 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:include="fragments/common :: headFragment">
+<head th:include="dodaci/sabloni :: headFragment">
 <title>Vehicles</title>
 </head>
 <body>
 
-<div th:include="fragments/common :: adminHeaderFragment"></div>
+<div th:include="dodaci/sabloni :: adminHeaderFragment"></div>
 
 <div class="container">
 
 <section id="object">
   <div class="page-header">
-    <h1 class="alert alert-info">Razduzi <span th:text="${kvAtribut.korisnik.ime} + ' ' + ${kvAtribut.korisnik.prezime}"></span> kao korisnika vozila <span th:text="${kvAtribut.vozilo.vin} ? ${regAtribut.tablice} : ''"></span>? </h1>
+    <h1 class="alert alert-info">Razduzi <span th:text="${kvAtribut.korisnik.ime} + ' ' + ${kvAtribut.korisnik.prezime}"></span> kao korisnika vozila <span th:text="${kvAtribut.vozilo.vin} ? ${regAtribut.tablica} : ''"></span>? </h1>
   </div>
 
 <div class="row">
     
 	<form action="#" th:object="${kvAtribut}"
-		th:action="@{/admin/vehicles/remove}" method="post" class="form-horizontal well">
+		th:action="@{/admin/razduzi/}" method="post" class="form-horizontal well">
 
 <!-- <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
     <h1>Error</h1>
 	<p th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</p>    
     </div>  -->
     <input type="hidden" th:field="*{id}" />
-    <input type="hidden" th:field="*{vehicle.vin}" />
-    <input type="hidden" th:field="*{consultant.id}" />
-          <div class="form-group" th:class="${#fields.hasErrors('vehicle.licensePlate')} ? 'form-group has-error' : 'form-group'">
-          <label for="vehicle.licensePlate" class="col-lg-2 control-label">License Plates</label>
+    <input type="hidden" th:field="*{vozilo.vin}" />
+    <input type="hidden" th:field="*{korisnik.id}" />
+          <div class="form-group" th:class="'form-group'">
+          <label class="col-lg-2 control-label">License Plates</label>
             <div class="col-lg-10">
-              	<input type="text" th:field="*{vehicle.licensePlate}" readonly="readonly"  class="form-control input-xlarge"/>
-              <p th:if="${#fields.hasErrors('vehicle.licensePlate')}" class="label label-danger" th:errors="*{vehicle.licensePlate}">Incorrect VIN</p>
+              	<input type="text" th:field="${regAtribut.tablica}" readonly="readonly"  class="form-control input-xlarge"/>
             </div>
           </div>
           
-          <div class="form-group" th:class="${#fields.hasErrors('consultant.firstName')} ? 'form-group has-error' : 'form-group'">
-          <label for="consultant.firstName" class="col-lg-2 control-label">Consultant</label>
+          <div class="form-group" th:class="${#fields.hasErrors('korisnik.ime')} ? 'form-group has-error' : 'form-group'">
+          <label for="korisnik.ime" class="col-lg-2 control-label">Consultant</label>
             <div class="col-lg-10">
-              	<input type="text" th:field="*{consultant.firstName}" readonly="readonly" class="form-control input-xlarge"/>
-              <p th:if="${#fields.hasErrors('consultant.firstName')}" class="label label-danger" th:errors="*{consultant.firstName}">Incorrect VIN</p>
+              	<input type="text" th:field="*{korisnik.ime}" readonly="readonly" class="form-control input-xlarge"/>
+              <p th:if="${#fields.hasErrors('korisnik.ime')}" class="label label-danger" th:errors="*{korisnik.ime}">Incorrect VIN</p>
             </div>
           </div>
-          <div class="form-group" th:class="${#fields.hasErrors('consultant.lastName')} ? 'form-group has-error' : 'form-group'">
-          <label for="consultant.lastName" class="col-lg-2 control-label">Consultant</label>
+          <div class="form-group" th:class="${#fields.hasErrors('korisnik.prezime')} ? 'form-group has-error' : 'form-group'">
+          <label for="korisnik.prezime" class="col-lg-2 control-label">Consultant</label>
             <div class="col-lg-10">
-              	<input type="text" th:field="*{consultant.lastName}" readonly="readonly" class="form-control input-xlarge"/>
-              <p th:if="${#fields.hasErrors('consultant.lastName')}" class="label label-danger" th:errors="*{consultant.lastName}">Incorrect VIN</p>
+              	<input type="text" th:field="*{korisnik.prezime}" readonly="readonly" class="form-control input-xlarge"/>
+              <p th:if="${#fields.hasErrors('korisnik.prezime')}" class="label label-danger" th:errors="*{korisnik.prezime}">Incorrect VIN</p>
             </div>
           </div>
-          
-          <div class="form-group" th:class="${#fields.hasErrors('assignedDate')} ? 'form-group has-error' : 'form-group'">
-          <label for="assignedDate" class="col-lg-2 control-label">Assigned Date</label>
+          <div class="form-group" th:class="${#fields.hasErrors('dodijeljeno')} ? 'form-group has-error' : 'form-group'">
+          <label for="dodijeljeno" class="col-lg-2 control-label">Assigned Date</label>
             <div class="col-lg-10">
-              <input type="date" th:field="*{assignedDate}" class="form-control input-xlarge" placeholder="Registration Date" readonly="readonly" />
-              <p th:if="${#fields.hasErrors('assignedDate')}" class="label label-danger" th:errors="*{assignedDate}">Assigned Date Error</p>
+              <input type="date" th:field="*{dodijeljeno}" class="form-control input-xlarge" placeholder="Registration Date" readonly="readonly" />
+              <p th:if="${#fields.hasErrors('dodijeljeno')}" class="label label-danger" th:errors="*{dodijeljeno}">Assigned Date Error</p>
             </div>
           </div>
- 		  <div class="form-group" th:class="${#fields.hasErrors('returnedDate')} ? 'form-group has-error' : 'form-group'">
- 		  <label for="returnedDate" class="col-lg-2 control-label">Returned Date</label>
+ 		  <div class="form-group" th:class="${#fields.hasErrors('vraceno')} ? 'form-group has-error' : 'form-group'">
+ 		  <label for="vraceno" class="col-lg-2 control-label">Returned Date</label>
             <div class="col-lg-10">
-              <input type="date" th:field="*{returnedDate}" class="form-control input-xlarge" placeholder="Registration Due Date" />
-              <p th:if="${#fields.hasErrors('returnedDate')}" class="label label-danger" th:errors="*{returnedDate}">Returned Date Error</p>
+              <input type="date" th:field="*{vraceno}" class="form-control input-xlarge" placeholder="Registration Due Date" />
+              <p th:if="${#fields.hasErrors('vraceno')}" class="label label-danger" th:errors="*{vraceno}">Returned Date Error</p>
             </div>
           </div>
 		<hr/>
           <div class="form-actions">
             <button type="submit" class="btn btn-primary">Razduzi</button>
-            <a class="btn btn-default" th:href="@{/admin/dodijeljivanje/}">Cancel</a>
+            <a class="btn btn-default" th:href="@{/admin/vozila/}">Cancel</a>
           </div>
 	</form>
 	
@@ -79,10 +77,10 @@
   <a class="btn btn-primary btn-large" th:href="@{/admin/vehicles}">Back to list</a>
 </div> 
 
-<div th:include="fragments/common :: footerFragment"></div>
+<div th:include="dodaci/sabloni :: footerFragment"></div>
 </div>
 <!-- /.container -->
-<div th:include="fragments/common :: jsFragment"></div>
+<div th:include="dodaci/sabloni :: jsFragment"></div>
 
 </body>
 </html>

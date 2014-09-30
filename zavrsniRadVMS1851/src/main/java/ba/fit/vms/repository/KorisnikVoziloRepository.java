@@ -26,13 +26,16 @@ public interface KorisnikVoziloRepository extends JpaRepository<KorisnikVozilo, 
 	@Query("select c from Vozilo c where c.vin not in (select c.vozilo.vin from KorisnikVozilo c)")
 	List<Vozilo> findAllUnassignedV();
 	
-	List<KorisnikVozilo> findAllByVozilo_Vin(String vin);
+	List<KorisnikVozilo> findAllByVozilo_VinOrderByVracenoDesc(String vin);
 	
 	List<KorisnikVozilo> findAllByKorisnik_Id(Long id);
 	
 	KorisnikVozilo findByVozilo_VinAndVracenoNull(String vin);
 	
-	Page<KorisnikVozilo> findAllByVozilo_Vin(String vin, Pageable pageable);
+	Page<KorisnikVozilo> findAllByVozilo_VinOrderByVracenoDesc(String vin, Pageable pageable);
+	
+	@Query("select a from KorisnikVozilo a where a.vraceno in(select max(b.vraceno) from KorisnikVozilo b)")
+	KorisnikVozilo findLast();
 	
 	
 

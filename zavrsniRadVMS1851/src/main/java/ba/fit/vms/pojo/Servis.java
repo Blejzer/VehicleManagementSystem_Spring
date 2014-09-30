@@ -45,7 +45,7 @@ public class Servis implements Serializable{
 	@NotNull
 	private Vozilo vozilo;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JoinTable(name = "servis_dio", joinColumns = { 
 			@JoinColumn(name = "servis_id", nullable = false, updatable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "dio_id", 
@@ -56,6 +56,11 @@ public class Servis implements Serializable{
 	@JoinColumn(nullable=false)
 	@NotNull
 	private VrstaServisa vrstaServisa;
+	
+	@ManyToOne( cascade = {CascadeType.ALL}, fetch=FetchType.EAGER )
+	@JoinColumn(nullable=false)
+	@NotNull
+	private Kilometraza kilometraza;
 	
 	private Boolean zavrsen;
 
@@ -132,6 +137,14 @@ public class Servis implements Serializable{
 	 */
 	public void setVrstaServisa(VrstaServisa vrstaServisa) {
 		this.vrstaServisa = vrstaServisa;
+	}
+
+	public Kilometraza getKilometraza() {
+		return kilometraza;
+	}
+
+	public void setKilometraza(Kilometraza kilometraza) {
+		this.kilometraza = kilometraza;
 	}
 
 	/**
