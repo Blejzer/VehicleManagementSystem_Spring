@@ -22,4 +22,6 @@ public interface RegistracijaRepository  extends JpaRepository<Registracija, Lon
 	
 	Page<Registracija> findAllByVozilo_Vin(String vin, Pageable pageable);
 
+	List<Registracija> findAllByJeAktivnoTrue();
+
 }

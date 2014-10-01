@@ -157,6 +157,10 @@
 	  </div>
 </section>
 </div>
+
+<!--#########################################################
+	#		Pretraga servisa se vrsi kroz posebnu formu		#
+	#########################################################  -->
 <div id="servisReport" th:fragment="servisReport">
 	<section id="filterForm">
 	
@@ -165,25 +169,25 @@
 	  </div>
 	  
 	  <div id="filter" class="collapse">
-	        <form action="#" th:action="@{/admin/servisi/listAllServis}" th:object="${searchAttribute}" method="post" class="form-inline well">
+	        <form action="#" th:action="@{/admin/servis/pretraga}" th:object="${searchAttribute}" method="post" class="form-inline well">
 		          <div class="col-md-3">
 		              <select th:field="*{vin}" id="vin" name="vin" class="form-control">
 				          <option value="" th:text="#{common.select.prompt}"></option>
-				          <option th:each="vehicle : *{vehicles}" th:value="${vehicle.vin}" th:text="${vehicle.licensePlate}">VIN</option>
+				          <option th:each="registracija : *{registracije}" th:value="${registracija.vozilo.vin}" th:text="${registracija.tablica}">VIN</option>
 		              </select>
 		          </div>
 		          <div class="col-md-3">
-		              <select th:field="*{month}" id="month" name="month" class="form-control">
-		              	<option th:each="sopt:${searchAttribute.months.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
+		              <select th:field="*{mjesec}" id="mjesec" name="mjesec" class="form-control">
+		              	<option th:each="sopt:${searchAttribute.mjeseci.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
 		              </select>
 		          </div>
 		            <div class="col-md-2">
-		              <select th:field="*{year}" id="year" name="year" class="form-control">
-		              	<option th:each="sopt:${searchAttribute.years.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
+		              <select th:field="*{godina}" id="godina" name="godina" class="form-control">
+		              	<option th:each="sopt:${searchAttribute.godine.entrySet()}" th:value="${sopt.key}" th:text="${sopt.value}">Januar</option>
 		              </select>
 		          </div>
 		        	<button type="submit" class="btn btn-info">Search</button>
-		    	    <a class="btn btn-warning" th:href="@{/admin/servisi/listAllServis}">Reset</a>
+		    	    <a class="btn btn-warning" th:href="@{/admin/servis/pretraga}">Reset</a>
 	      </form>
 	  </div>
 	</section>

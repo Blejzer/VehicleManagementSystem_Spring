@@ -2,16 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:include="fragments/common :: headFragment">
+<head th:include="dodaci/sabloni :: headFragment">
 <title>Services</title>
 </head>
 <body>
 
-	<div th:include="fragments/common :: adminHeaderFragment"></div>
+	<div th:include="dodaci/sabloni :: adminHeaderFragment"></div>
 
 	<div class="container">
 
-		<div th:include="fragments/filters :: servisReport"></div>
+		<div th:include="dodaci/filters :: servisReport"></div>
 
 		<section id="tables">
 
@@ -36,7 +36,7 @@
 			<div th:if="${vehicleVin!=null}" class="page-header">
 				<h1>Services for all vehicles</h1>
 				<a class="btn btn-primary btn-large right"
-					th:href="@{/admin/servisi/addServis(id=${vehicleVin})}">Add new
+					th:href="@{/admin/servis/novi(vin=${vehicleVin})}">Novi
 					Servis</a>
 			</div>
 
@@ -59,22 +59,21 @@
 					<thead>
 						<tr class="success">
 							<th class="text-center h3" colspan="2"
-								th:text="${servisi.key.licensePlate}">Vehicle</th>
+								th:text="${servisi.key.tablica}">Vozilo</th>
 							<th class="text-center h3" colspan="2"><a
 								class="btn btn-success btn-sm btn-large right"
-								th:href="@{/admin/servisi/addServis(id=${servisi.key.vin})}">Add
-									new Servis</a></th>
+								th:href="@{/admin/servis/novi(id=${servisi.key.vozilo.vin})}">Novi Servis</a></th>
 						</tr>
 						<tr>
-							<th class="text-center h4">Completed?</th>
-							<th class="text-center h4">Date</th>
-							<th class="text-center h4">Service Type</th>
-							<th class="text-center h4">Actions</th>
+							<th class="text-center h4">Zavrsen?</th>
+							<th class="text-center h4">Datum</th>
+							<th class="text-center h4">Vrsta servisa</th>
+							<th class="text-center h4">Radnje</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="servis : ${servisi.value}">
-							<td class="col-md-3" th:switch="${servis.completed}">
+							<td class="col-md-3" th:switch="${servis.zavrsen}">
 								<p th:case="true">
 									<i class="glyphicon glyphicon-ok"></i>
 								</p>
@@ -83,10 +82,10 @@
 								</p>
 							</td>
 							<td class="col-md-3"
-								th:text="${#calendars.format(servis.serviceDate,'dd MMMM yyyy')}">date</td>
-							<td class="col-md-3" th:text="${servis.serviceType.name}">Type</td>
+								th:text="${#calendars.format(servis.datum,'dd MMMM yyyy')}">date</td>
+							<td class="col-md-3" th:text="${servis.vrstaServisa.naziv}">Type</td>
 							<td class="col-md-3 center"><a class="btn btn-info btn-sm"
-								th:href="@{/admin/servisi/showServis(id=${servis.id})}"><i
+								th:href="@{/admin/servis/showServis(id=${servis.id})}"><i
 									class="glyphicon glyphicon-list-alt"></i> <span
 									th:text="#{actions.show}">Show action</span></a></td>
 						</tr>
@@ -107,10 +106,10 @@
 
 		</section>
 
-		<div th:include="fragments/common :: footerFragment"></div>
+		<div th:include="dodaci/sabloni :: footerFragment"></div>
 	</div>
 	<!-- /.container -->
-	<div th:include="fragments/common :: jsFragment"></div>
+	<div th:include="dodaci/sabloni :: jsFragment"></div>
 
 </body>
 </html>
