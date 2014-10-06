@@ -47,41 +47,14 @@ public class ServisController {
 	
 	@Autowired
 	private VrstaServisaRepository vrstaServisaRepository;
+
 	
-	@RequestMapping(value={"/admin/servis/svi/", "/admin/servis/svi/lista"}, method = RequestMethod.GET)
-	public String getSviServisi(Model model, HttpServletRequest request){
-
-		int page;
-		if(request.getParameter("page")==null){
-			page=0;
-		} else{
-			page = Integer.parseInt(request.getParameter("page"));
-		}
-
-		int pageSize = 4;
-
-		Pageable pageable = new PageRequest(page, pageSize);
-		model.addAttribute("pager", servisRepository.findAll(pageable));
-		return "/admin/servis/servis/listaSvih";
-	}
-	
-	@RequestMapping(value="/admin/servis/zavrseni", method = RequestMethod.GET)
-	public String getSviUradjeniServisi(Model model, HttpServletRequest request){
-
-		int page;
-		if(request.getParameter("page")==null){
-			page=0;
-		} else{
-			page = Integer.parseInt(request.getParameter("page"));
-		}
-
-		int pageSize = 4;
-
-		Pageable pageable = new PageRequest(page, pageSize);
-		model.addAttribute("pager", servisRepository.findByZavrsenTrue(pageable));
-		return "/admin/servis/dio/lista";
-	}
-	
+	/**
+	 * Unos novog servisa
+	 * @param vin
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value="/admin/servis/novi", method = RequestMethod.GET)
 	public String getNoviServis(@RequestParam(value="vin", required=true) String vin, ModelMap map){
 		if(vin==null || vin.isEmpty()){
@@ -99,6 +72,14 @@ public class ServisController {
 		return "admin/servis/servis/novi";	
 	}
 	
+	
+	/**
+	 * Snimanje novog servisa
+	 * @param servis
+	 * @param rezultat
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value="/admin/servis/novi", method=RequestMethod.POST)
 	public String postNoviServis(@ModelAttribute("sAtribut") @Valid Servis servis, BindingResult rezultat, ModelMap map){
 		if(servis.getKilometraza().getKilometraza()==null || servis.getKilometraza().getDatum()==null){
@@ -115,6 +96,41 @@ public class ServisController {
 		servisRepository.save(servis);
 		return "redirect:/admin/servis/?vin="+servis.getVozilo().getVin();
 	}
+	
+	@RequestMapping(value="/admin/servis/izmjena", method = RequestMethod.GET)
+	public String getIzmjenaServisa(@RequestParam(value="id", required=true) Long id, Model model){
+		if(id==null){
+			return "redirect:/admin/vozila/";
+		}
+		Servis s = servisRepository.findOne(id);
+		
+		model.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(s.getVozilo().getVin()));
+		model.addAttribute("dAtribut", dioRepository.findAll());
+		model.addAttribute("vAtribut", vrstaServisaRepository.findAll());
+		model.addAttribute("sAtribut", s);
+		
+		return "/admin/servis/servis/izmjena";
+		
+	}
+	
+	@RequestMapping(value="/admin/servis/izmjena", method=RequestMethod.POST)
+	public String postIzmjenaServis(@ModelAttribute("sAtribut") @Valid Servis servis, BindingResult rezultat, ModelMap map){
+		if(servis.getKilometraza().getKilometraza()==null || servis.getKilometraza().getDatum()==null){
+			rezultat.rejectValue("kilometraza.datum", "datum");
+			rezultat.rejectValue("kilometraza.kilometraza", "kilometraza");
+		}
+		if(rezultat.hasErrors()){
+			map.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(servis.getVozilo().getVin()));
+			map.addAttribute("dAtribut", dioRepository.findAll());
+			map.addAttribute("vAtribut", vrstaServisaRepository.findAll());
+			System.out.println(rezultat.toString());
+			return "admin/servis/servis/izmjena";
+		}
+		
+		servisRepository.save(servis);
+		return "redirect:/admin/servis/?vin="+servis.getVozilo().getVin();
+	}
+	
 	
 	@RequestMapping(value={"/admin/servis/", "/admin/servis/lista"}, method = RequestMethod.GET)
 	public String getSviServisiZaVozilo(Model model, HttpServletRequest request){
@@ -138,10 +154,20 @@ public class ServisController {
 		return "/admin/servis/servis/lista";
 	}
 	
+	
+	/**
+	 * Pretraga servisa get metoda otvara formu za pretragu
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/admin/servis/pretraga", method = RequestMethod.GET)
 	public String listCustomServis(HttpServletRequest request, HttpServletResponse response, Model model){
 		ServisPretraga search = new ServisPretraga(registracijaRepository);
+		Boolean first = true;
 		model.addAttribute("searchAttribute", search);
+		model.addAttribute("first", first);
 		return "/admin/servis/servis/listaSvih";
 	}
 	
@@ -155,7 +181,6 @@ public class ServisController {
 		searchnew.setGodina(search.getGodina());
 		model.addAttribute("searchAttribute", searchnew);
 		LinkedHashMap<Registracija, List<Servis>> report = new LinkedHashMap<Registracija, List<Servis>>();
-		//LinkedHashMap<String, LinkedHashMap<String, List<Servis>>> reporti = new LinkedHashMap<String, LinkedHashMap<String, List<Servis>>>();
 
 		if (!search.getVin().isEmpty()) {
 			List<Servis> servisi = new ArrayList<Servis>(servisRepository.getCustomServis(searchnew.getVin(), Integer.parseInt(searchnew.getGodina().toString()), Integer.parseInt(searchnew.getMjesec().toString())));

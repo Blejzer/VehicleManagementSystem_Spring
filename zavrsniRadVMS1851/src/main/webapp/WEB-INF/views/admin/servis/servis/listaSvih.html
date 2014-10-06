@@ -85,9 +85,9 @@
 								th:text="${#calendars.format(servis.datum,'dd MMMM yyyy')}">date</td>
 							<td class="col-md-3" th:text="${servis.vrstaServisa.naziv}">Type</td>
 							<td class="col-md-3 center"><a class="btn btn-info btn-sm"
-								th:href="@{/admin/servis/showServis(id=${servis.id})}"><i
+								th:href="@{/admin/servis/izmjena(id=${servis.id})}"><i
 									class="glyphicon glyphicon-list-alt"></i> <span
-									th:text="#{actions.show}">Show action</span></a></td>
+									th:text="#{rad.prk}">Show action</span></a></td>
 						</tr>
 					</tbody>
 				</table>

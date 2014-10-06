@@ -1,6 +1,7 @@
 package ba.fit.vms.pojo;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,6 +66,22 @@ public class Dio implements Serializable{
 	public void setSerijskiBroj(String serijskiBroj) {
 		this.serijskiBroj = serijskiBroj;
 	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		return false;
+		}
+		if (getClass() != obj.getClass()) {
+		return false;
+		}
+		final Dio other = (Dio) obj;
+		if (!Objects.equals(this.id, other.id)) {
+		return false;
+		}
+		return true;
+		}
 	
 	
 

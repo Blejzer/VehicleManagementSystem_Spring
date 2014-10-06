@@ -168,7 +168,7 @@
 	    <p th:text="#{servis.filter.title}" class="lead" data-toggle="collapse" data-target="#filter">Vehicle servis<i class="fright glyphicon glyphicon-circle-arrow-down"></i></p>
 	  </div>
 	  
-	  <div id="filter" class="collapse">
+	  <div id="filter" th:class="${first} ? 'page-header' : 'collapse'">
 	        <form action="#" th:action="@{/admin/servis/pretraga}" th:object="${searchAttribute}" method="post" class="form-inline well">
 		          <div class="col-md-3">
 		              <select th:field="*{vin}" id="vin" name="vin" class="form-control">
