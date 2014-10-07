@@ -17,12 +17,11 @@
 
 			<div class="row">
 
-				<form action="#" th:object="${kilometrazaAtribut}"
-					th:action="@{/admin/kilometraza/novi}" method="post"
+				<form action="#" th:object="${lkAtribut}"
+					th:action="@{/admin/kilo/novi}" method="post"
 					class="form-horizontal well">
 
-					<input type="hidden" th:field="*{vozilo.vin}" /> <input
-						type="hidden" th:field="*{korisnik.email}" />
+					<input type="hidden" th:field="*{korisnikVozilo.id}" />
 
 					<div class="form-group"
 						th:class="${#fields.hasErrors('datum')} ? 'form-group has-error' : 'form-group'">

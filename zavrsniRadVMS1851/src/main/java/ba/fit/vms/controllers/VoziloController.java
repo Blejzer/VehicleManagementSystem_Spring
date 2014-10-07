@@ -57,6 +57,7 @@ public class VoziloController {
 
 		Pageable pageable = new PageRequest(page, pageSize);
 		model.addAttribute("pager", voziloRepository.findAll(pageable));
+		model.addAttribute("rAtribut", voziloRepository.getRegistrovanaVozila());
 		return "/admin/vozila/lista";
 	}
 

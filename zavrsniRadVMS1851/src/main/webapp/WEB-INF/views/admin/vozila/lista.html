@@ -61,7 +61,7 @@
 			<td>
 				<a class="btn btn-warning btn-sm" th:href="@{/admin/vozila/izmjena(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Rednja - izmjeni</span></a>
 				<a class="btn btn-primary btn-sm" th:href="@{/admin/registracije/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-certificate"></i> Registracije</a>
-				<a class="btn btn-warning btn-sm" th:href="@{/admin/dodjeljivanje/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.zad}">Rednja - zaduzenje</span></a>
+				<a class="btn btn-warning btn-sm" th:href="${rAtribut.contains(vozilo)} ? @{/admin/dodjeljivanje/(vin=${vozilo.vin})}:''" th:disabled="${not rAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.zad}">Rednja - zaduzenje</span></a>
 			    <a class="btn btn-success btn-sm" th:href="@{/admin/servis/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.ser}">Rednja - zaduzenje</span></a>
 			    <a class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${vozilo.vin} + '\');'"><i class="glyphicon glyphicon-remove"></i><span th:text="#{rad.obr}">Radnja - izbrisi</span></a>
 			</td>

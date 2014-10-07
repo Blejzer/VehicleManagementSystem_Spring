@@ -1,6 +1,8 @@
 package ba.fit.vms.pojo;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -127,5 +129,21 @@ public class Vozilo implements Serializable{
 	public void setBoja(String boja) {
 		this.boja = boja;
 	}	
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		return false;
+		}
+		if (getClass() != obj.getClass()) {
+		return false;
+		}
+		final Vozilo  other = (Vozilo) obj;
+		if (!Objects.equals(this.vin, other.vin)) {
+		return false;
+		}
+		return true;
+		}
 
 }

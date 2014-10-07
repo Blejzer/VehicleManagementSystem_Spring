@@ -18,7 +18,7 @@
  	function deleteObject(id) {
 		bootbox.confirm("Da li ste sigurni?", function(result) {
 			if (result) {
-				var url = /*[[ @{'/admin/dio/izbrisi?id='} ]]*/ "genericUrl";
+				var url = /*[[ @{'/admin/kilometraza/izbrisi?id='} ]]*/ "genericUrl";
 				url = url+id;
 				document.location = url;
 			}
@@ -28,7 +28,7 @@
 
   <div class="page-header">
     <h1>Dijelovi</h1>
-	<a class="btn btn-primary btn-large right" th:href="@{/admin/dio/novi}">Dodaj novi dio</a>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/kilometraza/novi}">Unesi novu kilometrazu</a>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
@@ -40,7 +40,7 @@
      </div>
     </div>
   
-  <table th:if="${not #lists.isEmpty(pager.pageList)}" class="table table-bordered table-striped table-hover">
+  <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
         <th th:text="#{dioTekst.id}">Identifikacijski broj</th>
