@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
 import ba.fit.vms.pojo.Vozilo;
+import ba.fit.vms.repository.KorisnikVoziloRepository;
 import ba.fit.vms.repository.VoziloRepository;
 import ba.fit.vms.util.VoziloValidatorForme;
 
@@ -34,6 +35,9 @@ public class VoziloController {
 
 	@Autowired
 	private VoziloValidatorForme voziloValidatorForme;
+	
+	@Autowired
+	private KorisnikVoziloRepository kvRepository;
 
 
 	/**

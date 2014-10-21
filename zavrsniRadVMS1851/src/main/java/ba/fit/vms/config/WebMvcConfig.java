@@ -27,6 +27,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
 import ba.fit.vms.util.DioFormater;
+import ba.fit.vms.util.LokacijaFormater;
 
 /*import ba.fit.vms.util.DioFormater;*/
 
@@ -83,6 +84,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addFormatters(FormatterRegistry registry){
     	registry.addFormatter(new DioFormater());
+    	registry.addFormatter(new LokacijaFormater());
     }
 
 	@Override

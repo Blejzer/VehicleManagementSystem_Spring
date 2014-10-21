@@ -35,8 +35,7 @@ public interface KorisnikVoziloRepository extends JpaRepository<KorisnikVozilo, 
 	Page<KorisnikVozilo> findAllByVozilo_VinOrderByVracenoDesc(String vin, Pageable pageable);
 	
 	@Query("select a from KorisnikVozilo a where a.vraceno in(select max(b.vraceno) from KorisnikVozilo b)")
-	KorisnikVozilo findLast();
-	
+	KorisnikVozilo findLast();	
 	
 
 }

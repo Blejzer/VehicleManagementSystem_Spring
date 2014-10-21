@@ -30,22 +30,21 @@ public class LokacijaKilometraza implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id")
 	private Long id;
-	
-	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
-	@JoinColumn(nullable=false, updatable=false)
-	private Kilometraza kilometraza;
+
+	@Column(name="kilometraza")
+	@NotNull
+	private Long kilometraza;
 	
 	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
 	@JoinColumn(nullable=false, updatable=false)
 	private Lokacija lokacija;
 	
 	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
-	@JoinColumn(nullable=false, updatable=false)
+	@JoinColumn(nullable=true, updatable=false)
 	private KorisnikVozilo korisnikVozilo;
 	
 	@Column(name = "datum")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
-	@NotNull
 	private Date datum;
 
 	public Long getId() {
@@ -56,11 +55,11 @@ public class LokacijaKilometraza implements Serializable{
 		this.id = id;
 	}
 
-	public Kilometraza getKilometraza() {
+	public Long getKilometraza() {
 		return kilometraza;
 	}
 
-	public void setKilometraza(Kilometraza kilometraza) {
+	public void setKilometraza(Long kilometraza) {
 		this.kilometraza = kilometraza;
 	}
 

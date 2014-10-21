@@ -30,7 +30,7 @@
     <h1>Vozila</h1>
 	<a class="btn btn-primary btn-large right" th:href="@{/admin/vozila/novi}">Dodaj novo vozilo</a>
   </div>
-  
+  <span th:text="${kAtribut}"></span>
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <h1>Greska</h1>
@@ -59,11 +59,12 @@
 	    	<td th:text="${vozilo.boja}">GE123</td>
 	    	<td th:text="${vozilo.godina}">GE123</td>
 			<td>
-				<a class="btn btn-warning btn-sm" th:href="@{/admin/vozila/izmjena(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Rednja - izmjeni</span></a>
-				<a class="btn btn-primary btn-sm" th:href="@{/admin/registracije/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-certificate"></i> Registracije</a>
-				<a class="btn btn-warning btn-sm" th:href="${rAtribut.contains(vozilo)} ? @{/admin/dodjeljivanje/(vin=${vozilo.vin})}:''" th:disabled="${not rAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.zad}">Rednja - zaduzenje</span></a>
-			    <a class="btn btn-success btn-sm" th:href="@{/admin/servis/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.ser}">Rednja - zaduzenje</span></a>
-			    <a class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${vozilo.vin} + '\');'"><i class="glyphicon glyphicon-remove"></i><span th:text="#{rad.obr}">Radnja - izbrisi</span></a>
+				<a class="btn btn-default btn-sm" th:href="@{/admin/vozila/izmjena(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Rednja - izmjeni</span></a>
+				<a class="btn btn-sm" th:classappend="${rAtribut.contains(vozilo)} ? btn-default : btn-danger" th:href="@{/admin/registracije/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-certificate"></i> Registracije</a>
+				<a class="btn btn-default btn-sm" th:href="${rAtribut.contains(vozilo)} ? @{/admin/kilo/nova(vin=${vozilo.vin})}:''" th:disabled="${not rAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-road"></i> Kilometraza</a>
+				<a class="btn btn-default btn-sm" th:href="${rAtribut.contains(vozilo)} ? @{/admin/dodjeljivanje/(vin=${vozilo.vin})}:''" th:disabled="${not rAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.zad}">Rednja - zaduzenje</span></a>
+			    <a class="btn btn-default btn-sm" th:href="@{/admin/servis/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-cog"></i> <span th:text="#{rad.ser}">Rednja - zaduzenje</span></a>
+			    <a class="btn btn-default btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${vozilo.vin} + '\');'"><i class="glyphicon glyphicon-remove"></i><span th:text="#{rad.obr}">Radnja - izbrisi</span></a>
 			</td>
 		</tr>
     </tbody>

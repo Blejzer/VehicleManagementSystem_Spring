@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,8 +22,9 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
-public class Servis implements Serializable{
+@Entity
+@Table(name="servis1")
+public class Servis1 implements Serializable{
 
 	/**
 	 * 
@@ -56,108 +58,81 @@ public class Servis implements Serializable{
 	@NotNull
 	private VrstaServisa vrstaServisa;
 	
-	/*@ManyToOne( cascade = {CascadeType.ALL}, fetch=FetchType.EAGER )
+	@ManyToOne( cascade = {CascadeType.PERSIST}, fetch=FetchType.EAGER )
 	@JoinColumn(nullable=false)
 	@NotNull
-	private Kilometraza kilometraza;*/
+	private LokacijaKilometraza lokacijaKilometraza;
 	
 	private Boolean zavrsen;
 
-	
-	//***********************************************
-	//*  			Getteri i Setteri 				*
-	//*                    							*
-	// **********************************************
-	/**
-	 * @return the id
-	 */
 	public Long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the datum
-	 */
 	public Date getDatum() {
 		return datum;
 	}
 
-	/**
-	 * @param datum the datum to set
-	 */
 	public void setDatum(Date datum) {
 		this.datum = datum;
 	}
 
-	/**
-	 * @return the vozilo
-	 */
 	public Vozilo getVozilo() {
 		return vozilo;
 	}
 
-	/**
-	 * @param vozilo the vozilo to set
-	 */
 	public void setVozilo(Vozilo vozilo) {
 		this.vozilo = vozilo;
 	}
 
-	/**
-	 * @return the djelovi
-	 */
 	public List<Dio> getDjelovi() {
 		return djelovi;
 	}
 
-	/**
-	 * @param djelovi the djelovi to set
-	 */
 	public void setDjelovi(List<Dio> djelovi) {
 		this.djelovi = djelovi;
 	}
 
-	/**
-	 * @return the vrstaServisa
-	 */
 	public VrstaServisa getVrstaServisa() {
 		return vrstaServisa;
 	}
 
-	/**
-	 * @param vrstaServisa the vrstaServisa to set
-	 */
 	public void setVrstaServisa(VrstaServisa vrstaServisa) {
 		this.vrstaServisa = vrstaServisa;
 	}
 
-	/*public Kilometraza getKilometraza() {
-		return kilometraza;
+	public LokacijaKilometraza getLokacijaKilometraza() {
+		return lokacijaKilometraza;
 	}
 
-	public void setKilometraza(Kilometraza kilometraza) {
-		this.kilometraza = kilometraza;
-	}*/
+	public void setLokacijaKilometraza(LokacijaKilometraza lokacijaKilometraza) {
+		this.lokacijaKilometraza = lokacijaKilometraza;
+	}
 
-	/**
-	 * @return the zavrsen
-	 */
 	public Boolean getZavrsen() {
 		return zavrsen;
 	}
 
-	/**
-	 * @param zavrsen the zavrsen to set
-	 */
 	public void setZavrsen(Boolean zavrsen) {
 		this.zavrsen = zavrsen;
 	}
-
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		return false;
+		}
+		if (getClass() != obj.getClass()) {
+		return false;
+		}
+		final Servis1 other = (Servis1) obj;
+		if (!Objects.equals(this.id, other.id)) {
+		return false;
+		}
+		return true;
+		}
 }

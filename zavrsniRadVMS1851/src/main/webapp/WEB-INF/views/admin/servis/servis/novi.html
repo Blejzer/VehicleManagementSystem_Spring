@@ -29,7 +29,7 @@
             </div>
           </div>    
           <div class="form-group" th:class="${#fields.hasErrors('datum')} ? 'form-group has-error' : 'form-group'">
-          <label for="datum" class="col-lg-3 control-label">Servis Date: </label>
+          <label for="datum" class="col-lg-3 control-label">Datum servisa: </label>
             <div class="col-lg-9">
               <input type="date" th:field="*{datum}" class="form-control input-xlarge" placeholder="Datum servisa" />
               <p th:if="${#fields.hasErrors('datum')}" class="label label-danger" th:errors="*{datum}">Incorrect Date</p>
@@ -57,22 +57,26 @@
               <p th:if="${#fields.hasErrors('djelovi')}" class="label label-danger" th:errors="*{djelovi}">Incorrect part ID</p>
             </div>
           </div>
-           <div class="form-group" th:class="${#fields.hasErrors('kilometraza.datum')} ? 'form-group has-error' : 'form-group'">
-          <label for="kilometraza.datum" class="col-lg-3 control-label">Datum ocitanja kilometraze: </label>
+          <div class="form-group" th:class="${#fields.hasErrors('lokacijaKilometraza.kilometraza')} ? 'form-group has-error' : 'form-group'">
+          <label for="lokacijaKilometraza.kilometraza" class="col-lg-3 control-label">Trenutna kilometraza</label>
             <div class="col-lg-9">
-              <input type="date" th:field="*{kilometraza.datum}" class="form-control input-xlarge" placeholder="Datum ocitanja kilometraze" />
-              <p th:if="${#fields.hasErrors('kilometraza.datum')}" class="label label-danger" th:errors="*{kilometraza.datum}">Incorrect Date</p>
+              	<input type="text" th:field="*{lokacijaKilometraza.kilometraza}" class="form-control input-xlarge" placeholder="Kilometraza"/>
+              <p th:if="${#fields.hasErrors('lokacijaKilometraza.kilometraza')}" class="label label-danger" th:errors="*{lokacijaKilometraza.kilometraza}">Incorrect LP</p>
             </div>
           </div>
-          <div class="form-group" th:class="${#fields.hasErrors('kilometraza.kilometraza')} ? 'form-group has-error' : 'form-group'">
-          <label for="kilometraza.kilometraza" class="col-lg-3 control-label">Trenutna kilometraza</label>
-            <div class="col-lg-9">
-              	<input type="text" th:field="*{kilometraza.kilometraza}" class="form-control input-xlarge" placeholder="Kilometraza"/>
-              <p th:if="${#fields.hasErrors('kilometraza.kilometraza')}" class="label label-danger" th:errors="*{kilometraza.kilometraza}">Incorrect LP</p>
-            </div>
-          </div>
+          <div class="form-group" th:class="${#fields.hasErrors('lokacijaKilometraza.lokacija')} ? 'form-group has-error' : 'form-group'">
+          	<label for="lokacijaKilometraza.lokacija" class="col-lg-3 control-label">Lokacija:</label>
+          	<div class="col-lg-9">
+				<select th:field="*{lokacijaKilometraza.lokacija}" class="form-control">
+  					<option th:each="lok : ${lAtribut}" 
+  						th:value="${lok.id}" 
+          				th:text="${lok.naziv}">Lokacija</option>
+				</select>
+				<p th:if="${#fields.hasErrors('lokacijaKilometraza.lokacija')}" class="label label-danger" th:errors="*{lokacijaKilometraza.lokacija}">neispravna kilometraza</p>
+			</div>
+		  </div>
           <div class="form-group" th:class="${#fields.hasErrors('zavrsen')} ? 'form-group has-error' : 'form-group'">
-          <label for="zavrsen" class="col-lg-3 control-label">Is service completed?</label>
+          <label for="zavrsen" class="col-lg-3 control-label">Da li je servis uradjen?</label>
             <div class="col-lg-9">
               <select th:field="*{zavrsen}" class="form-control">
                 <option value="true">Da</option>

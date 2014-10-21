@@ -18,7 +18,7 @@
 			<div class="row">
 
 				<form action="#" th:object="${lkAtribut}"
-					th:action="@{/admin/kilo/novi}" method="post"
+					th:action="@{/admin/kilo/nova}" method="post"
 					class="form-horizontal well">
 
 					<input type="hidden" th:field="*{korisnikVozilo.id}" />
@@ -27,7 +27,7 @@
 						th:class="${#fields.hasErrors('datum')} ? 'form-group has-error' : 'form-group'">
 						<label for="datum" class="col-lg-2 control-label">Datum: </label>
 						<div class="col-lg-10">
-							<input type="text" th:field="*{datum}"
+							<input type="date" th:field="*{datum}"
 								class="form-control input-xlarge" placeholder="Datum" />
 							<p th:if="${#fields.hasErrors('datum')}"
 								class="label label-danger" th:errors="*{datum}">neispravan
@@ -36,7 +36,7 @@
 					</div>
 					<div class="form-group"
 						th:class="${#fields.hasErrors('kilometraza')} ? 'form-group has-error' : 'form-group'">
-						<label for="kilometraza" class="col-lg-2 control-label">Naziv:
+						<label for="kilometraza" class="col-lg-2 control-label">Kilometraza:
 						</label>
 						<div class="col-lg-10">
 							<input type="text" th:field="*{kilometraza}"
@@ -46,10 +46,25 @@
 								kilometraza</p>
 						</div>
 					</div>
+					<div class="form-group"
+						th:class="${#fields.hasErrors('lokacija')} ? 'form-group has-error' : 'form-group'">
+						<label for="kilometraza" class="col-lg-2 control-label">Lokacija:
+						</label>
+						<div class="col-lg-10">
+							<select th:field="*{lokacija}" class="form-control">
+  				<option th:each="lok : ${lAtribut}" 
+  						th:value="${lok.id}" 
+          				th:text="${lok.naziv}">Lokacija</option>
+				</select>
+							<p th:if="${#fields.hasErrors('lokacija')}"
+								class="label label-danger" th:errors="*{lokacija}">neispravna
+								kilometraza</p>
+						</div>
+					</div>
 					<hr />
 					<div class="form-actions">
 						<button type="submit" class="btn btn-primary">Unesi kilometrazu</button>
-						<a class="btn btn-default" th:href="@{/admin/kilometraza/}">Odustani</a>
+						<a class="btn btn-default" th:href="@{/admin/vozila/}">Odustani</a>
 					</div>
 				</form>
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Upit</title>
+</head>
+<body>
+	<script type="text/javascript"  th:inline="javascript">
+		$(function() {
+
+			bootbox
+					.dialog({
+						message : "Kilometrazu mozete unijeti samo ako je vozilo dodijeljeno.",
+						title : "Da li zelite sada dodijeliti vozilo?",
+						buttons : {
+							success : {
+								label : "Da, zelim",
+								className : "btn-success",
+								callback : function() {
+									var url = /*[[ @{'/admin/dodjeljivanje/?vin='} ]]*/"genericUrl";
+									var vin = [[${voziloAtribut.vin}]]; 
+									// [[${Objekat}]] je nacin na koji u javascript proslijedjujemo model atribut
+									url = url + vin;
+									document.location = url;
+								}
+							},
+							danger : {
+								label : "Ne, vrati me nazad",
+								className : "btn-danger",
+								callback : function() {
+									var url = /*[[ @{'/admin/vozila/'}]]*/"genericUrl";
+									document.location = url;
+								}
+							}
+						}
+					});
+		});
+	</script>
+</body>
+</html>
