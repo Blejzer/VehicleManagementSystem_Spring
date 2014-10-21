@@ -26,6 +26,9 @@ public interface KorisnikVoziloRepository extends JpaRepository<KorisnikVozilo, 
 	@Query("select c from Vozilo c where c.vin not in (select c.vozilo.vin from KorisnikVozilo c)")
 	List<Vozilo> findAllUnassignedV();
 	
+	@Query("SELECT c FROM Vozilo c WHERE c.vin in (SELECT v.vozilo.vin FROM KorisnikVozilo v WHERE v.vraceno IS null AND v.vozilo.vin IN (SELECT DISTINCT c.vozilo.vin FROM KorisnikVozilo c))")
+	List<Vozilo> findAllAssignedV();
+	
 	List<KorisnikVozilo> findAllByVozilo_VinOrderByVracenoDesc(String vin);
 	
 	List<KorisnikVozilo> findAllByKorisnik_Id(Long id);

@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ba.fit.vms.pojo.Registracija;
-import ba.fit.vms.pojo.Servis;
+import ba.fit.vms.pojo.StariServis;
 import ba.fit.vms.pojo.Vozilo;
 import ba.fit.vms.repository.DioRepository;
 import ba.fit.vms.repository.RegistracijaRepository;
-import ba.fit.vms.repository.ServisRepository;
+import ba.fit.vms.repository.StariServisRepository;
 import ba.fit.vms.repository.VoziloRepository;
 import ba.fit.vms.repository.VrstaServisaRepository;
 import ba.fit.vms.util.ServisPretraga;
 
 
-public class ServisController {
+public class StariServisController {
 	
 	@Autowired
-	private ServisRepository servisRepository;
+	private StariServisRepository stariServisRepository;
 	
 	@Autowired
 	private VoziloRepository voziloRepository;
@@ -62,7 +62,7 @@ public class ServisController {
 		}
 		Vozilo v = voziloRepository.findOne(vin);
 		Registracija r = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
-		Servis s = new Servis();
+		StariServis s = new StariServis();
 		s.setVozilo(v);
 		map.addAttribute("rAtribut", r);
 		map.addAttribute("sAtribut", s);
@@ -75,25 +75,25 @@ public class ServisController {
 	
 	/**
 	 * Snimanje novog servisa
-	 * @param servis
+	 * @param stariServis
 	 * @param rezultat
 	 * @param map
 	 * @return
 	 */
 	@RequestMapping(value="/admin/servis/novi", method=RequestMethod.POST)
-	public String postNoviServis(@ModelAttribute("sAtribut") @Valid Servis servis, BindingResult rezultat, ModelMap map){
+	public String postNoviServis(@ModelAttribute("sAtribut") @Valid StariServis stariServis, BindingResult rezultat, ModelMap map){
 		if(false){ //servis.getKilometraza().getKilometraza()==null
 			rezultat.rejectValue("kilometraza.kilometraza", "kilometraza");
 		}
 		if(rezultat.hasErrors()){
-			map.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(servis.getVozilo().getVin()));
+			map.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(stariServis.getVozilo().getVin()));
 			map.addAttribute("dAtribut", dioRepository.findAll());
 			map.addAttribute("vAtribut", vrstaServisaRepository.findAll());
 			return "admin/servis/servis/novi";
 		}
 		
-		servisRepository.save(servis);
-		return "redirect:/admin/servis/?vin="+servis.getVozilo().getVin();
+		stariServisRepository.save(stariServis);
+		return "redirect:/admin/servis/?vin="+stariServis.getVozilo().getVin();
 	}
 	
 	@RequestMapping(value="/admin/servis/izmjena", method = RequestMethod.GET)
@@ -101,7 +101,7 @@ public class ServisController {
 		if(id==null){
 			return "redirect:/admin/vozila/";
 		}
-		Servis s = servisRepository.findOne(id);
+		StariServis s = stariServisRepository.findOne(id);
 		
 		model.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(s.getVozilo().getVin()));
 		model.addAttribute("dAtribut", dioRepository.findAll());
@@ -113,20 +113,20 @@ public class ServisController {
 	}
 	
 	@RequestMapping(value="/admin/servis/izmjena", method=RequestMethod.POST)
-	public String postIzmjenaServis(@ModelAttribute("sAtribut") @Valid Servis servis, BindingResult rezultat, ModelMap map){
+	public String postIzmjenaServis(@ModelAttribute("sAtribut") @Valid StariServis stariServis, BindingResult rezultat, ModelMap map){
 		if(false){ //servis.getKilometraza().getKilometraza()==null
 			rezultat.rejectValue("kilometraza.kilometraza", "kilometraza");
 		}
 		if(rezultat.hasErrors()){
-			map.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(servis.getVozilo().getVin()));
+			map.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(stariServis.getVozilo().getVin()));
 			map.addAttribute("dAtribut", dioRepository.findAll());
 			map.addAttribute("vAtribut", vrstaServisaRepository.findAll());
 			System.out.println(rezultat.toString());
 			return "admin/servis/servis/izmjena";
 		}
 		
-		servisRepository.save(servis);
-		return "redirect:/admin/servis/?vin="+servis.getVozilo().getVin();
+		stariServisRepository.save(stariServis);
+		return "redirect:/admin/servis/?vin="+stariServis.getVozilo().getVin();
 	}
 	
 	
@@ -147,7 +147,7 @@ public class ServisController {
 		int pageSize = 4;
 
 		Pageable pageable = new PageRequest(page, pageSize);
-		model.addAttribute("pager", servisRepository.findAllByVozilo_Vin(vin, pageable));
+		model.addAttribute("pager", stariServisRepository.findAllByVozilo_Vin(vin, pageable));
 		model.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
 		return "/admin/servis/servis/lista";
 	}
@@ -178,10 +178,10 @@ public class ServisController {
 		searchnew.setMjesec(search.getMjesec());
 		searchnew.setGodina(search.getGodina());
 		model.addAttribute("searchAttribute", searchnew);
-		LinkedHashMap<Registracija, List<Servis>> report = new LinkedHashMap<Registracija, List<Servis>>();
+		LinkedHashMap<Registracija, List<StariServis>> report = new LinkedHashMap<Registracija, List<StariServis>>();
 
 		if (!search.getVin().isEmpty()) {
-			List<Servis> servisi = new ArrayList<Servis>(servisRepository.getCustomServis(searchnew.getVin(), Integer.parseInt(searchnew.getGodina().toString()), Integer.parseInt(searchnew.getMjesec().toString())));
+			List<StariServis> servisi = new ArrayList<StariServis>(stariServisRepository.getCustomServis(searchnew.getVin(), Integer.parseInt(searchnew.getGodina().toString()), Integer.parseInt(searchnew.getMjesec().toString())));
 			if (!servisi.isEmpty()) {
 				report.put(registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(searchnew.getVin()), servisi);
 			} else {
@@ -189,7 +189,7 @@ public class ServisController {
 			}
 		} else {
 			for (Registracija registracija : searchnew.getRegistracije()) {
-				List<Servis> servisi = new ArrayList<Servis>(servisRepository.getCustomServis(registracija.getVozilo().getVin(), Integer.parseInt(searchnew.getGodina().toString()), Integer.parseInt(searchnew.getMjesec().toString())));
+				List<StariServis> servisi = new ArrayList<StariServis>(stariServisRepository.getCustomServis(registracija.getVozilo().getVin(), Integer.parseInt(searchnew.getGodina().toString()), Integer.parseInt(searchnew.getMjesec().toString())));
 				if (!servisi.isEmpty()) {
 					report.put(registracija, servisi);
 				} else {

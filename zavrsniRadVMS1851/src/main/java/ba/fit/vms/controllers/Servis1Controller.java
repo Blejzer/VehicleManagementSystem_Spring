@@ -1,7 +1,11 @@
 package ba.fit.vms.controllers;
 
-import javax.persistence.NoResultException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +20,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ba.fit.vms.pojo.KorisnikVozilo;
-import ba.fit.vms.pojo.LokacijaKilometraza;
 import ba.fit.vms.pojo.Registracija;
-import ba.fit.vms.pojo.Servis;
 import ba.fit.vms.pojo.Servis1;
 import ba.fit.vms.pojo.Vozilo;
 import ba.fit.vms.repository.DioRepository;
 import ba.fit.vms.repository.KorisnikVoziloRepository;
-import ba.fit.vms.repository.LokacijaKilometrazaRepository;
 import ba.fit.vms.repository.LokacijaRepository;
 import ba.fit.vms.repository.RegistracijaRepository;
 import ba.fit.vms.repository.Servis1Repository;
 import ba.fit.vms.repository.VoziloRepository;
 import ba.fit.vms.repository.VrstaServisaRepository;
+import ba.fit.vms.util.ServisPretraga;
 
 @Controller
 public class Servis1Controller {
@@ -55,8 +56,6 @@ public class Servis1Controller {
 	@Autowired
 	private LokacijaRepository lokacijaRepository;
 	
-	@Autowired
-	private LokacijaKilometrazaRepository lkRepository;
 	
 	
 	/**
@@ -71,12 +70,6 @@ public class Servis1Controller {
 			return "redirect:/admin/vozila/";
 		}
 		Vozilo v = voziloRepository.findOne(vin);
-		KorisnikVozilo kv = new KorisnikVozilo();
-		try {
-			kv = kvRepository.findByVozilo_VinAndVracenoNull(vin);
-		} catch (NoResultException e) {
-			System.out.println("Vozilo nije dodijeljeno");
-		}
 		
 		Registracija r = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
 		Servis1 s = new Servis1();
@@ -99,17 +92,17 @@ public class Servis1Controller {
 	 */
 	@RequestMapping(value="/admin/servis/novi", method=RequestMethod.POST)
 	public String postNoviServis(@ModelAttribute("sAtribut") @Valid Servis1 servis, BindingResult rezultat, ModelMap map){
-		if(servis.getLokacijaKilometraza().getKilometraza()==null){ 
-			rezultat.rejectValue("kilometraza.kilometraza", "kilometraza");
+		if(servis.getLokacijaKilometraza().getKilometraza()==null || servis.getLokacijaKilometraza().getKilometraza().toString().isEmpty()){ 
+			rezultat.rejectValue("lokacijaKilometraza.kilometraza", "kilometraza");
 		}
 		if(rezultat.hasErrors()){
 			map.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(servis.getVozilo().getVin()));
 			map.addAttribute("dAtribut", dioRepository.findAll());
 			map.addAttribute("lAtribut", lokacijaRepository.findAll());
 			map.addAttribute("vAtribut", vrstaServisaRepository.findAll());
-			System.out.println("greska");
 			return "admin/servis/servis/novi";
 		}
+		servis.getLokacijaKilometraza().setDatum(servis.getDatum());
 		servisRepository.save(servis);
 		return "redirect:/admin/servis/?vin="+servis.getVozilo().getVin();
 	}
@@ -189,6 +182,66 @@ public class Servis1Controller {
 		model.addAttribute("pager", servisRepository.findAllByVozilo_Vin(vin, pageable));
 		model.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
 		return "/admin/servis/servis/lista";
+	}
+	
+	
+	/**
+	 * Pretraga servisa po vozilu, mjesecu, godini
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/servis/pretraga", method = RequestMethod.GET)
+	public String listCustomServis(HttpServletRequest request, HttpServletResponse response, Model model){
+		ServisPretraga search = new ServisPretraga(registracijaRepository);
+		Boolean first = true;
+		model.addAttribute("searchAttribute", search);
+		model.addAttribute("first", first);
+		return "/admin/servis/servis/listaSvih";
+	}
+	
+	
+	/**
+	 * Rezultat pretrage u vidu liste servisa po vozilima
+	 * @param search
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/servis/pretraga", method = RequestMethod.POST)
+	public String findCustomServis(	@ModelAttribute("searchAttribute") ServisPretraga search,
+			Model model){
+
+		ServisPretraga searchnew = new ServisPretraga(registracijaRepository);
+		searchnew.setVin(search.getVin());
+		searchnew.setMjesec(search.getMjesec());
+		searchnew.setGodina(search.getGodina());
+		model.addAttribute("searchAttribute", searchnew);
+		LinkedHashMap<Registracija, List<Servis1>> report = new LinkedHashMap<Registracija, List<Servis1>>();
+
+		if (!search.getVin().isEmpty()) {
+			List<Servis1> servisi = new ArrayList<Servis1>(servisRepository.getCustomServis(searchnew.getVin(), Integer.parseInt(searchnew.getGodina().toString()), Integer.parseInt(searchnew.getMjesec().toString())));
+			if (!servisi.isEmpty()) {
+				report.put(registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(searchnew.getVin()), servisi);
+			} else {
+				model.addAttribute("vehicleVin", search.getVin());
+			}
+		} else {
+			for (Registracija registracija : searchnew.getRegistracije()) {
+				List<Servis1> servisi = new ArrayList<Servis1>(servisRepository.getCustomServis(registracija.getVozilo().getVin(), Integer.parseInt(searchnew.getGodina().toString()), Integer.parseInt(searchnew.getMjesec().toString())));
+				if (!servisi.isEmpty()) {
+					report.put(registracija, servisi);
+				} else {
+					//report.put(vehicle.getVin(),null);
+				}
+			}
+			//reporti.put(LP, report);
+		}
+
+		model.addAttribute("report", report);
+		//model.addAttribute("reporti", reporti);
+
+		return "/admin/servis/servis/listaSvih";
 	}
 
 }
