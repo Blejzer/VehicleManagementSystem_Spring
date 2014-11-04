@@ -1,8 +1,11 @@
 Za uraditi:
-
-- unosenje kilometraze za vozilo (samo kilometraza)
-- kilometraza izvjestaj
-- kilometraza mjesecni pregled
+- Servis srediti dodavanje kilometraze.(ne radi persist!!!)
 - Tiketi
 - dodati triger na bazu i pozivanje skripti na bazi
-- 
+- Frontpage
+  - kilometraza
+  - servis
+  - zaduzenja
+  - tiketi
+  - registracije
+- Servis pretaga bez datuma

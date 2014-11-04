@@ -16,15 +16,6 @@
 			</div>
 
 			<div class="row">
-				<div class="form-group">
-					<label for="registrovano" class="col-lg-2 control-label">Da
-						li je vozilo registrovano?: </label>
-					<div class="col-lg-10">
-						<input type="radio" name="registrovano" value="${registrovano}">Da
-						li je vozilo registrovano?:</input>
-					</div>
-				</div>
-
 				<form action="#" th:object="${voziloAtribut}"
 					th:action="@{/admin/vozila/novi}" method="post"
 					class="form-horizontal well">

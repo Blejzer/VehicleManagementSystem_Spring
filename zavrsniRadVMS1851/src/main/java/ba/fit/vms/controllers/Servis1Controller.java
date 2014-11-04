@@ -20,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ba.fit.vms.pojo.KorisnikVozilo;
+import ba.fit.vms.pojo.LokacijaKilometraza;
 import ba.fit.vms.pojo.Registracija;
 import ba.fit.vms.pojo.Servis1;
 import ba.fit.vms.pojo.Vozilo;
 import ba.fit.vms.repository.DioRepository;
 import ba.fit.vms.repository.KorisnikVoziloRepository;
+import ba.fit.vms.repository.LokacijaKilometrazaRepository;
 import ba.fit.vms.repository.LokacijaRepository;
 import ba.fit.vms.repository.RegistracijaRepository;
 import ba.fit.vms.repository.Servis1Repository;
@@ -56,6 +59,9 @@ public class Servis1Controller {
 	@Autowired
 	private LokacijaRepository lokacijaRepository;
 	
+	@Autowired
+	private LokacijaKilometrazaRepository lkRepository;
+	
 	
 	
 	/**
@@ -72,8 +78,12 @@ public class Servis1Controller {
 		Vozilo v = voziloRepository.findOne(vin);
 		
 		Registracija r = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
+		KorisnikVozilo kv = kvRepository.findByVozilo_VinAndVracenoNull(vin);
 		Servis1 s = new Servis1();
 		s.setVozilo(v);
+		LokacijaKilometraza nova = new LokacijaKilometraza();
+		nova.setKorisnikVozilo(kv);
+		s.setLokacijaKilometraza(nova);
 		map.addAttribute("rAtribut", r);
 		map.addAttribute("sAtribut", s);
 		map.addAttribute("lAtribut", lokacijaRepository.findAll());
@@ -103,6 +113,7 @@ public class Servis1Controller {
 			return "admin/servis/servis/novi";
 		}
 		servis.getLokacijaKilometraza().setDatum(servis.getDatum());
+		servis.getLokacijaKilometraza().setKorisnikVozilo(kvRepository.findOne(servis.getLokacijaKilometraza().getKorisnikVozilo().getId()));
 		servisRepository.save(servis);
 		return "redirect:/admin/servis/?vin="+servis.getVozilo().getVin();
 	}
@@ -150,8 +161,25 @@ public class Servis1Controller {
 			System.out.println(rezultat.toString());
 			return "admin/servis/servis/izmjena";
 		}
-		
-		servisRepository.save(servis);
+		Servis1 s = servisRepository.findOne(servis.getId());
+		s.setDatum(servis.getDatum());
+		System.out.println("dodao: datum");
+		s.setDjelovi(servis.getDjelovi());
+		System.out.println("dodao: dijelove");
+		s.setId(servis.getId());
+		System.out.println("dodao: id");
+		s.setVozilo(servis.getVozilo());
+		System.out.println("dodao: vozilo");
+		s.setLokacijaKilometraza(servis.getLokacijaKilometraza());
+		s.getLokacijaKilometraza().setKilometraza(servis.getLokacijaKilometraza().getKilometraza());
+		s.getLokacijaKilometraza().setDatum(s.getDatum());
+		s.getLokacijaKilometraza().setKorisnikVozilo(kvRepository.findOne(servis.getLokacijaKilometraza().getKorisnikVozilo().getId()));
+		System.out.println("dodao: lokacijaKilometraza");
+		s.setVrstaServisa(servis.getVrstaServisa());
+		System.out.println("dodao: vrstu servisa");
+		s.setZavrsen(servis.getZavrsen());
+		System.out.println("dodao: zavrsen");
+		servisRepository.saveAndFlush(s);
 		return "redirect:/admin/servis/?vin="+servis.getVozilo().getVin();
 	}
 	
@@ -179,7 +207,7 @@ public class Servis1Controller {
 		int pageSize = 4;
 
 		Pageable pageable = new PageRequest(page, pageSize);
-		model.addAttribute("pager", servisRepository.findAllByVozilo_Vin(vin, pageable));
+		model.addAttribute("pager", servisRepository.findAllByVozilo_VinOrderByDatumDesc(vin, pageable));
 		model.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
 		return "/admin/servis/servis/lista";
 	}

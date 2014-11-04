@@ -22,6 +22,8 @@
 		
 		<input type="hidden" th:field="*{vozilo.vin}" class="form-control input-xlarge" />
 		<input type="hidden" th:field="*{id}" class="form-control input-xlarge" />
+		<input type="hidden" th:field="*{lokacijaKilometraza.id}" />
+		<input type="hidden" th:field="*{lokacijaKilometraza.korisnikVozilo.id}"/>
           <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
           <label for="vozilo.vin" class="col-lg-3 control-label">Registarske oznake: </label>
             <div class="col-lg-9">

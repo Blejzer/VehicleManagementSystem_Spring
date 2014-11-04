@@ -27,13 +27,14 @@
 </script>
 
   <div class="page-header">
-    <h1>Registracije za vozilo: <span th:text="${vozilo.vin}+${vozilo.marka}+${vozilo.model}"></span></h1>
+    <h1>Registracije za vozilo: <span th:text="${vozilo.vin}+' '+${vozilo.marka}+' '+${vozilo.model}"></span></h1>
 	<a class="btn btn-primary btn-large right" th:href="@{/admin/registracija/novi(vin=${vozilo.vin})}">Nova registracija</a>
   </div>
   
   <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
+        <th th:text="#{registrationList.tablica}">Tablice</th>
         <th th:text="#{registrationList.regOd}">AAAAAAA</th>
         <th th:text="#{registrationList.regDo}">License Plates</th>
         <th th:text="#{registrationList.osigOd}">Make</th>
@@ -44,6 +45,7 @@
     </thead>
     <tbody>
 	    <tr th:each="registracija : ${pager}">
+	    	<td th:text="*{registracija.tablica}">Registarska oznaka</td>
 	    	<td th:text="${#dates.format(registracija.regOd, 'dd/MM/yyyy')}">WVWZZZ857E58T7R</td>
 	    	<td th:text="${#dates.format(registracija.regDo, 'dd/MM/yyyy')}" th:class="${#dates.year(#dates.createNow()) ge #dates.year(registracija.regDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registracija.regDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registracija.regDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registracija.regDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registracija.regDo)} ? 'danger' : 'warning')))  : ''" ></td>
 	    	<td th:text="${#dates.format(registracija.osigOd, 'dd/MM/yyyy')}">Ford</td>

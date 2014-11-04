@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Services</title>
+</head>
+<body>
+
+	<div th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+
+	<div class="container">
+
+		<div th:include="dodaci/filters :: kiloPregled"></div>
+
+		<section id="tables">
+
+
+			<div th:if="${vehicleVin!=null}" class="page-header">
+				<h1>Services for all vehicles</h1>
+				<a class="btn btn-primary btn-large right"
+					th:href="@{/admin/servis/novi(vin=${vehicleVin})}">Novi
+					Servis</a>
+			</div>
+
+			<div class="alert alert-danger alert-dismissable"
+				th:if="${error != null}">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-hidden="true">&times;</button>
+				<h1>Error</h1>
+				<h4>
+					An unexpected error occurred, <a href="#" class="alert-link">please
+						contact the support team</a>.
+				</h4>
+				<div class="alert alert-warning">
+					<p th:text="${error}">error</p>
+				</div>
+			</div>
+
+			<div th:if="${pregledAtribut}" th:each="kilometraze : ${pregledAtribut}">
+				<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<tr class="success">
+							<th class="text-center h3" colspan="3"><a th:href="@{/admin/kilo/lista(vin=${kilometraze.key.vozilo.vin})}"><span  th:text="${kilometraze.key.tablica}"></span></a></th>
+							<th class="text-center h3" colspan="2"><a class="btn btn-success btn-sm btn-large right" th:href="@{/admin/kilo/nova(vin=${kilometraze.key.vozilo.vin})}">Novi Servis</a></th>
+						</tr>
+						<tr>
+							<th class="text-center h4">Datum</th>
+							<th class="text-center h4">Kilometraza</th>
+							<th class="text-center h4">Lokacija</th>
+							<th class="text-center h4">Radnje</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="kilometraza : ${kilometraze.value}">
+							<td class="col-md-3" th:text="${#calendars.format(kilometraza.datum,'dd MMMM yyyy')}">date</td>
+							<td class="col-md-3" th:text="${kilometraza.kilometraza}">Type</td>
+							<td class="col-md-2" th:text="${kilometraza.lokacija.naziv}">Type</td>
+							<td class="col-md-2 center"><a class="btn btn-info btn-sm" th:href="@{/admin/kilo/izmjena(id=${kilometraza.id})}"><i class="glyphicon glyphicon-list-alt"></i> 
+								<span th:text="#{rad.prk}">Show action</span></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div th:if="${pregledAtribut !=null}">
+				<div th:if="${pregledAtribut.isEmpty()}">
+
+					<span>
+						<h3>No Services recorded for selected search</h3>
+					</span>
+
+				</div>
+			</div>
+
+
+
+		</section>
+
+		<div th:include="dodaci/sabloni :: footerFragment"></div>
+	</div>
+	<!-- /.container -->
+	<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>

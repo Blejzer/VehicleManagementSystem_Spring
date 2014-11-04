@@ -2,6 +2,7 @@ package ba.fit.vms.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -44,7 +45,7 @@ public class LokacijaKilometraza implements Serializable{
 	private KorisnikVozilo korisnikVozilo;
 	
 	@Column(name = "datum")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date datum;
 
 	public Long getId() {
@@ -86,6 +87,21 @@ public class LokacijaKilometraza implements Serializable{
 	public void setDatum(Date datum) {
 		this.datum = datum;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		return false;
+		}
+		if (getClass() != obj.getClass()) {
+		return false;
+		}
+		final LokacijaKilometraza other = (LokacijaKilometraza) obj;
+		if (!Objects.equals(this.id, other.id)) {
+		return false;
+		}
+		return true;
+		}
 	
 	
 

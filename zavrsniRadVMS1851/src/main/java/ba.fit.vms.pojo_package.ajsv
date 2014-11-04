@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)--><ajsv>
+    <diagram creationDate="2014-Oct-21 10:08" filterScript="" licenseGrade="evaluation" licenseeName="anon" licenseeOrganization="unknown" version="1.7.17.v20140508-2136">
+        <class className="ba.fit.vms.pojo.KorisnikVozilo" project="zavrsniRadVMS1851" xLocation="1584" yLocation="391"/>
+        <class className="ba.fit.vms.pojo.Dio" project="zavrsniRadVMS1851" xLocation="586" yLocation="27"/>
+        <class className="ba.fit.vms.pojo.VrstaServisa" project="zavrsniRadVMS1851" xLocation="522" yLocation="1117"/>
+        <class className="ba.fit.vms.pojo.Vozilo" project="zavrsniRadVMS1851" xLocation="1280" yLocation="1094"/>
+        <class className="ba.fit.vms.pojo.Tiket" project="zavrsniRadVMS1851" xLocation="1665" yLocation="1089"/>
+        <class className="ba.fit.vms.pojo.Korisnik" project="zavrsniRadVMS1851" xLocation="1978" yLocation="540"/>
+        <class className="ba.fit.vms.pojo.LokacijaKilometraza" project="zavrsniRadVMS1851" xLocation="1124" yLocation="27"/>
+        <class className="ba.fit.vms.pojo.Registracija" project="zavrsniRadVMS1851" xLocation="874" yLocation="1017"/>
+        <class className="ba.fit.vms.pojo.Lokacija" project="zavrsniRadVMS1851" xLocation="1981" yLocation="34"/>
+        <class className="ba.fit.vms.pojo.Servis1" project="zavrsniRadVMS1851" xLocation="516" yLocation="414"/>
+    </diagram>
+</ajsv>

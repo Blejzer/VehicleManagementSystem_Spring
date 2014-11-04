@@ -2,6 +2,7 @@ package ba.fit.vms.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -93,5 +94,21 @@ public class KorisnikVozilo implements Serializable{
 	public void setVraceno(Date vraceno) {
 		this.vraceno = vraceno;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		return false;
+		}
+		if (getClass() != obj.getClass()) {
+		return false;
+		}
+		final KorisnikVozilo other = (KorisnikVozilo) obj;
+		if (!Objects.equals(this.id, other.id)) {
+		return false;
+		}
+		return true;
+		}
+	
 
 }
