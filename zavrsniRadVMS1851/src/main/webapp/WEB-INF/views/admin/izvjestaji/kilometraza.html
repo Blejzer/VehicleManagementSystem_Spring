@@ -51,9 +51,9 @@
 							<td class="col-md-2 center"><a class="btn btn-info btn-sm" th:href="@{/admin/kilo/izmjena(id=${kilo.id})}"><i class="glyphicon glyphicon-list-alt"></i> 
 								<span th:text="#{rad.prk}">Show action</span></a></td>
 						</tr>
-						<tr>
-						<td class="col-md-3">VOZILO JE PRESLO UKUPNO: </td>
-								<td class="col-md-3" th:text="(${total[0]}-${zAtribut[status.index].kilometraza})">xxx</td>
+						<tr th:class="'info'">
+						<td class="col-md-3"><strong>VOZILO JE PRESLO UKUPNO: </strong></td>
+								<td class="col-md-3"><strong th:text="(${total[0]}-${zAtribut[status.index].kilometraza})"></strong></td>
 							<td class="col-md-2" ></td>
 							<td class="col-md-2 center"></td>
 								</tr>

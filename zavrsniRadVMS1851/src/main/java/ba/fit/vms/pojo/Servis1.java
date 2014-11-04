@@ -58,7 +58,7 @@ public class Servis1 implements Serializable{
 	@NotNull
 	private VrstaServisa vrstaServisa;
 	
-	@ManyToOne( cascade = {CascadeType.PERSIST}, fetch=FetchType.EAGER )
+	@ManyToOne( cascade = {CascadeType.ALL}, fetch=FetchType.EAGER )
 	@JoinColumn(nullable=false)
 	@NotNull
 	private LokacijaKilometraza lokacijaKilometraza;

@@ -1,6 +1,6 @@
 Za uraditi:
-- Servis srediti dodavanje kilometraze.(ne radi persist!!!)
-- Tiketi
+- Tiketi 
+  - dodati vozilo
 - dodati triger na bazu i pozivanje skripti na bazi
 - Frontpage
   - kilometraza

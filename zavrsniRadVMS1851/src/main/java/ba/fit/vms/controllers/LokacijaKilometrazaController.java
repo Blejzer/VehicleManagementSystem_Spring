@@ -82,7 +82,7 @@ public class LokacijaKilometrazaController {
 			return "/admin/vozila/kilometraza/novi";
 		}
 		lkRepository.save(lk);
-		Vozilo v = voziloRepository.findOne(kvRepository.findOne(lk.getKorisnikVozilo().getId()).getVozilo().getVin());
+		Vozilo v = voziloRepository.findOne(lk.getKorisnikVozilo().getVozilo().getVin());
 		return "redirect:/admin/kilo/lista?vin="+v.getVin();
 	}
 	
