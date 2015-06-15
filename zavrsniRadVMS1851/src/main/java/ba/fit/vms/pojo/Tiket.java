@@ -3,6 +3,7 @@ package ba.fit.vms.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -49,9 +51,17 @@ public class Tiket implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date rijesenDatum;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "korisnik_id", nullable = true)
+	@ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	@JoinColumn(name = "korisnik_id", nullable = false)
 	private Korisnik korisnik;
+	
+	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
+	@JoinColumn(name="vozilo_vin", nullable=false)
+	private Vozilo vozilo;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="tiket_id", nullable=true)
+	private Tiket prethodni;
 
 	
 	//***********************************************
@@ -113,7 +123,23 @@ public class Tiket implements Serializable{
 	public void setKorisnik(Korisnik korisnik) {
 		this.korisnik = korisnik;
 	}
-	
+
+	public Vozilo getVozilo() {
+		return vozilo;
+	}
+
+	public void setVozilo(Vozilo vozilo) {
+		this.vozilo = vozilo;
+	}
+
+	public Tiket getPrethodni() {
+		return prethodni;
+	}
+
+	public void setPrethodni(Tiket prethodni) {
+		this.prethodni = prethodni;
+	}
+
 	
 
 }

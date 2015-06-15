@@ -1,6 +1,7 @@
 Za uraditi:
-- Tiketi 
-  - dodati vozilo
+- Tiketi
+  - srediti vezivanje tiketa i odgovore na vezane tikete
+  - dodati view-ove za novi, pregled pretragu 
 - dodati triger na bazu i pozivanje skripti na bazi
 - Frontpage
   - kilometraza
@@ -9,3 +10,8 @@ Za uraditi:
   - tiketi
   - registracije
 - Servis pretaga bez datuma
+- Korisnici
+  - filter u listi korisnika ne radi
+- Kilometraza
+  - Detaljan pregled na kolimetraza/Pregled/detaljno / 404 returned for /vms/admin/kilo/izmjena with message Not Found
+  - Pretraga po mjesecima: javax.persistence.NonUniqueResultException: result returns more than one elements

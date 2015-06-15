@@ -1,12 +1,21 @@
 /* CSS code from Bootply.com editor
 -------------------------------------------------- */
+  .tiket {
+  table-layout:fixed;
+}
+
+.tiket td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 @media screen and (min-width: 992px) {
   .the-icons li {
     width: 12.5%;
   }
 }
-  
+
 .the-buttons > li {
   float: left;
   height: 80px;

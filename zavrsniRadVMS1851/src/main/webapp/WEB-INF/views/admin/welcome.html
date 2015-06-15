@@ -18,7 +18,7 @@
 
 		<div class="featurette">
 			<h2 class="featurette-heading">
-				Welcome <span th:text="${user}">user</span>
+				Dobrodošli <span th:text="${user}"></span>
 			</h2>
 
 			<p class="lead">In simple terms, a responsive web design figures
@@ -38,67 +38,123 @@
 			<div class="col-md-12 text-center"
 				sec:authorize="hasRole('ROLE_ADMIN')">
 
-				<h3 id="tabs">Summary</h3>
+				<h3 id="tabs">Sažetak</h3>
 				<ul class="nav nav-tabs">
 					<li class="active disabled"><a href="#TEST" data-toggle="tab"><i class="glyphicon glyphicon-arrow-right"></i></a></li>
-					<li><a href="#A" data-toggle="tab">Assigned vehicles</a></li>
-					<li><a href="#B" data-toggle="tab">Registration</a></li>
-					<li><a href="#C" data-toggle="tab"><span th:text="${#dates.monthName(#dates.createNow())} + ' mileage report'"></span></a></li>
-					<li><a href="#D" data-toggle="tab">Service</a></li>
+					<li><a href="#A" data-toggle="tab"><span th:class="${boolAtributi[0]} ? text-danger:text-success">Dodijeljena vozila</span></a></li>
+					<li><a href="#X" data-toggle="tab"><span th:class="${boolAtributi[0]} ? text-danger:text-success">Slobodna vozila</span></a></li>
+					<li><a href="#B" data-toggle="tab"><span th:class="${boolAtributi[1]} ? text-danger:text-success">Registracije</span></a></li>
+					<li><a href="#C" data-toggle="tab"><span th:class="${boolAtributi[2]} ? text-danger:text-success" th:text="${#dates.monthName(#dates.createNow())} + ' mileage report'"></span></a></li>
+					<li><a href="#D" data-toggle="tab"><span th:class="${boolAtributi[3]} ? text-danger:text-success">Servisi</span></a></li>
 <!-- 					<li><a href="#E" data-toggle="tab">Support</a></li> -->
 				</ul>
 				<div class="tabbable">
 					<div class="tab-content">
 						<div class="tab-pane active" id="TEST">
-							<h1 class="center">Select the tab to open desired summary!</h1>
+							<h1 class="center">Odaberite tab da otvorite željeni sažetak!</h1>
 						</div>
 						<div class="tab-pane" id="A">
-							<table th:if="${not #lists.isEmpty(mileageAttribute)}"
-								class="table table-bordered table-striped table-hover">
-								<thead>
-									<tr class="success">
-										<th th:text="#{registrationList.vehicle}">Vehicle tag</th>
-										<th th:text="#{consultantVehicle.consultant}">Consultant</th>
-										<th th:text="#{mileageList.mileage}">Mileage</th>
+						
+							<div th:if="${dodAtribut}" th:each="dodijeljeni : ${dodAtribut}">
+								<table class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr class="success">
+											<th class="col-md-3 text-center h3" colspan="3" th:text="${dodijeljeni.key.tablica}">Vozilo</th>
+										</tr>
+										<tr>
+											<th class="text-center h4">Korisnik</th>
+											<th class="text-center h4">Datum</th>
+											<th class="text-center h4">Radnje</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="dod : ${dodijeljeni.value}">
+											<td class="col-md-3" th:text="${dod.korisnik.ime}+' '+${dod.korisnik.prezime}" >
+												
+											</td>
+											<td class="col-md-3"
+												th:text="${#calendars.format(dod.dodijeljeno,'dd MMMM yyyy')}">date</td>
+											
+											<td class="col-md-3"><a class="btn btn-info btn-sm"
+												th:href="@{/admin/dodjeljivanje/(vin=${dod.vozilo.vin})}"><i
+													class="glyphicon glyphicon-list-alt"></i> <span
+													th:text="#{rad.prk}">Show action</span></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div th:if="${report !=null}">
+								<div th:if="${report.isEmpty()}">
 
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:if="${mileage.vehicle}"
-										th:each="mileage : ${mileageAttribute}">
-										<td th:text="${mileage.vehicle.licensePlate}">License
-											Plate</td>
-										<td
-											th:text="${mileage.consultant.firstName} + ' ' + ${mileage.consultant.lastName}">Consultant
-											Name</td>
-										<td th:text="${mileage.mileage}">Mileage</td>
-									</tr>
-								</tbody>
-							</table>
+									<span>
+										<h3>
+											Nema zabilježenih servisa u ovom mjesecu <span
+												th:text="${#calendars.monthName(#calendars.createToday())}"></span>
+										</h3>
+									</span>
+
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="X">
+						
+							<div th:if="${not #lists.isEmpty(slobAtribut)}">
+								<table class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th class="text-center h4">Tablica</th>
+											<th class="text-center h4">Radnje</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="regi : ${slobAtribut}">
+											<td class="col-md-3" th:text="${regi.tablica}" >
+												
+											</td>
+											
+											<td class="col-md-3"><a class="btn btn-info btn-sm"
+												th:href="@{/admin/dodjeljivanje/(vin=${regi.vozilo.vin})}"><i
+													class="glyphicon glyphicon-list-alt"></i> <span
+													th:text="#{rad.prk}">Show action</span></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div th:if="${slobAtribut !=null}">
+								<div th:if="${slobAtribut.isEmpty()}">
+
+									<span>
+										<h3>
+											Nema slobodnih vozila <span
+												th:text="${#calendars.monthName(#calendars.createToday())}"></span>
+										</h3>
+									</span>
+
+								</div>
+							</div>
 						</div>
 						<div class="tab-pane" id="B">
-							<table th:if="${not #lists.isEmpty(registrationAttribute)}"
+							<table th:if="${not #lists.isEmpty(regAtribut)}"
 								class="table table-bordered table-striped table-hover">
 								<thead>
 									<tr class="success">
-										<th th:text="#{registrationList.vehicle}">Vehicle tag</th>
-										<th th:text="#{registrationList.regDue}">Reg due</th>
-										<th th:text="#{registrationList.insDue}">Ins due</th>
-										<th th:text="#{rad.na}">Available actions</th>
+										<th th:text="#{registrationList.tablica}">Registarske oznake</th>
+										<th th:text="#{registrationList.regDo}">Reg do</th>
+										<th th:text="#{registrationList.osigDo}">Osig do</th>
+										<th th:text="#{rad.na}">Dostupne radnje</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:if="${registration}"
-										th:each="registration : ${registrationAttribute}">
-										<td th:text="${registration.vehicle.licensePlate}">License
-											Plate</td>
+										th:each="registration : ${regAtribut}">
+										<td th:text="${registration.tablica}">Registarske oznake</td>
 										<td
-											th:text="${#dates.format(registration.regDue, 'dd/MM/yyyy')}"
-											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.regDue)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.regDue)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDue)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.regDue)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDue)} ? 'danger' : 'warning')))  : ''"></td>
+											th:text="${#dates.format(registration.regDo, 'dd/MM/yyyy')}"
+											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.regDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.regDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.regDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDo)} ? 'danger' : 'warning')))  : ''"></td>
 										<td
-											th:text="${#dates.format(registration.insDue, 'dd/MM/yyyy')}"
-											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.insDue)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.insDue)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.insDue)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.insDue)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.insDue)} ? 'danger' : 'warning')))  : ''"></td>
-										<td><a class="btn btn-primary btn-sm" th:href="@{/admin/registrations/list(id=${registration.vehicle.vin})}"><i class="glyphicon glyphicon-edit"></i> <span	th:text="#{rad.izm}">Edit action</span></a></td>
+											th:text="${#dates.format(registration.osigDo, 'dd/MM/yyyy')}"
+											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.osigDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.osigDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.osigDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.osigDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.osigDo)} ? 'danger' : 'warning')))  : ''"></td>
+										<td><a class="btn btn-primary btn-sm" th:href="@{/admin/registracije/(vin=${registration.vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span	th:text="#{rad.izm}">Edit action</span></a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -134,22 +190,21 @@
 								<table class="table table-bordered table-striped table-hover">
 									<thead>
 										<tr class="success">
-											<th class="col-md-6 text-center h3" colspan="2" th:text="${servisi.key.licensePlate}">Vehicle</th>
+											<th class="col-md-6 text-center h3" colspan="2" th:text="${servisi.key.tablica}">Vozilo</th>
 											<th class="col-md-6 text-center h3" colspan="2" ><a
 												class="btn btn-success btn-sm btn-large right"
-												th:href="@{/admin/servisi/addServis(id=${servisi.key.vin})}">Add
-													new Servis</a></th>
+												th:href="@{/admin/servisi/addServis(id=${servisi.key.vozilo.vin})}">Unesi novi servis</a></th>
 										</tr>
 										<tr>
-											<th class="text-center h4">Completed?</th>
-											<th class="text-center h4">Date</th>
-											<th class="text-center h4">Service Type</th>
-											<th class="text-center h4">Actions</th>
+											<th class="text-center h4">Završen?</th>
+											<th class="text-center h4">Datum</th>
+											<th class="text-center h4">Vrsta servisa</th>
+											<th class="text-center h4">Radnje</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr th:each="servis : ${servisi.value}">
-											<td class="col-md-3" th:switch="${servis.completed}">
+											<td class="col-md-3" th:class="${servis.zavrsen} ? primary:danger" th:switch="${servis.zavrsen}">
 												<p th:case="true">
 													<i class="glyphicon glyphicon-ok"></i>
 												</p>
@@ -158,8 +213,8 @@
 												</p>
 											</td>
 											<td class="col-md-3"
-												th:text="${#calendars.format(servis.serviceDate,'dd MMMM yyyy')}">date</td>
-											<td class="col-md-3" th:text="${servis.serviceType.name}">Type</td>
+												th:text="${#calendars.format(servis.datum,'dd MMMM yyyy')}">date</td>
+											<td class="col-md-3" th:text="${servis.vrstaServisa.naziv}">Type</td>
 											<td class="col-md-3"><a class="btn btn-info btn-sm"
 												th:href="@{/admin/servisi/showServis(id=${servis.id})}"><i
 													class="glyphicon glyphicon-list-alt"></i> <span
@@ -173,7 +228,7 @@
 
 									<span>
 										<h3>
-											No Services recorded in <span
+											Nema zabilježenih servisa u ovom mjesecu <span
 												th:text="${#calendars.monthName(#calendars.createToday())}"></span>
 										</h3>
 									</span>

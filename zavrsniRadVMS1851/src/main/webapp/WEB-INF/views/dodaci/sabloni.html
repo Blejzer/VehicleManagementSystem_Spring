@@ -69,6 +69,14 @@
 									<li><a th:href="@{/admin/vrstaServisa/}">Vrste servisa</a></li>
 								</ul></li>
 							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown">Podrska <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+								<li><a th:href="@{/korisnik/tiketi/lista}">Svi tiketi</a></li>
+									<li><a th:href="@{/korisnik/tiketi/nerijeseni}">Tiketi na cekanju</a></li>
+									<li><a th:href="@{/korisnik/tiketi/rijeseni}">Rijeseni tiketi</a></li>
+								</ul>
+							</li>
 							<ul class="nav navbar-nav navbar-right">
 								<li th:if="${#authorization.expression('!isAuthenticated()')}"><a
 									href="/signin" th:href="@{/signin}">Sign in</a></li>
@@ -105,15 +113,14 @@
 						<ul class="nav navbar-nav">
 							<li class="active"><a th:href="@{/}">Pocetna</a></li>
 							<li th:if="${#authorization.expression('isAuthenticated()')}">
-								<!-- <li><a th:href="@{/vehicle}">Vehicle</a></li>  -->
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
 								data-toggle="dropdown">Podrska <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li><a th:href="@{/support/pending}">Zahtjevi na
-											cekanju</a></li>
-									<li><a th:href="@{/support/solved}">Rijeseni zahtjevi</a></li>
+								<li><a th:href="@{/korisnik/tiketi/lista}">Svi tiketi</a></li>
+									<li><a th:href="@{/korisnik/tiketi/nerijeseni}">Tiketi na cekanju</a></li>
+									<li><a th:href="@{/korisnik/tiketi/rijeseni}">Rijeseni tiketi</a></li>
 									<li class="divider"></li>
-									<li><a th:href="@{/support/add}">Novi zahtjev</a></li>
+									<li th:if="${kvAtribut}"><a th:href="@{/korisnik/tiketi/novi(vin=${kvAtribut.vozilo.vin})}">Novi tiket</a></li>
 								</ul></li>
 							</li>
 							<ul class="nav navbar-nav navbar-right">

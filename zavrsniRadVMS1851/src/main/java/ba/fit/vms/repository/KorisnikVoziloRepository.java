@@ -23,7 +23,7 @@ public interface KorisnikVoziloRepository extends JpaRepository<KorisnikVozilo, 
 	@Query("select c from Korisnik c where c.id not in (select v.korisnik.id from KorisnikVozilo v where v.vraceno is null)")
 	List<Korisnik> findAllUnassigned();
 	
-	@Query("select c from Vozilo c where c.vin not in (select c.vozilo.vin from KorisnikVozilo c)")
+	@Query("select c from Vozilo c where c.vin not in (SELECT c FROM Vozilo c WHERE c.vin in (SELECT v.vozilo.vin FROM KorisnikVozilo v WHERE v.vraceno IS null AND v.vozilo.vin IN (SELECT DISTINCT c.vozilo.vin FROM KorisnikVozilo c)))")
 	List<Vozilo> findAllUnassignedV();
 	
 	@Query("SELECT c FROM Vozilo c WHERE c.vin in (SELECT v.vozilo.vin FROM KorisnikVozilo v WHERE v.vraceno IS null AND v.vozilo.vin IN (SELECT DISTINCT c.vozilo.vin FROM KorisnikVozilo c))")
@@ -33,12 +33,16 @@ public interface KorisnikVoziloRepository extends JpaRepository<KorisnikVozilo, 
 	
 	List<KorisnikVozilo> findAllByKorisnik_Id(Long id);
 	
+	KorisnikVozilo findByKorisnik_EmailAndVracenoNull(String email);
+	
 	KorisnikVozilo findByVozilo_VinAndVracenoNull(String vin);
 	
 	Page<KorisnikVozilo> findAllByVozilo_VinOrderByVracenoDesc(String vin, Pageable pageable);
 	
 	@Query("select a from KorisnikVozilo a where a.vraceno in(select max(b.vraceno) from KorisnikVozilo b)")
 	KorisnikVozilo findLast();	
+	
+	List<KorisnikVozilo> findByVracenoNull();
 	
 
 }

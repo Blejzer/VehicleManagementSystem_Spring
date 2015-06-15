@@ -32,5 +32,7 @@ public interface LokacijaKilometrazaRepository extends
 	LokacijaKilometraza getMinMileagePrevious(String vin, Integer mjesec, Integer godina);
 	
 	Page<LokacijaKilometraza> findByKorisnikVozilo_VoziloVinOrderByKilometrazaDesc(String vin, Pageable pageable);
+	
+	LokacijaKilometraza findMaxKilometrazaByKorisnikVozilo_VoziloVin(String vin);
 
 }
