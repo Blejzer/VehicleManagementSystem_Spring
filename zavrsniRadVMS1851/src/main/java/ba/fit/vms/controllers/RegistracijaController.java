@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -67,7 +68,13 @@ public class RegistracijaController {
 			model.addAttribute("regVehicles", voziloRepository.getNeregistrovanaVozila());
 			logger.debug("vin je null. pokupio neregistrovana vozila");
 		} else{
-			model.addAttribute("registracijaAtribut", new Registracija());
+			Registracija prethodna = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
+			prethodna.setOsigOd(new DateTime(prethodna.getOsigOd()).plusYears(1).toDate());
+			prethodna.setOsigDo(new DateTime(prethodna.getOsigDo()).plusYears(1).toDate());
+			prethodna.setRegOd(new DateTime(prethodna.getRegOd()).plusYears(1).toDate());
+			prethodna.setRegDo(new DateTime(prethodna.getRegDo()).plusYears(1).toDate());
+			
+			model.addAttribute("registracijaAtribut", prethodna);
 			model.addAttribute("regVehicles", voziloRepository.findOne(vin));
 			logger.debug("Imamo vin, pokupio vozilo. " + model.toString());
 		}

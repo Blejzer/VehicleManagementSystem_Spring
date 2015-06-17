@@ -29,7 +29,6 @@ public class LokacijaFormater implements Formatter<Lokacija>{
 		try {
 			Lokacija novaLokacija = new Lokacija();
 			novaLokacija.setId(lokacija.getId());
-			System.out.println("konvertovan dio u string!");
 			return novaLokacija.getId().toString();
 		} catch (NumberFormatException e) {
 			throw new RuntimeException("Nisam uspio konvertovati `" + lokacija + "` u validan id");
@@ -46,7 +45,6 @@ public class LokacijaFormater implements Formatter<Lokacija>{
 			Long id = Long.parseLong(text);
 			Lokacija lokacija = new Lokacija();
 			lokacija.setId(id);
-			System.out.println("konvertovan string u id!");
 			return lokacija;
 		} catch (NumberFormatException e) {
 			throw new RuntimeException("Nisam uspio konvertovati `" + text + "` u validnu Lokaciju");

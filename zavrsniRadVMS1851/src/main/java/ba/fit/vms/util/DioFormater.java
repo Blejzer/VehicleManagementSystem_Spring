@@ -30,7 +30,6 @@ public class DioFormater implements Formatter<Dio>{
 		try {
 			Dio noviDio = new Dio();
 			noviDio.setId(dio.getId());
-			System.out.println("konvertovan dio u string!");
 			return noviDio.getId().toString();
 		} catch (NumberFormatException e) {
 			throw new RuntimeException("Nisam uspio konvertovati `" + dio + "` u validan id");
@@ -47,7 +46,6 @@ public class DioFormater implements Formatter<Dio>{
 			Long id = Long.parseLong(text);
 			Dio dio = new Dio();
 			dio.setId(id);
-			System.out.println("konvertovan string u id!");
 			return dio;
 		} catch (NumberFormatException e) {
 			throw new RuntimeException("Nisam uspio konvertovati `" + text + "` u validan Dio");

@@ -44,12 +44,12 @@
       </tr>
     </thead>
     <tbody>
-	    <tr th:each="registracija : ${pager}">
+	    <tr th:each="registracija : ${pager}" th:class="${registracija.jeAktivno} ? (${#dates.format(#dates.createToday(), 'dd/MMM/yyyy')} ge ${#dates.format(#dates.create(#dates.year(registracija.regDo), #dates.month(registracija.regDo)-1, #dates.day(registracija.regDo)), 'dd/MMM/yyyy')} ? danger  : '') : ''">
 	    	<td th:text="*{registracija.tablica}">Registarska oznaka</td>
-	    	<td th:text="${#dates.format(registracija.regOd, 'dd/MM/yyyy')}">WVWZZZ857E58T7R</td>
-	    	<td th:text="${#dates.format(registracija.regDo, 'dd/MM/yyyy')}" th:class="${#dates.year(#dates.createNow()) ge #dates.year(registracija.regDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registracija.regDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registracija.regDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registracija.regDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registracija.regDo)} ? 'danger' : 'warning')))  : ''" ></td>
-	    	<td th:text="${#dates.format(registracija.osigOd, 'dd/MM/yyyy')}">Ford</td>
-    		<td th:text="${#dates.format(registracija.osigDo, 'dd/MM/yyyy')}" th:class="${#dates.year(#dates.createNow()) ge #dates.year(registracija.osigDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registracija.osigDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registracija.osigDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registracija.osigDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registracija.osigDo)} ? 'danger' : 'warning')))  : ''"></td>
+	    	<td th:text="${#dates.format(registracija.regOd, 'dd-MM-yyyy')}">WVWZZZ857E58T7R</td>
+	    	<td th:text="${#dates.format(registracija.regDo, 'dd-MM-yyyy')}"></td>
+	    	<td th:text="${#dates.format(registracija.osigOd, 'dd-MM-yyyy')}">Ford</td>
+    		<td th:text="${#dates.format(registracija.osigDo, 'dd-MM-yyyy')}"></td>
 			<td th:switch="${registracija.jeAktivno}">
 			    <p th:case="true"><i class="glyphicon glyphicon-ok"></i></p>
     			<p th:case="false"><i class="glyphicon glyphicon-minus"></i></p>

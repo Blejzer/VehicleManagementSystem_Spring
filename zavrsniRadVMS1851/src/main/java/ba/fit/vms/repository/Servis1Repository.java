@@ -1,5 +1,6 @@
 package ba.fit.vms.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -16,5 +17,9 @@ public interface Servis1Repository extends JpaRepository<Servis1, Long> {
 	
 	@Query("select s from Servis1 s where s.vozilo.vin=:vin and YEAR(s.datum)=:year and MONTH(s.datum)=:month order by s.datum DESC")
 	List<Servis1> getCustomServis(@Param("vin") String vin, @Param("year") int year, @Param("month") int month);
+	
+	List<Servis1> findByZavrsenFalseAndVozilo_vinAndDatumLessThanEqualOrderByDatumAsc(String vin, Date datum);
+	
+	List<Servis1> findByVozilo_vinAndDatumBetweenOrderByDatumAsc(String vin, Date datum1, Date datum2);
 
 }

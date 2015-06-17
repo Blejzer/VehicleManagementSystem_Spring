@@ -5,13 +5,46 @@ Za uraditi:
 - dodati triger na bazu i pozivanje skripti na bazi
 - Frontpage
   - kilometraza
-  - servis
-  - zaduzenja
+  - servis - RIJESENO
+  - zaduzenja - RIJESENO
   - tiketi
-  - registracije
+  - registracije - RIJESENO
 - Servis pretaga bez datuma
+  - detaljan pregled iz frontpage-a ne radi
 - Korisnici
   - filter u listi korisnika ne radi
 - Kilometraza
   - Detaljan pregled na kolimetraza/Pregled/detaljno / 404 returned for /vms/admin/kilo/izmjena with message Not Found
   - Pretraga po mjesecima: javax.persistence.NonUniqueResultException: result returns more than one elements
+
+  
+  // KILOMETRAZA TAB
+				Date lastDayOfThisMonth = new DateTime().dayOfMonth().withMaximumValue().toDate();
+				
+				LinkedHashMap<Registracija, List<LokacijaKilometraza>> kilometraza = new LinkedHashMap<Registracija, List<LokacijaKilometraza>>();
+				for (Registracija regVozilo : regRepository.findAllByJeAktivnoTrueOrderByRegDoDesc()) {
+					try {
+						List<LokacijaKilometraza> vozila = new ArrayList<LokacijaKilometraza>();
+						LokacijaKilometraza temp = new LokacijaKilometraza();
+						temp = lokiRepository.getMaxKilo2(regVozilo.getVozilo().getVin(), lastDayOfThisMonth);
+						Integer k = 0;
+						k = temp.getKilometraza().intValue();
+						vozila.add(temp);
+						
+						try {
+							Date lastDayOfPreviousMonth = new DateTime(temp.getDatum()).minusMonths(1).dayOfMonth().withMaximumValue().toDate();
+							temp = lokiRepository.getMaxKilo2(regVozilo.getVozilo().getVin(), lastDayOfPreviousMonth);
+							temp.setKilometraza(Long.valueOf(k-temp.getKilometraza().intValue()));
+							vozila.add(temp);
+						} catch (Exception e) {
+							temp.setKilometraza(Long.valueOf(k));
+							vozila.add(temp);
+						}
+						if(vozila.size()>1){
+							kilometraza.put(regVozilo, vozila);
+						}
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
+				}
+				// KRAJ KILOMETRAZA TAB

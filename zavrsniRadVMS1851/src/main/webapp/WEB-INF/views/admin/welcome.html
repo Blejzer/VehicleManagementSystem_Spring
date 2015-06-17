@@ -88,7 +88,7 @@
 
 									<span>
 										<h3>
-											Nema zabilježenih servisa u ovom mjesecu <span
+											Nema zabilježenih servisa u mjesecu <span
 												th:text="${#calendars.monthName(#calendars.createToday())}"></span>
 										</h3>
 									</span>
@@ -149,10 +149,10 @@
 										th:each="registration : ${regAtribut}">
 										<td th:text="${registration.tablica}">Registarske oznake</td>
 										<td
-											th:text="${#dates.format(registration.regDo, 'dd/MM/yyyy')}"
+											th:text="${#dates.format(registration.regDo, 'dd-MM-yyyy')}"
 											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.regDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.regDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.regDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDo)} ? 'danger' : 'warning')))  : ''"></td>
 										<td
-											th:text="${#dates.format(registration.osigDo, 'dd/MM/yyyy')}"
+											th:text="${#dates.format(registration.osigDo, 'dd-MM-yyyy')}"
 											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.osigDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.osigDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.osigDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.osigDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.osigDo)} ? 'danger' : 'warning')))  : ''"></td>
 										<td><a class="btn btn-primary btn-sm" th:href="@{/admin/registracije/(vin=${registration.vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span	th:text="#{rad.izm}">Edit action</span></a></td>
 									</tr>
@@ -160,30 +160,36 @@
 							</table>
 						</div>
 						<div class="tab-pane" id="C">
-							<table th:if="${not #lists.isEmpty(monthlyAttribute)}"
-								class="table table-bordered table-striped table-hover">
-								<thead>
-									<tr class="success">
-										<th>License Plate</th>
-										<th>Assigned to</th>
-										<th>Last update</th>
-										<th>Mileage</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:if="${mileage}" th:each="mileage : ${monthlyAttribute}">
-										<td th:text="${mileage.vehicle.licensePlate}"></td>
-										<td th:text="${mileage.consultant.firstName} + ' ' + ${mileage.consultant.lastName}"></td> 
-										<td th:text="${#dates.format(mileage.mileDate, 'dd/MM/yyyy')}"></td>
-										<td th:text="${mileage.mileage}"></td>
-									</tr>
-									<tr>
-										<td colspan="3">Please notice that if the vehicle does
-											not appear in the list, it means it does not have updated
-											mileage log</td>
-									</tr>
-								</tbody>
-							</table>
+							
+							<div th:if="${mileages}" th:each="mileages : ${mileageAtribut}">
+								<table class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr class="success">
+											<th class="col-md-6 text-center h3" colspan="2" th:text="${mileages.key.tablica}">Vozilo</th>
+											<th class="col-md-6 text-center h3" colspan="2" ><a
+												class="btn btn-success btn-sm btn-large right"
+												th:href="@{/admin/servisi/addServis(id=${mileages.key.vozilo.vin})}">Unesi novi servis</a></th>
+										</tr>
+										<tr>
+											<th class="text-center h4">Datum</th>
+											<th class="text-center h4">Mjesto</th>
+											<th class="text-center h4">Korisnik</th>
+											<th class="text-center h4">Zadnja kilometraža</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="mileage,iterStat : ${mileages.value}">
+											<td th:class="${iterStat.odd}? 'hidden'" th:text="${#dates.format(mileage.datum, 'dd-MM-yyyy')}"></td>
+											<td th:class="${iterStat.even}? 'hidden warning'" colspan="3"><strong>Ukupno pređeno:</strong></td>
+											<td th:class="${iterStat.odd}? 'hidden'" th:text="${mileage.lokacija.naziv}"></td>
+											<td th:class="${iterStat.odd}? 'hidden'" th:text="${mileage.korisnikVozilo.korisnik.ime} + ' ' + ${mileage.korisnikVozilo.korisnik.prezime}"></td>
+											<td th:text="${mileage.kilometraza}"></td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+							<p >Ukoliko vozila nisu na spisku, znači da nemaju osvježenu kilometražu u ovom mjesecu</p>
 						</div>
 						<div class="tab-pane" id="D">
 							<div th:if="${report}" th:each="servisi : ${report}">
@@ -216,7 +222,7 @@
 												th:text="${#calendars.format(servis.datum,'dd MMMM yyyy')}">date</td>
 											<td class="col-md-3" th:text="${servis.vrstaServisa.naziv}">Type</td>
 											<td class="col-md-3"><a class="btn btn-info btn-sm"
-												th:href="@{/admin/servisi/showServis(id=${servis.id})}"><i
+												th:href="@{/admin/servis/izmjena(id=${servis.id})}"><i
 													class="glyphicon glyphicon-list-alt"></i> <span
 													th:text="#{rad.prk}">Show action</span></a></td>
 										</tr>

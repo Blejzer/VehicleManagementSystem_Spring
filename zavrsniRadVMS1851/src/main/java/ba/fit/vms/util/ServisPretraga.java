@@ -18,7 +18,7 @@ public class ServisPretraga {
 
 	public ServisPretraga(RegistracijaRepository  registracijaRepository){
 		DateTimeGenerator now = new DateTimeGenerator();
-		this.registracije = registracijaRepository.findAllByJeAktivnoTrue();
+		this.registracije = registracijaRepository.findAllByJeAktivnoTrueOrderByRegDoDesc();
 		this.mjeseci = now.getMonths();
 		this.godine = now.getYears();
 		this.mjesec = now.getMonth();

@@ -1,5 +1,6 @@
 package ba.fit.vms.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -34,5 +35,14 @@ public interface LokacijaKilometrazaRepository extends
 	Page<LokacijaKilometraza> findByKorisnikVozilo_VoziloVinOrderByKilometrazaDesc(String vin, Pageable pageable);
 	
 	LokacijaKilometraza findMaxKilometrazaByKorisnikVozilo_VoziloVin(String vin);
+	
+	@Query(value="SELECT t1.* FROM lokacija_kilometraza t1, (SELECT * FROM lokacija_kilometraza WHERE `korisnikVozilo_id` IN (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1)) t2 WHERE t1.kilometraza = (SELECT max(kilometraza) from lokacija_kilometraza WHERE `korisnikVozilo_id` in (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1) and datum<?2) group by t1.id", nativeQuery=true)
+	LokacijaKilometraza getMaxMileagePrevious2(String vin, Date d);
+	
+	@Query(value="SELECT t1.* FROM lokacija_kilometraza t1 INNER JOIN (SELECT * FROM lokacija_kilometraza WHERE `korisnikVozilo_id` IN (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1)) t2 ON t1.id = t2.id WHERE t1.kilometraza = (SELECT max(kilometraza) from lokacija_kilometraza WHERE `korisnikVozilo_id` in (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1 AND datum BETWEEN ?2 AND ?3 )) group by t1.id", nativeQuery=true)
+	LokacijaKilometraza getMaxKilo1(String vin, Date d1, Date d2);
+
+	@Query(value="SELECT t1.* FROM lokacija_kilometraza t1 INNER JOIN (SELECT * FROM lokacija_kilometraza WHERE `korisnikVozilo_id` IN (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1)) t2 ON t1.id = t2.id WHERE t1.kilometraza = (SELECT max(kilometraza) from lokacija_kilometraza WHERE `korisnikVozilo_id` in (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1 AND datum < ?2 )) group by t1.id", nativeQuery=true)
+	LokacijaKilometraza getMaxKilo2(String vin, Date d);
 
 }
