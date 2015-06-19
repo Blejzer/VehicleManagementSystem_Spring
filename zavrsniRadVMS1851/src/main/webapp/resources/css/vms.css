@@ -62,7 +62,7 @@
 body {
   padding-top: 80px;
   padding-bottom: 40px;
-  color: #5a5a5a;
+  color: #333333;
 }
 
 
@@ -77,6 +77,14 @@ body {
   left: 0;
   right: 0;
   z-index: 10;
+}
+.navbar-test {
+	margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
 }
 
 

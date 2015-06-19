@@ -62,6 +62,9 @@ public class Tiket implements Serializable{
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="tiket_id", nullable=true)
 	private Tiket prethodni;
+	
+	@Column(name = "zavrsen")
+	private Boolean zavrsen;
 
 	
 	//***********************************************
@@ -138,6 +141,14 @@ public class Tiket implements Serializable{
 
 	public void setPrethodni(Tiket prethodni) {
 		this.prethodni = prethodni;
+	}
+
+	public Boolean getZavrsen() {
+		return zavrsen;
+	}
+
+	public void setZavrsen(Boolean zavrsen) {
+		this.zavrsen = zavrsen;
 	}
 
 	

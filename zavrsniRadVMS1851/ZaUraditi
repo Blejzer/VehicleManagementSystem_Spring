@@ -4,13 +4,13 @@ Za uraditi:
   - dodati view-ove za novi, pregled pretragu 
 - dodati triger na bazu i pozivanje skripti na bazi
 - Frontpage
-  - kilometraza
+  - kilometraza - RIJESENO
   - servis - RIJESENO
   - zaduzenja - RIJESENO
   - tiketi
   - registracije - RIJESENO
 - Servis pretaga bez datuma
-  - detaljan pregled iz frontpage-a ne radi
+  - detaljan pregled iz frontpage-a ne radi - RIJESENO
 - Korisnici
   - filter u listi korisnika ne radi
 - Kilometraza

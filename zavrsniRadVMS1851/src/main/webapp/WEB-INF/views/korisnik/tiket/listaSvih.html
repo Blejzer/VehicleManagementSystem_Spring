@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Lista tiketa</title>
+</head>
+<body>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+<div sec:authorize="hasRole('ROLE_USER')" th:include="dodaci/sabloni :: headerFragment"></div>
+
+<div class="container"> 
+
+<section id="tables">
+
+<script src="/resources/bootstrap/js/bootbox.min.js" th:src="@{/resources/js/bootbox.min.js}"></script>
+		
+<script th:inline="javascript">
+ 	function deleteObject(id) {
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				var url = /*[[ @{'/admin/dodjeljivanje/izbrisi?id='} ]]*/ "genericUrl";
+				url = url+id;
+				document.location = url;
+			}
+		}); 
+	};
+</script>
+<p th:if="${#lists.isEmpty(report)}" th:text="'Nemate kreiranih tiketa!'" class="label label-success"/>
+  <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h1>Error</h1>
+     <h4>An unexpected error occurred, <a href="#" class="alert-link">please contact the support team</a>.</h4>
+     <div class="alert alert-warning">
+     	<p th:text="${error}">error</p>
+     </div>
+    </div>
+    <div th:if="${report}" th:each="tiketi : ${report}">
+				<table class="table table-bordered table-striped table-hover tiket">
+					<thead>
+						<tr class="success">
+							<th class="text-indent h3" colspan="5"><a th:href="@{/korisnik/tiketi/tiket(id=${tiketi.key.id})}"><span  th:text="'Naslov: ' + ${tiketi.key.naslov}"></span></a></th>
+						</tr>
+						<tr>
+							<th class="text-center h4">Datum tiketa</th>
+							<th class="text-center h4">Datum odgovora</th>
+							<th class="text-center h4">Upit</th>
+							<th class="text-center h4">Odgovor</th>
+							<th class="text-center h4">Radnja</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="tiket : ${tiketi.value}">
+							<td class="col-md-3" th:text="${#calendars.format(tiket.tiketDatum,'dd MMMM yyyy')}">date</td>
+							<td class="col-md-3" th:text="${tiket.rijesenDatum} ? ${#calendars.format(tiket.rijesenDatum,'dd MMMM yyyy')} : ''">date</td>
+							<td class="col-md-3" th:text="${tiket.sadrzaj}">Type</td>
+							<td class="col-md-3" th:text="${tiket.odgovor}">Type</td>
+							<td class="col-lg-3 center" >
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:if="not ${tiket.rijesenDatum}" class="btn btn-info btn-sm" th:href="@{/korisnik/tiketi/odgovor(id=${tiket.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.odg}">Radnja - odgovor</span></a>
+								<a sec:authorize="hasRole('ROLE_USER')"  th:if="${tiket.rijesenDatum}"  class="btn btn-info btn-sm" th:href="@{/korisnik/tiketi/nastavi(id=${tiket.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.nov}">Radnja - odgovor</span></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div th:if="${report !=null}">
+				<div th:if="${report.isEmpty()}">
+
+					<span>
+						<h3>Nemate podnesen ni jedan tiket</h3>
+					</span>
+
+				</div>
+			</div>
+  
+  
+   
+
+  
+</section>
+
+<div class="row right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}">Lista vozila</a>
+</div> 
+
+<div th:include="dodaci/sabloni :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>

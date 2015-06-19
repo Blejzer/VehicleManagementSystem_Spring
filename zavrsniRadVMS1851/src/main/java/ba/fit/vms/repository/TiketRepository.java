@@ -17,13 +17,14 @@ public interface TiketRepository extends JpaRepository<Tiket, Long> {
 	Page<Tiket> findAllByKorisnik_IdAndRijesenDatumNullOrderByTiketDatumDesc(Long id, Pageable pageable);
 	Page<Tiket> findAllByKorisnik_IdAndRijesenDatumNotNullOrderByTiketDatumDesc(Long id, Pageable pageable);
 	Page<Tiket> findAllByRijesenDatumNullOrderByTiketDatumDesc(Pageable pageable);
-	Page<Tiket> findAllByRijesenDatumNotNullOrderByTiketDatumDesc(Pageable pageable);
-	Page<Tiket> findAll(Pageable pageable);
 	List<Tiket> findAllByKorisnik_IdAndVozilo_vinAndPrethodniNotNullOrderByIdDesc(Long id, String vin);
 	List<Tiket> findAllByKorisnik_IdAndVozilo_vinAndPrethodniNullOrderByIdDesc(Long id, String vin);
 	List<Tiket> findAllByKorisnik_IdAndVozilo_vinOrderByIdDesc(Long id, String vin);
 	List<Tiket> findAllByPrethodniNotNullOrderByIdDesc();
 	List<Tiket> findAllByPrethodniNullOrderByIdDesc();
+
+	Page<Tiket> findAllByRijesenDatumNotNullOrderByTiketDatumDesc(Pageable pageable);
+	Page<Tiket> findAll(Pageable pageable);
 	
 	Page<Tiket> findAllByIdIn(List<Long> ids, Pageable pageable);
 	
