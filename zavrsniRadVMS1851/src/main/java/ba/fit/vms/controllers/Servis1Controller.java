@@ -1,6 +1,7 @@
 package ba.fit.vms.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -82,8 +83,10 @@ public class Servis1Controller {
 		Servis1 s = new Servis1();
 		s.setVozilo(v);
 		LokacijaKilometraza nova = new LokacijaKilometraza();
+		nova.setKilometraza(lkRepository.getMaxMileage(v.getVin()).getKilometraza());
 		nova.setKorisnikVozilo(kv);
 		s.setLokacijaKilometraza(nova);
+		s.setDatum(new Date());
 		map.addAttribute("rAtribut", r);
 		map.addAttribute("sAtribut", s);
 		map.addAttribute("lAtribut", lokacijaRepository.findAll());
@@ -105,6 +108,7 @@ public class Servis1Controller {
 		if(servis.getLokacijaKilometraza().getKilometraza()==null || servis.getLokacijaKilometraza().getKilometraza().toString().isEmpty()){ 
 			rezultat.rejectValue("lokacijaKilometraza.kilometraza", "kilometraza");
 		}
+		
 		if(rezultat.hasErrors()){
 			map.addAttribute("rAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(servis.getVozilo().getVin()));
 			map.addAttribute("dAtribut", dioRepository.findAll());

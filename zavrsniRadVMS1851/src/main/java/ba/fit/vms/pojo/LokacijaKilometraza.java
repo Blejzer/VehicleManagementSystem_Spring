@@ -37,7 +37,7 @@ public class LokacijaKilometraza implements Serializable{
 	private Long kilometraza;
 	
 	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
-	@JoinColumn(nullable=false, updatable=false)
+	@JoinColumn(nullable=false, updatable=true)
 	private Lokacija lokacija;
 	
 	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )

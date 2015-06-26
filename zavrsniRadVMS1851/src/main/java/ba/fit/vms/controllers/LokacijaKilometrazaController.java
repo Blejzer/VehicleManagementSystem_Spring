@@ -1,6 +1,7 @@
 package ba.fit.vms.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -54,13 +55,24 @@ public class LokacijaKilometrazaController {
 	
 	@RequestMapping(value="/admin/kilo/nova", method=RequestMethod.GET)
 	public String getNovaKilometraza(@RequestParam(value="vin", required=true) String vin, Model model, HttpServletRequest request){
-		
-		KorisnikVozilo kv = kvRepository.findByVozilo_VinAndVracenoNull(vin);
-		if(kv==null){
+		KorisnikVozilo kv = new KorisnikVozilo();
+		try {
+			kv = kvRepository.findByVozilo_VinAndVracenoNull(vin);
+			System.out.println("kv uradjen "+ kv.getId());
+		} catch (Exception e) {
 			model.addAttribute("voziloAtribut", voziloRepository.findOne(vin));
+			System.out.println(e.getMessage());
 			return "/admin/vozila/kvtest";
 		}
+		
 		LokacijaKilometraza lk = new LokacijaKilometraza();
+		lk.setDatum(new Date());
+		try {
+			lk.setKilometraza(lkRepository.getMaxMileage(vin).getKilometraza());
+		} catch (Exception e) {
+			System.out.println("greska: "+e.getMessage());
+		}
+		
 		lk.setKorisnikVozilo(kv);
 		
 		
@@ -224,5 +236,68 @@ public class LokacijaKilometrazaController {
 		return "/admin/izvjestaji/kilometraza";
 		
 	}
+	
+	@RequestMapping(value="/admin/kilo/izmjena", method=RequestMethod.GET)
+	public String getIzmjenaKilometraza(@RequestParam(value="id", required=true) Long id, Model model, HttpServletRequest request){
+		System.out.println("id je: "+id);
+		LokacijaKilometraza lk = new LokacijaKilometraza();
+		try {
+			lk = lkRepository.findOne(id);
+			System.out.println(lk.getId());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		model.addAttribute("lkAtribut", lk);
+		model.addAttribute("lAtribut", lokacijaRepository.findAll());
+		
+		return "/admin/vozila/kilometraza/izmjena";
+	}
+	
+	
+	@RequestMapping(value="/admin/kilo/izmjena", method = RequestMethod.POST)
+	public String postIzmjenaKilometraza(@ModelAttribute("lkAtribut") @Valid LokacijaKilometraza lk, BindingResult rezultat, Model model){
+		
+		lk.setKorisnikVozilo(kvRepository.findOne(lk.getKorisnikVozilo().getId()));
+		System.out.println("pozivam validator za vin: " + lk.getKorisnikVozilo().getVozilo().getVin());
+		
+		validator.validate(lk, rezultat);
+		System.out.println("uradio validaciju. Broj gresaka: " + rezultat.getErrorCount());
+		System.out.println("Greske: " + rezultat.getAllErrors());
+		
+		if(rezultat.hasErrors()){
+			model.addAttribute("lkAtribut", lkRepository.findOne(lk.getId()));
+			model.addAttribute("lAtribut", lokacijaRepository.findAll());
+			return "/admin/vozila/kilometraza/izmjena";
+		}
+		
+		LokacijaKilometraza lkNew = new LokacijaKilometraza();
+		lkNew.setId(lk.getId());
+		lkNew.setDatum(lk.getDatum());
+		lkNew.setKilometraza(lk.getKilometraza());
+		lkNew.setKorisnikVozilo(kvRepository.findOne(lk.getKorisnikVozilo().getId()));
+		lkNew.setLokacija(lokacijaRepository.findOne(lk.getLokacija().getId()));
+		//lkNew.getLokacija().setNaziv(lokacijaRepository.findOne(lk.getLokacija().getId()).getNaziv());
+		System.out.println("Lokacija: " + lkNew.getLokacija().getNaziv());
+		lkRepository.saveAndFlush(lkNew);
+		Vozilo v = voziloRepository.findOne(lk.getKorisnikVozilo().getVozilo().getVin());
+		return "redirect:/admin/kilo/lista?vin="+v.getVin();
+	}
+	
+	@RequestMapping(value="/admin/kilo/izbrisi", method=RequestMethod.GET)
+	public String getIzbrisiKilometraza(@RequestParam(value="id", required=true) Long id, Model model, HttpServletRequest request){
+		LokacijaKilometraza lk = new LokacijaKilometraza();
+		try {
+			lk = lkRepository.findOne(id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		lkRepository.delete(lk);
+		
+		return "redirect:/admin/kilo/lista?vin="+lk.getKorisnikVozilo().getVozilo().getVin();
+	}
+	
 
 }
