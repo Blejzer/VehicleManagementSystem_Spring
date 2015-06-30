@@ -110,7 +110,7 @@
 		          <div class="col-md-3">
 		              <select th:field="*{vin}" id="vin" name="vin" class="form-control">
 				          <option value="" th:text="#{common.select.prompt}"></option>
-				          <option th:each="vozilo : *{vozila}" th:value="${vozilo.vin}" th:text="${vozilo.vin}">VIN</option>
+				          <option th:each="reg : *{registracije}" th:value="${reg.vozilo.vin}" th:text="${reg.tablica}">VIN</option>
 		              </select>
 		          </div>
 		          <div class="col-md-3">

@@ -14,8 +14,10 @@ Za uraditi:
 - Korisnici
   - filter u listi korisnika ne radi
 - Kilometraza
-  - Detaljan pregled na kolimetraza/Pregled/detaljno / 404 returned for /vms/admin/kilo/izmjena with message Not Found
-  - Pretraga po mjesecima: javax.persistence.NonUniqueResultException: result returns more than one elements
+  - Detaljan pregled na kolimetraza/Pregled/detaljno / 404 returned for /vms/admin/kilo/izmjena with message Not Found - RIJESENO
+  - Pretraga po mjesecima: javax.persistence.NonUniqueResultException: result returns more than one elements - RIJESENO
+
+
 
   
   // KILOMETRAZA TAB

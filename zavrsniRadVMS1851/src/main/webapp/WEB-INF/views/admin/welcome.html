@@ -18,7 +18,8 @@
 
 		<div class="featurette">
 			<h2 class="featurette-heading">
-				Dobrodošli <span th:text="${user}"></span>
+				Dobrodošli <span th:text="${#authentication.name}"></span>
+				
 			</h2>
 
 			<p class="lead">In simple terms, a responsive web design figures

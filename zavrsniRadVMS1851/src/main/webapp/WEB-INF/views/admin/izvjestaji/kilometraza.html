@@ -29,8 +29,34 @@
 				</div>
 			</div>
 
-			<div th:if="${pregledAtribut}" th:each="kilometraze, status : ${pregledAtribut}">
-				<table class="table table-bordered table-striped table-hover" th:with="total=${#arrays.toArray(kilometraze.value.![kilometraza])}">
+			<div th:if="${mileages}" th:each="mileages : ${pregledAtribut}">
+				<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<tr class="success">
+							<th class="col-md-8 text-center h3" colspan="3" th:text="${mileages.key.tablica}">Vozilo</th>
+							<th class="col-md-3 text-center h3" colspan="1" ><a
+								class="btn btn-success btn-sm btn-large right"
+								th:href="@{/admin/kilo/lista(vin=${mileages.key.vozilo.vin})}" th:text="#{rad.det}">Detaljno</a></th>
+						</tr>
+						<tr>
+							<th class="text-center h4" th:text="#{lk.dat}">Datum</th>
+							<th class="text-center h4" th:text="#{lk.lok}">Mjesto</th>
+							<th class="text-center h4" th:text="#{kv.kor}">Korisnik</th>
+							<th class="text-center h4" th:text="#{lk.zad}">Zadnja kilometraža</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="mileage,iterStat : ${mileages.value}">
+							<td th:class="${iterStat.odd}? 'hidden'" th:text="${#dates.format(mileage.datum, 'dd-MM-yyyy')}"></td>
+							<td th:class="${iterStat.even}? 'hidden warning'" colspan="3"><strong th:text="#{lk.tot}">Ukupno predjeno:</strong></td>
+							<td th:class="${iterStat.odd}? 'hidden'" th:text="${mileage.lokacija.naziv}"></td>
+							<td th:class="${iterStat.odd}? 'hidden'" th:text="${mileage.korisnikVozilo.korisnik.ime} + ' ' + ${mileage.korisnikVozilo.korisnik.prezime}"></td>
+							<td th:text="${mileage.kilometraza}"></td>
+						</tr>
+						
+					</tbody>
+				</table>
+				<!-- <table class="table table-bordered table-striped table-hover" th:with="total=${#arrays.toArray(kilometraze.value.![kilometraza])}">
 					<thead>
 						<tr class="success">
 							<th class="text-center h3" colspan="3"><a th:href="@{/admin/kilo/lista(vin=${kilometraze.key.vozilo.vin})}"><span  th:text="${kilometraze.key.tablica}"></span></a></th>
@@ -58,13 +84,13 @@
 							<td class="col-md-2 center"></td>
 								</tr>
 					</tbody>
-				</table>
+				</table> -->
 			</div>
 			<div th:if="${pregledAtribut !=null}">
 				<div th:if="${pregledAtribut.isEmpty()}">
 
 					<span>
-						<h3>No Services recorded for selected search</h3>
+						<h3>Nema unesenih kilometraza za odabrani period</h3>
 					</span>
 
 				</div>

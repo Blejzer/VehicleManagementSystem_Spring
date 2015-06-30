@@ -3,7 +3,9 @@ package ba.fit.vms.util;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import ba.fit.vms.pojo.Registracija;
 import ba.fit.vms.pojo.Vozilo;
+import ba.fit.vms.repository.RegistracijaRepository;
 import ba.fit.vms.repository.VoziloRepository;
 
 public class KilometrazaPretraga {
@@ -12,6 +14,7 @@ public class KilometrazaPretraga {
 	private Integer mjesec;
 	private Integer godina;
 	
+	private List<Registracija> registracije;
 	private List<Vozilo> vozila;
 	private LinkedHashMap<Integer, String> mjeseci;
 	private LinkedHashMap<Integer, Integer> godine;
@@ -20,6 +23,15 @@ public class KilometrazaPretraga {
 		
 		DateTimeGenerator now = new DateTimeGenerator();
 		this.vozila = voziloRepository.findAll();
+		this.mjeseci = now.getMonths();
+		this.godine = now.getYears();
+		this.mjesec = now.getMonth();
+		this.godina = now.getYear();		
+	}
+public KilometrazaPretraga(RegistracijaRepository regRepository){
+		
+		DateTimeGenerator now = new DateTimeGenerator();
+		this.registracije = regRepository.findAllByJeAktivnoTrueOrderByRegDoDesc();
 		this.mjeseci = now.getMonths();
 		this.godine = now.getYears();
 		this.mjesec = now.getMonth();
@@ -74,6 +86,12 @@ public class KilometrazaPretraga {
 
 	public void setGodine(LinkedHashMap<Integer, Integer> godine) {
 		this.godine = godine;
+	}
+	public List<Registracija> getRegistracije() {
+		return registracije;
+	}
+	public void setRegistracije(List<Registracija> registracije) {
+		this.registracije = registracije;
 	};
 
 }
