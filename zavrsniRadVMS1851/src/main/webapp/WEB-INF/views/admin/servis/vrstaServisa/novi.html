@@ -12,7 +12,7 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Dodaj novu vrstu servisa</h1>
+    <h1 th:text="#{vs.new}">Add new service type</h1>
   </div>
 
 <div class="row">
@@ -21,7 +21,7 @@
 		th:action="@{/admin/vrstaServisa/novi}" method="post" class="form-horizontal well">
     
           <div class="form-group" th:class="${#fields.hasErrors('naziv')} ? 'form-group has-error' : 'form-group'">
-          <label for="naziv" class="col-lg-2 control-label">Naziv: </label>
+          <label for="naziv" class="col-lg-2 control-label" th:text="#{vs.naz}">Title: </label>
             <div class="col-lg-10">
               <input type="text" th:field="*{naziv}" class="form-control input-xlarge" placeholder="Naziv" />
               <p th:if="${#fields.hasErrors('naziv')}" class="label label-danger" th:errors="*{naziv}">neispravan naziv</p>
@@ -29,8 +29,8 @@
           </div>
 		<hr/>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Dodaj vrstu servisa</button>
-            <a class="btn btn-default" th:href="@{/admin/vrstaServisa/}">Odustani</a>
+            <button type="submit" class="btn btn-primary" th:text="#{vs.btn}">Save service type</button>
+            <a class="btn btn-default" th:href="@{/admin/vrstaServisa/}" th:text="#{rad.odu}">Cancel</a>
           </div>
 	</form>
 	
@@ -38,7 +38,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/vrstaServisa/}">Natrag na listu</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vrstaServisa/}" th:text="#{rad.nal}">Back to the list</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

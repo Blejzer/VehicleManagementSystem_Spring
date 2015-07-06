@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head th:include="dodaci/sabloni :: headFragment">
-<title>Edit Registration</title>
+<title>Izmjena registracije</title>
 </head>
 <body>
 
@@ -12,7 +12,7 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Edit registration <span th:text="${registracijaAtribut.tablica}">VIN NO.</span></h1>
+    <h1 th:text="#{reg.ttl1}+' ' +${registracijaAtribut.tablica}">Edit registration</h1>
   </div>
 
 <div class="row">
@@ -28,18 +28,18 @@
     <input type="hidden" th:field="*{id}" class="form-control input-xlarge" />
     <input type="hidden" th:field="*{vozilo.vin}" class="form-control input-xlarge" />
           <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
-          <label for="vozilo.vin" class="col-lg-2 control-label">License Plate</label>
+          <label for="vozilo.vin" class="col-lg-2 control-label" th:text="#{reg.tab}">License Plate</label>
             <div class="col-lg-10">
               	<input type="text" th:field="*{tablica}" class="form-control input-xlarge" placeholder="Registarska oznaka" readonly="readonly"/>
               <p th:if="${#fields.hasErrors('tablica')}" class="label label-danger" th:errors="*{tablica}">Incorrect VIN</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('jeAktivno')} ? 'form-group has-error' : 'form-group'">
-          <label for="current" class="col-lg-2 control-label">Is registration current?</label>
+          <label for="current" class="col-lg-2 control-label" th:text="#{reg.is}">Is registration current?</label>
             <div class="col-lg-10">
               <select th:field="*{jeAktivno}" class="form-control">
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+                <option value="true" th:text="#{msg.d}">Yes</option>
+                <option value="false" th:text="#{msg.n}">No</option>
               </select>
               <p th:if="${#fields.hasErrors('jeAktivno')}" class="label label-danger" th:errors="*{jeAktivno}">Incorrect LP</p>
             </div>
@@ -74,8 +74,8 @@
           </div>
 		<hr/>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Izmijeni Registraciju</button>
-            <a class="btn btn-default" th:href="@{/admin/registracije/(vin=${registracijaAtribut.vozilo.vin})}">Odustani</a>
+            <button type="submit" class="btn btn-primary" th:text="#{reg.btn}">Save</button>
+            <a class="btn btn-default" th:href="@{/admin/registracije/(vin=${registracijaAtribut.vozilo.vin})}" th:text="#{rad.odu}">Odustani</a>
           </div>
 	</form>
 	
@@ -83,7 +83,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/registracije/(vin=${registracijaAtribut.vozilo.vin})}">Natrag na listu</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/registracije/(vin=${registracijaAtribut.vozilo.vin})}" th:text="#{rad.nal}">Natrag na listu</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

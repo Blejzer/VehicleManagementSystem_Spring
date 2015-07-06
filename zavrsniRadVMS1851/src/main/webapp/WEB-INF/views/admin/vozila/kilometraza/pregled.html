@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head th:include="dodaci/sabloni :: headFragment">
-<title>Services</title>
+<title>Pregled</title>
 </head>
 <body>
 
@@ -19,11 +19,8 @@
 				th:if="${error != null}">
 				<button type="button" class="close" data-dismiss="alert"
 					aria-hidden="true">&times;</button>
-				<h1>Error</h1>
-				<h4>
-					An unexpected error occurred, <a href="#" class="alert-link">please
-						contact the support team</a>.
-				</h4>
+				<h1 th:text="#{err.msg1}">Error</h1>
+				<h4 th:text="#{err.msg2}"></h4>
 				<div class="alert alert-warning">
 					<p th:text="${error}">error</p>
 				</div>
@@ -38,7 +35,7 @@
 						</tr>
 						<tr>
 							<th class="text-center h4" th:text="#{lk.dat}">Datum</th>
-							<th class="text-center h4" th:text="#{lk.lok}">Lokacija</th>
+							<th class="text-center h4" th:text="#{lok.one}">Lokacija</th>
 							<th class="text-center h4" th:text="#{lk.kil}">Kilometraza</th>
 							<th class="text-center h4" th:text="#{rad.na}">Radnje</th>
 						</tr>
@@ -58,7 +55,7 @@
 				<div th:if="${pregledAtribut.isEmpty()}">
 
 					<span>
-						<h3>No Services recorded for selected search</h3>
+						<h3 th:text="#{lk.msg1}">No Services recorded for selected search</h3>
 					</span>
 
 				</div>

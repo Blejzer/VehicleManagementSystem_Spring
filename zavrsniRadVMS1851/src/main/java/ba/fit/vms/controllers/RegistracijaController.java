@@ -62,21 +62,31 @@ public class RegistracijaController {
 	@RequestMapping(value = "/admin/registracija/novi", method = RequestMethod.GET)
 	public String getAdd(@RequestParam(value="vin", required=true) String vin, Model model) {
 		logger.debug("poceo get");
-		logger.debug(registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
+		
+		// logger.debug(registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
 		if(vin==null || vin.isEmpty()){
 			model.addAttribute("registracijaAtribut", new Registracija());
 			model.addAttribute("regVehicles", voziloRepository.getNeregistrovanaVozila());
 			logger.debug("vin je null. pokupio neregistrovana vozila");
 		} else{
-			Registracija prethodna = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
-			prethodna.setOsigOd(new DateTime(prethodna.getOsigOd()).plusYears(1).toDate());
-			prethodna.setOsigDo(new DateTime(prethodna.getOsigDo()).plusYears(1).toDate());
-			prethodna.setRegOd(new DateTime(prethodna.getRegOd()).plusYears(1).toDate());
-			prethodna.setRegDo(new DateTime(prethodna.getRegDo()).plusYears(1).toDate());
+			try {
+				Registracija prethodna = registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin);
+				prethodna.setOsigOd(new DateTime(prethodna.getOsigOd()).plusYears(1).toDate());
+				prethodna.setOsigDo(new DateTime(prethodna.getOsigDo()).plusYears(1).toDate());
+				prethodna.setRegOd(new DateTime(prethodna.getRegOd()).plusYears(1).toDate());
+				prethodna.setRegDo(new DateTime(prethodna.getRegDo()).plusYears(1).toDate());
+				
+				model.addAttribute("registracijaAtribut", prethodna);
+				model.addAttribute("regVehicles", voziloRepository.findOne(vin));
+				logger.debug("Imamo vin, pokupio vozilo. " + model.toString());
+			} catch (Exception e) {
+				Registracija nova = new Registracija();
+				nova.setVozilo(voziloRepository.findOne(vin));
+				model.addAttribute("registracijaAtribut", nova);
+				model.addAttribute("regVehicles", voziloRepository.findOne(vin));
+				
+			}
 			
-			model.addAttribute("registracijaAtribut", prethodna);
-			model.addAttribute("regVehicles", voziloRepository.findOne(vin));
-			logger.debug("Imamo vin, pokupio vozilo. " + model.toString());
 		}
 
 		return "/admin/vozila/registracija/novi";

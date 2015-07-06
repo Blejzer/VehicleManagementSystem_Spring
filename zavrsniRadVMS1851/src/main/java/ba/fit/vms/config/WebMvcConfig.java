@@ -1,6 +1,7 @@
 package ba.fit.vms.config;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -16,9 +17,13 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.i18n.FixedLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring3.SpringTemplateEngine;
@@ -51,6 +56,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename(MESSAGE_SOURCE);
 		messageSource.setCacheSeconds(5);
+		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
 	}
 	
@@ -122,5 +128,24 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 			return auth != null && auth.getPrincipal() instanceof UserDetails ? auth.getPrincipal() : null;
 		}
 	}
+	
+	@Bean
+    public LocaleResolver localeResolver() {
+		FixedLocaleResolver flr = new FixedLocaleResolver();
+        flr.setDefaultLocale(new Locale("hr", "HR"));
+        return flr;
+    }
+ 
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
+    }
+ 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
 
 }

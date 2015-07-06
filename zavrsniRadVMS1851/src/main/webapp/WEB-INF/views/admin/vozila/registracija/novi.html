@@ -12,7 +12,7 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Dodaj novu registraciju</h1>
+    <h1 th:text="#{reg.new}">Add new registration</h1>
   </div>
 
 <div class="row">
@@ -21,7 +21,7 @@
 		th:action="@{/admin/registracija/novi}" method="post" class="form-horizontal well">
     
           <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
-          <label for="vozilo.vin" class="col-lg-2 control-label">VIN</label>
+          <label for="vozilo.vin" class="col-lg-2 control-label"  th:text="#{voz.vin}">VIN</label>
             <div class="col-lg-10">
               	<select th:field="*{vozilo.vin}" class="form-control">
   				<option th:each="vozilo : ${regVehicles}" 
@@ -32,45 +32,45 @@
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('jeAktivno')} ? 'form-group has-error' : 'form-group'">
-          <label for="jeAktivno" class="col-lg-2 control-label">Da li je ova registracija trenutno vazeca?</label>
+          <label for="jeAktivno" class="col-lg-2 control-label" th:text="#{reg.is}">Current?</label>
             <div class="col-lg-10">
               <select th:field="*{jeAktivno}" class="form-control">
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+                <option value="true" th:text="#{msg.d}">Yes</option>
+                <option value="false" th:text="#{msg.n}">No</option>
               </select>
               <p th:if="${#fields.hasErrors('jeAktivno')}" class="label label-danger" th:errors="*{jeAktivno}">Incorrect LP</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('tablica')} ? 'form-group has-error' : 'form-group'">
-          	<label for="tablica" class="col-lg-2 control-label">Registarske oznake</label>
+          	<label for="tablica" class="col-lg-2 control-label" th:text="#{reg.tab}">Registarske oznake</label>
             <div class="col-lg-10">
               	<input th:type="text" th:field="*{tablica}" class="form-control input-xlarge" />
              	<p th:if="${#fields.hasErrors('tablica')}" class="label label-danger" th:errors="*{tablica}">Registration Date Error</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('regOd')} ? 'form-group has-error' : 'form-group'">
-          <label for="regOd" class="col-lg-2 control-label">Registration Date</label>
+          <label for="regOd" class="col-lg-2 control-label" th:text="#{reg.rod}">Registration Date</label>
             <div class="col-lg-10">
               <input th:type="date" th:field="*{regOd}" class="form-control input-xlarge" />
               <p th:if="${#fields.hasErrors('regOd')}" class="label label-danger" th:errors="*{regOd}">Registration Date Error</p>
             </div>
           </div>
  		  <div class="form-group" th:class="${#fields.hasErrors('regDo')} ? 'form-group has-error' : 'form-group'">
- 		  <label for="regDo" class="col-lg-2 control-label">Registration Due</label>
+ 		  <label for="regDo" class="col-lg-2 control-label" th:text="#{reg.rdo}">Registration Due</label>
             <div class="col-lg-10">
               <input th:type="date" th:field="*{regDo}" class="form-control input-xlarge" />
               <p th:if="${#fields.hasErrors('regDo')}" class="label label-danger" th:errors="*{regDo}">Incorrect LP</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('osigOd')} ? 'form-group has-error' : 'form-group'">
-          <label for="osigOd" class="col-lg-2 control-label">Insurance Date</label>
+          <label for="osigOd" class="col-lg-2 control-label" th:text="#{reg.ood}">Insurance Date</label>
             <div class="col-lg-10">
               <input th:type="date" th:field="*{osigOd}" class="form-control input-xlarge" />
               <p th:if="${#fields.hasErrors('osigOd')}" class="label label-danger" th:errors="*{osigOd}">Incorrect LP</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('osigDo')} ? 'form-group has-error' : 'form-group'">
-          <label for="osigDo" class="col-lg-2 control-label">Insurance Due</label>
+          <label for="osigDo" class="col-lg-2 control-label" th:text="#{reg.odo}">Insurance Due</label>
             <div class="col-lg-10">
               <input th:type="date" th:field="*{osigDo}" class="form-control input-xlarge"/>
               <p th:if="${#fields.hasErrors('osigDo')}" class="label label-danger" th:errors="*{osigDo}" >Incorrect LP</p>
@@ -78,8 +78,8 @@
           </div>
 		<hr/>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Dodaj Registraciju</button>
-            <a class="btn btn-default" th:href="@{/admin/vozila/}">Odustani</a>
+            <button type="submit" class="btn btn-primary" th:text="#{reg.btn}">Dodaj Registraciju</button>
+            <a class="btn btn-default" th:href="@{/admin/registracije/(vin=${registracijaAtribut.vozilo.vin})}" th:text="#{rad.odu}">Odustani</a>
           </div>
 	</form>
 	
@@ -87,7 +87,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}">Natrag</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}" th:text="#{rad.nal}">Natrag</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

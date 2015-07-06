@@ -16,7 +16,7 @@
 		
 <script th:inline="javascript">
  	function deleteObject(id) {
-		bootbox.confirm("Da li ste sigurni?", function(result) {
+		bootbox.confirm([[#{msg.ask}]], function(result) {
 			if (result) {
 				var url = /*[[ @{'/admin/lokacije/izbrisi?id='} ]]*/ "genericUrl";
 				url = url+id;
@@ -27,7 +27,7 @@
 </script>
 
   <div class="page-header">
-    <h1>Lokacije</h1>
+    <h1 th:text="#{lok.ttl}">Locations</h1>
 	<a class="btn btn-primary btn-large right" th:href="@{/admin/lokacije/novi}">Dodaj novu lokaciju</a>
   </div>
   

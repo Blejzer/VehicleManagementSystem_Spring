@@ -12,7 +12,7 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Izmjena - Vrsta servisa</h1>
+    <h1 th:text="#{vs.ttl2}">Change - Vrsta servisa</h1>
   </div>
 
 <div class="row">
@@ -25,7 +25,7 @@
     <input type="hidden" th:field="*{id}" class="form-control input-xlarge" placeholder="Vrsta servisa ID" />
     </div>
           <div class="form-group" th:class="${#fields.hasErrors('naziv')} ? 'form-group has-error' : 'form-group'">
-          <label for="naziv" class="col-lg-2 control-label">Naziv vrste servisa</label>
+          <label for="naziv" class="col-lg-2 control-label" th:text="#{vs.naz}">Service type name</label>
             <div class="col-lg-10">
               <input type="text" th:field="*{naziv}" class="form-control input-xlarge" placeholder="Naziv vrste servisa" />
               <p th:if="${#fields.hasErrors('naziv')}" class="label label-danger" th:errors="*{naziv}">Neispravan naziv vrste servisa</p>
@@ -33,8 +33,8 @@
           </div>
 		<hr/>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Zapamti izmjene</button>
-            <a class="btn btn-default" th:href="@{/admin/vrstaServisa/}">Odustani</a>
+            <button type="submit" class="btn btn-primary" th:text="#{vs.btn}">Save service type</button>
+            <a class="btn btn-default" th:href="@{/admin/vrstaServisa/}" th:text="#{rad.odu}">Cancel</a>
           </div>
 	</form>
 	
@@ -42,7 +42,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/vrstaServisa/}">Natrag na listu</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vrstaServisa/}" th:text="#{rad.nal}">Back to the list</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

@@ -12,7 +12,7 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Dodaj novi dio</h1>
+    <h1 th:text="#{d.ttl2}">Add new part</h1>
   </div>
 
 <div class="row">
@@ -21,14 +21,14 @@
 		th:action="@{/admin/dio/novi}" method="post" class="form-horizontal well">
     
           <div class="form-group" th:class="${#fields.hasErrors('serijskiBroj')} ? 'form-group has-error' : 'form-group'">
-          <label for="serijskiBroj" class="col-lg-2 control-label">Serijski Broj: </label>
+          <label for="serijskiBroj" class="col-lg-2 control-label" th:text="#{d.sb}">Serijski Broj: </label>
             <div class="col-lg-10">
               <input type="text" th:field="*{serijskiBroj}" class="form-control input-xlarge" placeholder="Serijski Broj" />
               <p th:if="${#fields.hasErrors('serijskiBroj')}" class="label label-danger" th:errors="*{serijskiBroj}">neispravan Serijski Broj</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('naziv')} ? 'form-group has-error' : 'form-group'">
-          <label for="naziv" class="col-lg-2 control-label">Naziv: </label>
+          <label for="naziv" class="col-lg-2 control-label" th:text="#{d.naz}">Naziv: </label>
             <div class="col-lg-10">
               <input type="text" th:field="*{naziv}" class="form-control input-xlarge" placeholder="Naziv" />
               <p th:if="${#fields.hasErrors('naziv')}" class="label label-danger" th:errors="*{naziv}">neispravan naziv</p>
@@ -36,8 +36,8 @@
           </div>
 		<hr/>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Dodaj dio</button>
-            <a class="btn btn-default" th:href="@{/admin/dio/}">Odustani</a>
+            <button type="submit" class="btn btn-primary" th:text="#{d.btn}">Dodaj dio</button>
+            <a class="btn btn-default" th:href="@{/admin/dio/}" th:text="#{rad.odu}">Odustani</a>
           </div>
 	</form>
 	
@@ -45,7 +45,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/dio/}">Natrag na listu</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/dio/}" th:text="#{rad.nal}">Natrag na listu</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

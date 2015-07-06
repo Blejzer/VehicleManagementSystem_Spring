@@ -32,19 +32,11 @@
 									});
 				};
 			</script>
-
-			<div th:if="${vehicleVin!=null}" class="page-header">
-				<h1>Services for all vehicles</h1>
-				<a class="btn btn-primary btn-large right" th:href="@{/admin/kilo/novi(vin=${vehicleVin})}">Nova kilometraza</a>
-			</div>
-
+			
 			<div class="alert alert-danger alert-dismissable" th:if="${error != null}">
 				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<h1>Error</h1>
-				<h4>
-					An unexpected error occurred, <a href="#" class="alert-link">please
-						contact the support team</a>.
-				</h4>
+				<h1 th:text="#{err.msg1}">Error</h1>
+				<h4 th:text="#{err.msg2}"></h4>
 				<div class="alert alert-warning">
 					<p th:text="${error}">error</p>
 				</div>
@@ -54,19 +46,20 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr class="success">
-							<th class="text-center h3" colspan="3"><a th:href="@{/admin/servis/lista(vin=${servisi.key.vozilo.vin})}"><span  th:text="${servisi.key.tablica}"></span></a></th>
-							<th class="text-center h3" colspan="2"><a class="btn btn-success btn-sm btn-large right" th:href="@{/admin/servis/novi(vin=${servisi.key.vozilo.vin})}">Novi Servis</a></th>
+							<th class="text-center h3" colspan="3"><a th:href="@{/admin/servis/lista(vin=${servisi.key.vozilo.vin})}"><span th:text="${servisi.key.tablica}"></span></a></th>
+							<th class="text-center h3" colspan="2"><a class="btn btn-success btn-sm btn-large right" th:href="@{/admin/servis/novi(vin=${servisi.key.vozilo.vin})}" th:text="#{s.new}">Novi Servis</a></th>
 						</tr>
 						<tr>
-							<th class="text-center h4">Zavrsen?</th>
-							<th class="text-center h4">Datum</th>
-							<th class="text-center h4">Vrsta servisa</th>
-							<th class="text-center h4">Kilometraza</th>
-							<th class="text-center h4">Radnje</th>
+							<th class="text-center h4" th:text="#{s.dat}">Datum</th>
+							<th class="text-center h4" th:text="#{s.za}">Zavrsen?</th>
+							<th class="text-center h4" th:text="#{s.st}">Vrsta servisa</th>
+							<th class="text-center h4" th:text="#{rad.klm}">Kilometraza</th>
+							<th class="text-center h4" th:text="#{rad.na}">Radnje</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="servis : ${servisi.value}">
+							<td class="col-md-3" th:text="${#calendars.format(servis.datum,'dd MMMM yyyy')}">date</td>
 							<td class="col-md-2" th:switch="${servis.zavrsen}">
 								<p th:case="true">
 									<i class="glyphicon glyphicon-ok"></i>
@@ -75,7 +68,6 @@
 									<i class="glyphicon glyphicon-minus"></i>
 								</p>
 							</td>
-							<td class="col-md-3" th:text="${#calendars.format(servis.datum,'dd MMMM yyyy')}">date</td>
 							<td class="col-md-3" th:text="${servis.vrstaServisa.naziv}">Type</td>
 							<td class="col-md-2" th:text="${servis.lokacijaKilometraza.kilometraza}">Type</td>
 							<td class="col-md-2 center"><a class="btn btn-info btn-sm" th:href="@{/admin/servis/izmjena(id=${servis.id})}"><i class="glyphicon glyphicon-list-alt"></i> 
@@ -86,11 +78,7 @@
 			</div>
 			<div th:if="${report !=null}">
 				<div th:if="${report.isEmpty()}">
-
-					<span>
-						<h3>No Services recorded for selected search</h3>
-					</span>
-
+						<h3 th:text="#{s.msg1}"></h3>
 				</div>
 			</div>
 

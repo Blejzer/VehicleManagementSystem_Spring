@@ -16,7 +16,7 @@
 		
 <script th:inline="javascript">
  	function deleteObject(id) {
-		bootbox.confirm("Da li ste sigurni?", function(result) {
+		bootbox.confirm([[#{msg.ask}]], function(result) {
 			if (result) {
 				var url = /*[[ @{'/admin/vozila/izbrisi?vin='} ]]*/ "genericUrl";
 				url = url+id;
@@ -27,14 +27,14 @@
 </script>
 
   <div class="page-header">
-    <h1>Vozila</h1>
-	<a class="btn btn-primary btn-large right" th:href="@{/admin/vozila/novi}">Dodaj novo vozilo</a>
+    <h1 th:text="#{mn.2}">Vozila</h1>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/vozila/novi}" th:text="#{voz.ttl3}">Dodaj novo vozilo</a>
   </div>
   <span th:text="${kAtribut}"></span>
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h1>Greska</h1>
-     <h4>Doslo je do neocekivane greske, <a href="#" class="alert-link">molimo kontaktirajte administratora</a>.</h4>
+    <h1 th:text="#{err.msg1}">Greska</h1>
+     <h4 th:text="#{err.msg2}"></h4>
      <div class="alert alert-warning">
      	<p th:text="${error}">error</p>
      </div>
@@ -43,12 +43,12 @@
   <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
-        <th th:text="#{voz.vin}">VIN broj</th>
-        <th th:text="#{voz.mar}">Make</th>
-        <th th:text="#{voz.mod}">Model</th>
-        <th th:text="#{voz.boj}">Color</th>
-        <th th:text="#{voz.god}">Year</th>
-        <th th:text="#{rad.na}">Actions</th>
+        <th class="col-lg-1" th:text="#{voz.vin}">VIN broj</th>
+        <th class="col-lg-1" th:text="#{voz.mar}">Make</th>
+        <th class="col-lg-1" th:text="#{voz.mod}">Model</th>
+        <th class="col-lg-1" th:text="#{voz.boj}">Color</th>
+        <th class="col-lg-1" th:text="#{voz.god}">Year</th>
+        <th class="col-lg-5" th:text="#{rad.na}">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -60,10 +60,10 @@
 	    	<td th:text="${vozilo.godina}">GE123</td>
 			<td>
 				<a class="btn btn-default btn-sm" th:href="@{/admin/vozila/izmjena(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Rednja - izmjeni</span></a>
-				<a class="btn btn-sm" th:classappend="${rAtribut.contains(vozilo)} ? btn-default : btn-danger" th:href="@{/admin/registracije/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-certificate"></i> Registracije</a>
-				<a class="btn btn-default btn-sm" th:href="${rAtribut.contains(vozilo)} ? @{/admin/kilo/lista(vin=${vozilo.vin})}:''" th:disabled="${not rAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-road"></i> Kilometraza</a>
-				<a class="btn btn-default btn-sm" th:href="${rAtribut.contains(vozilo)} ? @{/admin/dodjeljivanje/(vin=${vozilo.vin})}:''" th:disabled="${not rAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.zad}">Rednja - zaduzenje</span></a>
-			    <a class="btn btn-default btn-sm" th:href="@{/admin/servis/(vin=${vozilo.vin})}" th:disabled="${not vAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-cog"></i> <span th:text="#{rad.ser}">Rednja - zaduzenje</span></a>
+				<a class="btn btn-sm" th:classappend="${rAtribut.contains(vozilo)} ? btn-default : btn-danger" th:href="@{/admin/registracije/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-certificate"></i> <span th:text="#{rad.reg}"/></a>
+				<a class="btn btn-default btn-sm" th:href="${rAtribut.contains(vozilo)} ? @{/admin/kilo/lista(vin=${vozilo.vin})}:''" th:disabled="${not rAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-road"></i> <span th:text="#{rad.klm}"/></a>
+				<a class="btn btn-default btn-sm" th:href="${rAtribut.contains(vozilo)} ? @{/admin/dodjeljivanje/(vin=${vozilo.vin})}:''" th:disabled="${not rAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.zad}">Radnja - zaduzenje</span></a>
+			    <a class="btn btn-default btn-sm" th:href="@{/admin/servis/(vin=${vozilo.vin})}" th:disabled="${not vAtribut.contains(vozilo)}"><i class="glyphicon glyphicon-cog"></i> <span th:text="#{rad.ser}">Rednja - servisi</span></a>
 			    <a class="btn btn-default btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${vozilo.vin} + '\');'"><i class="glyphicon glyphicon-remove"></i><span th:text="#{rad.obr}">Radnja - izbrisi</span></a>
 			</td>
 		</tr>

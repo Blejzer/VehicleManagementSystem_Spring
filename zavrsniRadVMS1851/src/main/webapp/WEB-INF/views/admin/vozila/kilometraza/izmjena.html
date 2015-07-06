@@ -12,7 +12,7 @@
 
 		<section id="object">
 			<div class="page-header">
-				<h1>Izmjena unosa kilometraže</h1>
+				<h1 th:text="#{lk.ttl1}">Change mileage</h1>
 			</div>
 
 			<div class="row">
@@ -25,21 +25,21 @@
 					<input type="hidden" th:field="*{id}" />
 
 					<div class="form-group" th:class="${#fields.hasErrors('datum')} ? 'form-group has-error' : 'form-group'">
-						<label for="datum" class="col-lg-2 control-label">Datum: </label>
+						<label for="datum" class="col-lg-2 control-label" th:text="#{lk.dat}">Date: </label>
 						<div class="col-lg-10">
 							<input type="date" th:field="*{datum}" class="form-control input-xlarge" placeholder="Datum" />
 							<p th:if="${#fields.hasErrors('datum')}" class="label label-danger" th:errors="*{datum}">neispravan datum</p>
 						</div>
 					</div>
 					<div class="form-group" th:class="${#fields.hasErrors('kilometraza')} ? 'form-group has-error' : 'form-group'">
-						<label for="kilometraza" class="col-lg-2 control-label">Kilometraza: </label>
+						<label for="kilometraza" class="col-lg-2 control-label" th:text="#{lk.kil}">Mileage: </label>
 						<div class="col-lg-10">
 							<input type="text" th:field="*{kilometraza}" class="form-control input-xlarge" placeholder="Kilometraza" />
 							<p th:if="${#fields.hasErrors('kilometraza')}" class="label label-danger" th:errors="*{kilometraza}">neispravna kilometraza</p>
 						</div>
 					</div>
 					<div class="form-group" th:class="${#fields.hasErrors('lokacija')} ? 'form-group has-error' : 'form-group'">
-						<label for="kilometraza" class="col-lg-2 control-label">Lokacija: </label>
+						<label for="kilometraza" class="col-lg-2 control-label" th:text="#{lok.one}">Location: </label>
 						<div class="col-lg-10">
 							<select th:field="*{lokacija}" class="form-control">
   								<option th:each="lok : ${lAtribut}" 
@@ -51,8 +51,8 @@
 					</div>
 					<hr />
 					<div class="form-actions">
-						<button type="submit" class="btn btn-primary">Unesi kilometrazu</button>
-						<a class="btn btn-default" th:href="@{/admin/vozila/}">Odustani</a>
+						<button type="submit" class="btn btn-primary" th:text="#{lk.btn}">Save mileage</button>
+						<a class="btn btn-default" th:href="@{/admin/kilo/lista(vin=${lkAtribut.korisnikVozilo.vozilo.vin})}" th:text="#{rad.odu}">Cancel</a>
 					</div>
 				</form>
 
@@ -60,7 +60,7 @@
 		</section>
 
 		<div class="row right">
-			<a class="btn btn-primary btn-large" th:href="@{/admin/kilometraza/}">Natrag na listu</a>
+			<a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}" th:text="#{rad.nal}">Back to list</a>
 		</div>
 
 		<div th:include="dodaci/sabloni :: footerFragment"></div>

@@ -16,7 +16,7 @@
 		
 <script th:inline="javascript">
  	function deleteObject(id) {
-		bootbox.confirm("Are you sure?", function(result) {
+		bootbox.confirm([[#{msg.ask}]], function(result) {
 			if (result) {
 				var url = /*[[ @{'/admin/dodjeljivanje/izbrisi?id='} ]]*/ "genericUrl";
 				url = url+id;
@@ -27,18 +27,21 @@
 </script>
 
   <div class="page-header">
-    <h1 class="table table-bordered table-striped table-hover alert alert-info">Vozilo <span th:text="${trenutnoAtribut.korisnik} ? ${regAtribut.tablica} : ''"></span> <span th:text="${trenutnoAtribut.korisnik} ? ${'trenutno je zaduzeno na korisnika: '} + ${trenutnoAtribut.korisnik.ime} + ' ' + ${trenutnoAtribut.korisnik.prezime}: ${'trenutno nije zaduzeno'}"></span></h1>
-    <a th:if="not ${trenutnoAtribut.korisnik}" class="btn btn-primary btn-large right" th:href="@{/admin/dodjeljivanje/novi(vin=${trenutnoAtribut.vozilo.vin})}">Novo zaduzenje</a>
+    <h1 class="table table-bordered table-striped table-hover alert alert-info">
+    	<span th:text="#{kv.voz}+' '+(${trenutnoAtribut.korisnik} ? ${regAtribut.tablica} : '')+' '+(${trenutnoAtribut.korisnik} ? #{kv.msg4}+' '+${trenutnoAtribut.korisnik.ime}+' '+${trenutnoAtribut.korisnik.prezime} : #{kv.msg3})"></span>
+   	</h1>
+    <a th:if="not ${trenutnoAtribut.korisnik}" class="btn btn-primary btn-large right" th:href="@{/admin/dodjeljivanje/novi(vin=${trenutnoAtribut.vozilo.vin})}" th:text="#{kv.new}">Novo zaduzenje</a>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h1>Error</h1>
+    <!-- <h1>Error</h1>
      <h4>An unexpected error occurred, <a href="#" class="alert-link">please contact the support team</a>.</h4>
      <div class="alert alert-warning">
      	<p th:text="${error}">error</p>
-     </div>
+     </div> -->
     </div>
+    <div th:if="${trenutnoAtribut}">
     <table th:if="${trenutnoAtribut.korisnik}" class="table table-bordered table-striped table-hover alert alert-info">
     <thead>
       <tr>
@@ -60,42 +63,44 @@
 		</tr>
     </tbody>
   </table>
+  </div>
   <p th:if="not ${trenutnoAtribut}" th:text="'Vozilo nije zaduzeno!'" class="label label-success"/>
   
-  
-  <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
-    <thead>
-      <tr>
-        <th th:text="#{kv.kor}">Consultant</th>
-        <th th:text="#{kv.dod}">Assigned on</th>
-        <th th:text="#{kv.vra}">Returned on</th>
-      </tr>
-    </thead>
-    <tbody>
-	    <tr th:each="assign : ${pager}">
-	    	<td th:text="${assign.korisnik.ime} + ' ' + ${assign.korisnik.prezime}">Consultant Name</td>
-	    	<td th:text="${assign.dodijeljeno} ? ${#dates.format(assign.dodijeljeno, 'dd/MM/yyyy')} : ''">Assigned</td>
-	    	<td th:text="${assign.vraceno} ? ${#dates.format(assign.vraceno, 'dd/MM/yyyy')} : ''">Returned</td>
-		</tr>
-    </tbody>
-  </table>
+  <div th:if="${trenutnoAtribut.korisnik}">
+	  <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
+	    <thead>
+	      <tr>
+	        <th th:text="#{kv.kor}">Consultant</th>
+	        <th th:text="#{kv.dod}">Assigned on</th>
+	        <th th:text="#{kv.vra}">Returned on</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+		    <tr th:each="assign : ${pager}">
+		    	<td th:text="${assign.korisnik.ime} + ' ' + ${assign.korisnik.prezime}">Consultant Name</td>
+		    	<td th:text="${assign.dodijeljeno} ? ${#dates.format(assign.dodijeljeno, 'dd/MM/yyyy')} : ''">Assigned</td>
+		    	<td th:text="${assign.vraceno} ? ${#dates.format(assign.vraceno, 'dd/MM/yyyy')} : ''">Returned</td>
+			</tr>
+	    </tbody>
+	  </table>
    
-  <div class="col-lg-12 center">
-	<ul th:if="${pager.totalPages}>1" class="pagination">
-		<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
-		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
-		<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
-	        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
-	     </li>
-	    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
-		<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
-	</ul>
+	  <div class="col-lg-12 center">
+		<ul th:if="${pager.totalPages}>1" class="pagination">
+			<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
+			<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
+			<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
+		        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
+		     </li>
+		    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
+			<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
+		</ul>
+	  </div>
   </div>
   
 </section>
 
-<div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}">Lista vozila</a>
+<div class="right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}" th:text="#{voz.lis}"></a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

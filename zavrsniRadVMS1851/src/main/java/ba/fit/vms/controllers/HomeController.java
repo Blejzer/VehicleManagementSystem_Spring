@@ -81,7 +81,12 @@ public class HomeController {
 				List<Vozilo> slobodna = new ArrayList<Vozilo>();
 				slobodna = korisnikVoziloRepository.findAllUnassignedV();
 				for (Vozilo vozilo : slobodna) {
-					slobReg.add(regRepository.findByVozilo_VinAndJeAktivnoTrue(vozilo.getVin()));
+					try {
+						slobReg.add(regRepository.findByVozilo_VinAndJeAktivnoTrue(vozilo.getVin()));
+					} catch (Exception e) {
+						System.out.println("poruka je: " + e.getMessage());
+					}
+					
 				}				
 				// KRAJ SLOBODNA VOZILA TAB
 				

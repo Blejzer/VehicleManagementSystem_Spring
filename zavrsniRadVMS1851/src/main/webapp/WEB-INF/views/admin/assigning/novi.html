@@ -12,7 +12,7 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Dodjela vozila</h1>
+    <h1 th:text="#{kv.new}">new assign</h1>
   </div>
 
 <div class="row">
@@ -27,15 +27,15 @@
     
     <input type="hidden" th:field="*{vozilo.vin}" />
           <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
-          <label for="regAtribut.tablica" class="col-lg-2 control-label">Registarske oznake</label>
+          <label for="regAtribut.tablica" class="col-lg-2 control-label" th:text="#{reg.tab}">License plates</label>
             <div class="col-lg-10">
-              	<label th:text="${regAtribut.tablica}" ></label>
+            	<input type="text" th:field="${regAtribut.tablica}" readonly="readonly"  class="form-control input-xlarge"/>
 <!--               <p th:if="${#fields.hasErrors('vozilo.vin')}" class="label label-danger" th:errors="${regAtribut.tablica}">Incorrect VIN</p> -->
             </div>
           </div>
           
           <div class="form-group" th:class="${#fields.hasErrors('korisnik.email')} ? 'form-group has-error' : 'form-group'">
-          <label for="korisnik.email" class="col-lg-2 control-label">Korisnik</label>
+          <label for="korisnik.email" class="col-lg-2 control-label" th:text="#{kv.kor}">User</label>
             <div class="col-lg-10">
               	<select th:field="*{korisnik.email}" class="form-control">
   				<option th:each="korisnik : ${korisnici}" 
@@ -47,24 +47,26 @@
           </div>
           
           <div class="form-group" th:class="${#fields.hasErrors('dodijeljeno')} ? 'form-group has-error' : 'form-group'">
-          <label for="dodijeljeno" class="col-lg-2 control-label">Datum dodjele</label>
+          <label for="dodijeljeno" class="col-lg-2 control-label" th:text="#{kv.dod}">Assign date</label>
             <div class="col-lg-10">
               <input type="date" th:field="*{dodijeljeno}" class="form-control input-xlarge" placeholder="Registration Date" />
               <p th:if="${#fields.hasErrors('dodijeljeno')}" class="label label-danger" th:errors="*{dodijeljeno}">Greska kod datuma dodjele</p>
             </div>
           </div>
  		  <div class="form-group" th:class="${#fields.hasErrors('vraceno')} ? 'form-group has-error' : 'form-group'">
- 		  <label for="vraceno" class="col-lg-2 control-label">Datum vracanja</label>
+ 		  <label for="vraceno" class="col-lg-2 control-label" th:text="#{kv.vra}">return date</label>
             <div class="col-lg-10">
               <input type="date" th:field="*{vraceno}" class="form-control input-xlarge" placeholder="Registration Due Date" />
               <p th:if="${#fields.hasErrors('vraceno')}" class="label label-danger" th:errors="*{vraceno}">Greska kod datuma vracanja</p>
             </div>
           </div>
 		<hr/>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Dodijeli vozilo</button>
-            <a class="btn btn-default" th:href="@{/admin/vozila/}">Odustani</a>
-          </div>
+		<div class="form-group">
+			<div class="form-actions col-lg-10">
+	        	<button type="submit" class="btn btn-primary" th:text="#{kv.btn}">Dodijeli vozilo</button>
+	        	<a class="btn btn-default" th:href="@{/admin/vozila/}" th:text="#{rad.odu}">Odustani</a>
+	        </div>
+        </div>
 	</form>
 	
 </div>

@@ -21,8 +21,8 @@
   <!-- START THE FEATURETTES -->
 
   <div class="featurette">
-    <h2 class="featurette-heading text-center">Sistem Upravljanja Voznim Parkom</h2>
-    <p class="lead"><span class="text-muted"><a th:href="@{/signin}">Molimo, logirajte se ovdje</a></span>. Ukoliko nemate korisnicki nalog, molimo kontaktirajte Vaseg rukovodioca voznog parka ili sistemskog administratora.</p>
+    <h2 class="featurette-heading text-center" th:text="#{title.msg}">Vehicle management system</h2>
+    <p class="lead"><span class="text-muted"><a th:href="@{/signin}" th:text="#{title.log}">Please, Sign in here</a></span><span class="text-muted" th:text="#{title.msg2}"></span></p>
   </div>
 
   <hr class="featurette-divider" />
@@ -38,7 +38,7 @@
     </div>
     <div class="col-md-4 text-center">
       <img class="img-rounded" height="240" width="240" th:src="@{/resources/img/main-auto.png}" />
-      <h2>S.U.V.P.</h2>
+      <h2 th:text="#{title.ttl}"></h2>
       <p></p>
     </div>
     <div class="col-md-4 text-center">
@@ -48,7 +48,7 @@
     
   </div><!-- /.row -->
   <div class="col-md-12 text-center">
-  <h2>Sistem Upravljanja Voznim Parkom</h2>
+  <h2 th:text="#{title.msg}">Vehicle management system</h2>
   </div>
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

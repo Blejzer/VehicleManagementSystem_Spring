@@ -7,14 +7,16 @@
 <div th:include="dodaci/sabloni :: headerFragment"></div>
 
 <div class="container">
-    <p th:text="${errorMessage}">Doslo je do greske!</p>
-    <div class="form-group">
-            <div class="col-lg-offset-2 col-lg-10">
-            <p>Samo SUVP administratoru je dozvoljen pristup ovom dijelu aplikacije.</p>
-                <p>Da li ste administrator? Molimo logirajte se sa administratorskim nalogom <a href="signin" th:href="@{/signin}">Sign In</a></p>
-            </div>
+    
+    <div class="form-group alert alert-danger">
+    	<h2 class=""><span th:text="#{err.msg}"></span><span th:text="${errorMessage}"></span></h2>
+        <div>
+	        <p><span th:text="#{err.acc1}"></span></p>
+	        <p><span th:text="#{err.acc2}"></span><a href="signin" th:href="@{/signin}" th:text="#{sign.in}"></a></p>
+	        <p></p>
+	        <p></p>
         </div>
-    <div th:include="dodaci/sabloni :: footer">&copy; 2014 Nikola Kujaca</div>
+    </div>
 
 	<div th:include="dodaci/sabloni :: footerFragment"></div>
 

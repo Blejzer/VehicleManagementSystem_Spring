@@ -27,14 +27,14 @@
 </script>
 
   <div class="page-header">
-    <h1>Lokacije</h1>
-	<a class="btn btn-primary btn-large right" th:href="@{/admin/lokacije/novi}">Dodaj novu lokaciju</a>
+    <h1 th:text="#{lok.ttl}">Lokacije</h1>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/lokacije/novi}" th:text="#{lok.add}">Add new location</a>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h1>Greska</h1>
-     <h4>Doslo je do neocekivane greske, <a href="#" class="alert-link">molimo kontaktirajte administratora</a>.</h4>
+    <h1 th:text="#{err.msg1}"></h1>
+     <h4 th:text="#{err.msg2}"></h4>
      <div class="alert alert-warning">
      	<p th:text="${error}">error</p>
      </div>
@@ -43,8 +43,8 @@
   <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
-        <th th:text="#{dioTekst.id}">Identifikacijski broj</th>
-        <th th:text="#{dioTekst.naziv}">Naziv dijela</th>
+        <th th:text="#{lok.id}">Identifikacijski broj</th>
+        <th th:text="#{lok.naz}">Naziv dijela</th>
         <th th:text="#{rad.na}">Radnja</th>
         </tr>
     </thead>

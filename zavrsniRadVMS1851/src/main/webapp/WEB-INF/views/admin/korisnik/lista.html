@@ -17,7 +17,7 @@
 		
 <script th:inline="javascript">
  	function deleteObject(id) {
-		bootbox.confirm("Are you sure?", function(result) {
+		bootbox.confirm([[#{msg.ask}]], function(result) {
 			if (result) {
 				var url = /*[[ @{'/admin/korisnici/delete?id='} ]]*/ "genericUrl";
 				url = url+id;
@@ -29,13 +29,13 @@
 
   <div class="page-header">
     <h1>Korisnici</h1>
-    <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-large right" th:href="@{/admin/korisnici/novi}">Novi korisnik</a>
+    <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-large right" th:href="@{/admin/korisnici/novi}" th:text="#{kor.new}">New user</a>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" area-hidden="true">&times;</button>
-    <h1>Greska</h1>
-     <h4>Doslo je do neocekivane greske, <a href="#" class="alert-link">molimo kontaktirajte administratora</a>.</h4>
+    <h1 th:text="#{err.msg1}">Greska</h1>
+     <h4 th:text="#{err.msg2}"></h4>
      <div class="alert alert-warning">
      	<p th:text="${error}">error</p>
      </div>
@@ -45,7 +45,7 @@
     <thead>
       <tr>
         <th th:text="#{kor.id}">AAAAAAA</th>
-        <th th:text="#{kor.mail}">Email</th>
+        <th th:text="#{sign.eml}">Email</th>
         <th th:text="#{kor.ime}">First name</th>
         <th th:text="#{kor.prez}">last name</th>
         <th th:text="#{kor.rol}">Role</th>
@@ -61,8 +61,8 @@
 	    	<td th:text="${korisnik.prezime}">Doe</td>
 	    	<!-- Thymeleaf th:switch metoda 1 -->
 	    	<td th:switch="${korisnik.rola}">
-	        	<span th:case="'ROLE_ADMIN'">ADMINISTRATOR</span> 
-				<span th:case="'ROLE_USER'">User</span>
+	        	<span th:case="'ROLE_ADMIN'" th:text="#{kor.rol1}">ADMINISTRATOR</span> 
+				<span th:case="'ROLE_USER'" th:text="#{kv.kor}">User</span>
 	        </td>
 	        <!-- Thymeleaf th:switch metoda 2 -->
 	        <td th:switch="${korisnik.jeAktivan} ? ${true} : ${false}">

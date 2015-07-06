@@ -21,50 +21,49 @@
 		th:action="@{/admin/korisnici/novi}" method="post" class="form-horizontal well">
     
           <div class="form-group" th:class="${#fields.hasErrors('ime')} ? 'form-group has-error' : 'form-group'">
-          <label for="ime" class="col-lg-2 control-label">Ime: </label>
+          <label for="ime" class="col-lg-2 control-label" th:text="#{kor.ime}">First name: </label>
             <div class="col-lg-10">
               <input type="text" th:field="*{ime}" class="form-control input-xlarge" placeholder="Ime" />
-              <p th:if="${#fields.hasErrors('ime')}" class="label label-danger" th:errors="*{ime}">Neispravno ime</p>
+              <p th:if="${#fields.hasErrors('ime')}" class="label label-danger" th:errors="*{ime}">Incorrect First name</p>
             </div>
           </div>
 
 		<div class="form-group" th:class="${#fields.hasErrors('prezime')} ? 'form-group has-error' : 'form-group'">
-          <label for="prezime" class="col-lg-2 control-label">Prezime: </label>
+          <label for="prezime" class="col-lg-2 control-label" th:text="#{kor.prez}">Last name: </label>
             <div class="col-lg-10">
               <input type="text" th:field="*{prezime}" class="form-control input-xlarge" placeholder="Prezime" />
-              <p th:if="${#fields.hasErrors('prezime')}" class="label label-danger" th:errors="*{prezime}">Neispravno prezime</p>
+              <p th:if="${#fields.hasErrors('prezime')}" class="label label-danger" th:errors="*{prezime}">Incorrect last name</p>
         	</div>
         </div>
         
         <div class="form-group" th:class="${#fields.hasErrors('email')} ? 'form-group has-error' : 'form-group'">
-          <label for="vin" class="col-lg-2 control-label">Email adresa: </label>
+          <label for="vin" class="col-lg-2 control-label" th:text="#{sign.eml}">Email address: </label>
             <div class="col-lg-10">
               <input type="text" th:field="*{email}" class="form-control input-xlarge" placeholder="Email address" />
-              <p th:if="${#fields.hasErrors('email')}" class="label label-danger" th:errors="*{email}">Neispravna email adresa</p>
+              <p th:if="${#fields.hasErrors('email')}" class="label label-danger" th:errors="*{email}">Incorrect email</p>
         	</div>
         </div>
         
         <div class="form-group" th:class="${#fields.hasErrors('lozinka')} ? 'form-group has-error' : 'form-group'">
-          <label for="lozinka" class="col-lg-2 control-label">Lozinka: </label>
+          <label for="lozinka" class="col-lg-2 control-label" th:text="#{sign.pwd}">Pwd: </label>
             <div class="col-lg-10">
               <input type="password" th:field="*{lozinka}" class="form-control input-xlarge" placeholder="Lozinka" />
-              <p th:if="${#fields.hasErrors('lozinka')}" class="label label-danger" th:errors="*{lozinka}">Neispravna lozinka</p>
+              <p th:if="${#fields.hasErrors('lozinka')}" class="label label-danger" th:errors="*{lozinka}">Incorrect password</p>
         	</div>
         </div>
         
         <div class="form-group" th:class="${#fields.hasErrors('rola')} ? 'form-group has-error' : 'form-group'">
-          <label for="rola" class="col-lg-2 control-label">Rola: </label>
+          <label for="rola" class="col-lg-2 control-label" th:text="#{kor.rol}">Role: </label>
             <div class="col-lg-4">
               <select th:field="*{rola}" class="form-control">
-                <option value="ROLE_USER">User</option>
-                <option value="ROLE_ADMIN">Admin</option>
+                <option value="ROLE_USER" th:text="#{kv.kor}">User</option>
+                <option value="ROLE_ADMIN" th:text="#{kor.rol1}">Admin</option>
               </select>
         	</div>
-        	<label for="jeAktivan" class="col-lg-2 control-label">Aktivan?</label>
+        	<label for="jeAktivan" class="col-lg-2 control-label" th:text="#{kor.je}">Active?</label>
         	<div class="col-lg-4">
         	<label class="checkbox">
-                <input type="checkbox" th:field="*{jeAktivan}" />
-                Aktiviraj korisnika
+                <input type="checkbox" th:field="*{jeAktivan}" th:text="#{kor.msg1}"/>
               </label>
         	</div>
               <p th:if="${#fields.hasErrors('rola')}" class="label label-danger" th:errors="*{rola}">Neispravna rola</p>
@@ -73,8 +72,8 @@
         
 		<hr/>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Unesi korisnika</button>
-            <a class="btn btn-default" th:href="@{/admin/korisnici/}">Odustani</a>
+            <button type="submit" class="btn btn-primary" th:text="#{kor.btn}">Save user</button>
+            <a class="btn btn-default" th:href="@{/admin/korisnici/}" th:text="#{rad.odu}">Cancel</a>
           </div>
 	</form>
 	
@@ -82,7 +81,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/korisnici/}">Nazad na listu</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/korisnici/}" th:text="#{rad.nal}">Back to the list</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

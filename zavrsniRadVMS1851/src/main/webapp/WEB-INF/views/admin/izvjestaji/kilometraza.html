@@ -19,11 +19,8 @@
 				th:if="${error != null}">
 				<button type="button" class="close" data-dismiss="alert"
 					aria-hidden="true">&times;</button>
-				<h1>Error</h1>
-				<h4>
-					An unexpected error occurred, <a href="#" class="alert-link">please
-						contact the support team</a>.
-				</h4>
+				<h1 th:text="#{err.msg1}"></h1>
+				<h4 th:text="#{err.msg2"></h4>
 				<div class="alert alert-warning">
 					<p th:text="${error}">error</p>
 				</div>
@@ -40,7 +37,7 @@
 						</tr>
 						<tr>
 							<th class="text-center h4" th:text="#{lk.dat}">Datum</th>
-							<th class="text-center h4" th:text="#{lk.lok}">Mjesto</th>
+							<th class="text-center h4" th:text="#{lok.one}">Mjesto</th>
 							<th class="text-center h4" th:text="#{kv.kor}">Korisnik</th>
 							<th class="text-center h4" th:text="#{lk.zad}">Zadnja kilometraža</th>
 						</tr>
@@ -56,41 +53,12 @@
 						
 					</tbody>
 				</table>
-				<!-- <table class="table table-bordered table-striped table-hover" th:with="total=${#arrays.toArray(kilometraze.value.![kilometraza])}">
-					<thead>
-						<tr class="success">
-							<th class="text-center h3" colspan="3"><a th:href="@{/admin/kilo/lista(vin=${kilometraze.key.vozilo.vin})}"><span  th:text="${kilometraze.key.tablica}"></span></a></th>
-							<th class="text-center h3" colspan="2"><a class="btn btn-success btn-sm btn-large right" th:href="@{/admin/kilo/nova(vin=${kilometraze.key.vozilo.vin})}">Nova Kilometraza</a></th>
-						</tr>
-						<tr>
-							<th class="text-center h4">Datum</th>
-							<th class="text-center h4">Kilometraza</th>
-							<th class="text-center h4">Lokacija</th>
-							<th class="text-center h4">Radnje</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="kilo : ${kilometraze.value}">
-							<td class="col-md-3" th:text="${#calendars.format(kilo.datum,'dd MMMM yyyy')}">date</td>
-							<td class="col-md-3" th:text="${kilo.kilometraza}">Type</td>
-							<td class="col-md-2" th:text="${kilo.lokacija.naziv}">Type</td>
-							<td class="col-md-2 center"><a class="btn btn-info btn-sm" th:href="@{/admin/kilo/izmjena(id=${kilo.id})}"><i class="glyphicon glyphicon-list-alt"></i> 
-								<span th:text="#{rad.prk}">Show action</span></a></td>
-						</tr>
-						<tr th:class="'info'">
-						<td class="col-md-3"><strong>VOZILO JE PRESLO UKUPNO: </strong></td>
-								<td class="col-md-3"><strong th:text="(${total[0]}-${zAtribut[status.index].kilometraza})"></strong></td>
-							<td class="col-md-2" ></td>
-							<td class="col-md-2 center"></td>
-								</tr>
-					</tbody>
-				</table> -->
 			</div>
 			<div th:if="${pregledAtribut !=null}">
 				<div th:if="${pregledAtribut.isEmpty()}">
 
 					<span>
-						<h3>Nema unesenih kilometraza za odabrani period</h3>
+						<h3 th:text="#{lk.msg1}">Nema unesenih kilometraza za odabrani period</h3>
 					</span>
 
 				</div>

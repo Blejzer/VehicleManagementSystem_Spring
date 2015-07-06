@@ -29,75 +29,66 @@
 						<ul class="nav navbar-nav navbar-test">
 							<li class="navbar-brand"><img class="info"
 							height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
-							<li><a th:href="@{/}">Početna</a></li>
+							<li><a th:href="@{/}" th:text="#{mn.1}">Start</a></li>
 							<li th:if="${#authorization.expression('isAuthenticated()')}">
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown">Vozila <b class="caret"></b></a>
+								data-toggle="dropdown"><span th:text="#{mn.2}">Vehicles</span><b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li><a th:href="@{/admin/vozila/}">Lista vozila</a></li>
+										<li><a th:href="@{/admin/vozila/}" th:text="#{mn.2.1}">Vehicles list</a></li>
 										<li class="divider"></li>
-										<li><a th:href="@{/admin/vozila/novi}">Dodaj novo
-												vozilo</a></li>
+										<li><a th:href="@{/admin/vozila/novi}" th:text="#{mn.2.2}">Add new vehicle</a></li>
 									</ul>
 								</li>
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
-									data-toggle="dropdown">Korisnici <b class="caret"></b></a>
+									data-toggle="dropdown"><span th:text="#{mn.3}">Users</span> <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li><a th:href="@{/admin/korisnici/}">Lista korisnika</a></li>
+										<li><a th:href="@{/admin/korisnici/}" th:text="#{mn.3.1}">Users list</a></li>
 										<li class="divider"></li>
-										<li><a th:href="@{/admin/korisnici/novi}">Dodaj novog
-												korisnika</a></li>
+										<li><a th:href="@{/admin/korisnici/novi}" th:text="#{mn.3.2}">Add new user</a></li>
 									</ul>
 								</li>
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
-									data-toggle="dropdown">Kilometraža<b class="caret"></b></a>
+									data-toggle="dropdown"><span th:text="#{mn.4}">Mileage</span> <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li><a th:href="@{/admin/kilo/pregled}">Pregled</a></li>
-										<li><a th:href="@{/admin/kilo/izvjestaj}">Mjesečni</a></li>
+										<li><a th:href="@{/admin/kilo/pregled}" th:text="#{mn.4.1}">Overview</a></li>
+										<li><a th:href="@{/admin/kilo/izvjestaj}" th:text="#{mn.4.2}">Monthly</a></li>
 									</ul>
 								</li>
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
-									data-toggle="dropdown">Servis<b class="caret"></b></a>
+									data-toggle="dropdown"><span th:text="#{mn.5}">Service</span> <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li><a th:href="@{/admin/servis/pretraga}">Pretraga
-												servisa</a></li>
-										<li><a th:href="@{/admin/dio/lista}">Dijelovi</a></li>
-										<li><a th:href="@{/admin/vrstaServisa/}">Vrste servisa</a></li>
+										<li><a th:href="@{/admin/servis/pretraga}" th:text="#{mn.5.1}">Service search</a></li>
+										<li><a th:href="@{/admin/dio/lista}" th:text="#{mn.5.2}">Parts</a></li>
+										<li><a th:href="@{/admin/vrstaServisa/}" th:text="#{mn.5.3}">Service types</a></li>
 									</ul>
 								</li>
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
-									data-toggle="dropdown">Podrška <b class="caret"></b></a>
+									data-toggle="dropdown"><span th:text="#{mn.6}">Support</span> <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-									<li><a th:href="@{/korisnik/tiketi/lista}">Svi tiketi</a></li>
-										<li><a th:href="@{/korisnik/tiketi/nerijeseni}">Tiketi na čekanju</a></li>
-										<li><a th:href="@{/korisnik/tiketi/rijeseni}">Riješeni tiketi</a></li>
+									<li><a th:href="@{/korisnik/tiketi/lista}" th:text="#{mn.6.1}">Svi tiketi</a></li>
+										<li><a th:href="@{/korisnik/tiketi/nerijeseni}" th:text="#{mn.6.2}">Tiketi na čekanju</a></li>
+										<li><a th:href="@{/korisnik/tiketi/rijeseni}" th:text="#{mn.6.3}">Riješeni tiketi</a></li>
 									</ul>
 								</li>
 							</li>
 							<li>
 							<ul class="nav navbar-nav">
 								<li th:if="${#authorization.expression('!isAuthenticated()')}"><a
-									href="/signin" th:href="@{/signin}">Sign in</a></li>
+									href="/signin" th:href="@{/signin}" th:text="#{mn.7}">Sign in</a></li>
 								<li th:if="${#authorization.expression('isAuthenticated()')}"><a
-									href="/logout" th:href="@{/logout}">Logout</a></li>
+									href="/logout" th:href="@{/logout}" th:text="#{mn.8}">Logout</a></li>
 							</ul>
 							</li>
 							<li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
 						</ul>
-						
-					
 					</div>
-					
-
 				</div>
 			</div>
 			<!-- /container -->
 		</div>
 		<!-- /navbar wrapper -->
-
 		<hr class="featurette-divider" />
 	</header>
-
 
 	<header id="headerFragment" th:fragment="headerFragment">
 		<div class="navbar-wrapper">
@@ -106,16 +97,16 @@
 					<div class="navbar-collapse collapse">
 						<ul class="nav navbar-nav navbar-test">
 							<li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
-							<li><a th:href="@{/}">Početna</a></li>
+							<li><a th:href="@{/}" th:text="#{mn.1}">Start</a></li>
 							<li th:if="${#authorization.expression('isAuthenticated()')}">
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
-									data-toggle="dropdown">Podrška <b class="caret"></b></a>
+									data-toggle="dropdown"><span th:text="#{mn.6}">Support</span> <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-									<li><a th:href="@{/korisnik/tiketi/lista}">Svi tiketi</a></li>
-										<li><a th:href="@{/korisnik/tiketi/nerijeseni}">Tiketi na čekanju</a></li>
-										<li><a th:href="@{/korisnik/tiketi/rijeseni}">Riješeni tiketi</a></li>
+									<li><a th:href="@{/korisnik/tiketi/lista}" th:text="#{mn.6.1}">Svi tiketi</a></li>
+										<li><a th:href="@{/korisnik/tiketi/nerijeseni}" th:text="#{mn.6.2}">Tiketi na čekanju</a></li>
+										<li><a th:href="@{/korisnik/tiketi/rijeseni}" th:text="#{mn.6.3}">Riješeni tiketi</a></li>
 										<li class="divider"></li>
-										<li th:if="${kvAtribut}"><a th:href="@{/korisnik/tiketi/novi(vin=${kvAtribut.vozilo.vin})}">Novi tiket</a></li>
+										<li th:if="${kvAtribut}"><a th:href="@{/korisnik/tiketi/novi(vin=${kvAtribut.vozilo.vin})}" th:text="#{mn.6.4}">Novi tiket</a></li>
 									</ul>
 								</li>
 							</li>
@@ -123,9 +114,9 @@
 								<ul class="nav navbar-nav">
 									<li class="active"
 										th:if="${#authorization.expression('!isAuthenticated()')}"><a
-										href="/signin" th:href="@{/signin}">Sign in</a></li>
+										href="/signin" th:href="@{/signin}" th:text="#{mn.7}">Sign in</a></li>
 									<li th:if="${#authorization.expression('isAuthenticated()')}"><a
-										href="/logout" th:href="@{/logout}">Logout</a></li>
+										href="/logout" th:href="@{/logout}" th:text="#{mn.8}">Logout</a></li>
 								</ul>
 							</li>
 							<li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
@@ -148,11 +139,10 @@
 
 		<hr />
 		<p class="pull-right">
-			<a href="#">Natrag na vrh</a>
+			<a href="#" th:text="#{btt}">Back to the top</a>
 		</p>
-		<p>
-			© 2014 Nikola Kujača · <a href="#">Uslovi korištenja</a> · <a
-				href="#">Politika privatnosti</a> · <a href="#">Pomoć</a>
+		<p><span  th:text="#{cpr}" /> · <a href="#"  th:text="#{con}">Conditions</a> · <a
+				href="#" th:text="#{pp}">Privacy policy</a> · <a href="#" th:text="#{hlp}">Help</a>
 		</p>
 		<hr />
 	</footer>

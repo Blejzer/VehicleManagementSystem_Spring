@@ -11,14 +11,14 @@
 
 			bootbox
 					.dialog({
-						message : "Kilometrazu mozete unijeti samo ako je vozilo dodijeljeno.",
-						title : "Da li zelite sada dodijeliti vozilo?",
+						message : [[#{voz.msg4}]],
+						title : [[#{voz.msg3}]],
 						buttons : {
 							success : {
-								label : "Da, zelim",
+								label : [[#{voz.msg.d}]],
 								className : "btn-success",
 								callback : function() {
-									var url = /*[[ @{'/admin/dodjeljivanje/?vin='} ]]*/"genericUrl";
+									var url = /*[[ @{'/admin/dodjeljivanje/novi?vin='} ]]*/"genericUrl";
 									var vin = [[${voziloAtribut.vin}]]; 
 									// [[${Objekat}]] je nacin na koji u javascript proslijedjujemo model atribut
 									url = url + vin;
@@ -26,7 +26,7 @@
 								}
 							},
 							danger : {
-								label : "Ne, vrati me nazad",
+								label : [[#{voz.msg.n}]],
 								className : "btn-danger",
 								callback : function() {
 									var url = /*[[ @{'/admin/vozila/'}]]*/"genericUrl";

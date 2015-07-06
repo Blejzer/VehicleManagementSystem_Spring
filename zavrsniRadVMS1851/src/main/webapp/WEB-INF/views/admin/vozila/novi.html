@@ -12,7 +12,7 @@
 
 		<section id="object">
 			<div class="page-header">
-				<h1>Dodaj novi dio</h1>
+				<h1 th:text="#{voz.ttl3}">Add new vehicle</h1>
 			</div>
 
 			<div class="row">
@@ -22,7 +22,7 @@
 
 					<div class="form-group"
 						th:class="${#fields.hasErrors('vin')} ? 'form-group has-error' : 'form-group'">
-						<label for="vin" class="col-lg-2 control-label">VIN Broj:
+						<label for="vin" class="col-lg-2 control-label" th:text="#{voz.vin}">VIN No:
 						</label>
 						<div class="col-lg-10">
 							<input type="text" th:field="*{vin}"
@@ -33,7 +33,7 @@
 					</div>
 					<div class="form-group"
 						th:class="${#fields.hasErrors('marka')} ? 'form-group has-error' : 'form-group'">
-						<label for="marka" class="col-lg-2 control-label">Marka: </label>
+						<label for="marka" class="col-lg-2 control-label" th:text="#{voz.mar}">Make: </label>
 						<div class="col-lg-10">
 							<input type="text" th:field="*{marka}"
 								class="form-control input-xlarge" placeholder="Marka vozila" />
@@ -44,7 +44,7 @@
 					</div>
 					<div class="form-group"
 						th:class="${#fields.hasErrors('model')} ? 'form-group has-error' : 'form-group'">
-						<label for="model" class="col-lg-2 control-label">Model
+						<label for="model" class="col-lg-2 control-label" th:text="#{voz.mod}">Model
 							vozila: </label>
 						<div class="col-lg-10">
 							<input type="text" th:field="*{model}"
@@ -56,7 +56,7 @@
 					</div>
 					<div class="form-group"
 						th:class="${#fields.hasErrors('godina')} ? 'form-group has-error' : 'form-group'">
-						<label for="godina" class="col-lg-2 control-label">Godina
+						<label for="godina" class="col-lg-2 control-label" th:text="#{voz.god}">Year
 							proizvodnje: </label>
 						<div class="col-lg-10">
 							<input type="text" th:field="*{godina}"
@@ -68,7 +68,7 @@
 					</div>
 					<div class="form-group"
 						th:class="${#fields.hasErrors('boja')} ? 'form-group has-error' : 'form-group'">
-						<label for="boja" class="col-lg-2 control-label">Boja
+						<label for="boja" class="col-lg-2 control-label" th:text="#{voz.boj}">Color
 							vozila: </label>
 						<div class="col-lg-10">
 							<input type="text" th:field="*{boja}"
@@ -80,9 +80,8 @@
 					</div>
 					<hr />
 					<div class="form-actions">
-						<button type="submit" class="btn btn-primary">Dodaj
-							vozilo</button>
-						<a class="btn btn-default" th:href="@{/admin/vozila/}">Odustani</a>
+						<button type="submit" class="btn btn-primary" th:text="#{voz.btn}">Save vehicle</button>
+						<a class="btn btn-default" th:href="@{/admin/vozila/}" th:text="#{rad.odu}">Cancel</a>
 					</div>
 				</form>
 
@@ -90,8 +89,7 @@
 		</section>
 
 		<div class="row right">
-			<a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}">Natrag
-				na listu</a>
+			<a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}" th:text="#{rad.nal}">Back to the list</a>
 		</div>
 
 		<div th:include="dodaci/sabloni :: footerFragment"></div>

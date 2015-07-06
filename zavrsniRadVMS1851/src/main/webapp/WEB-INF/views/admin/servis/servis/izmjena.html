@@ -12,7 +12,7 @@
 
 <section id="object">
   <div class="page-header">
-    <h1>Izmjena servisa</h1>
+    <h1 th:text="#{s.ttl1}">Service change</h1>
   </div>
 
 <div class="row">
@@ -25,21 +25,21 @@
 		<input type="hidden" th:field="*{lokacijaKilometraza.id}" />
 		<input type="hidden" th:field="*{lokacijaKilometraza.korisnikVozilo.id}"/>
           <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
-          <label for="vozilo.vin" class="col-lg-3 control-label">Registarske oznake: </label>
+          <label for="vozilo.vin" class="col-lg-3 control-label" th:text="#{reg.tab}">plates: </label>
             <div class="col-lg-9">
               	<input type="text" th:field="${rAtribut.tablica}" class="form-control input-xlarge" placeholder="License Plate" readonly="readonly"/>
               <p th:if="${#fields.hasErrors('vozilo.vin')}" class="label label-danger" th:errors="*{vozilo.vin}">Incorrect LP</p>
             </div>
           </div>    
           <div class="form-group" th:class="${#fields.hasErrors('datum')} ? 'form-group has-error' : 'form-group'">
-          <label for="datum" class="col-lg-3 control-label">Datum servisa: </label>
+          <label for="datum" class="col-lg-3 control-label" th:text="#{s.dat}">Service date: </label>
             <div class="col-lg-9">
               <input type="date" th:field="*{datum}" class="form-control input-xlarge" placeholder="Servis Date" />
               <p th:if="${#fields.hasErrors('datum')}" class="label label-danger" th:errors="*{datum}">Incorrect Date</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('vrstaServisa.id')} ? 'form-group has-error' : 'form-group'">
-          <label for="vrstaServisa.id" class="col-lg-3 control-label">Vrsta Servisa: </label>
+          <label for="vrstaServisa.id" class="col-lg-3 control-label" th:text="#{s.st}">Service type: </label>
             <div class="col-lg-9">
               	<select th:field="*{vrstaServisa.id}" class="form-control">
   				<option th:each="servisType : ${vAtribut}" 
@@ -50,35 +50,35 @@
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('djelovi')} ? 'form-group has-error' : 'form-group'">
-          <label for="djelovi" class="col-lg-3 control-label">Dijelovi: </label>
+          <label for="djelovi" class="col-lg-3 control-label" th:text="#{d.ttl1}">Parts: </label>
             <div class="col-lg-9">
               	<select class="form-control" th:field="*{djelovi}" multiple="multiple" >
   				<option th:each="part : ${dAtribut}"
   						th:value="${part.id}"
-          				th:text="${part.naziv} + ' ' + ${sAtribut.djelovi.contains(part)}">Part name</option>
+          				th:text="${part.naziv}">Part name</option>
 				</select>
               <p th:if="${#fields.hasErrors('djelovi')}" class="label label-danger" th:errors="*{djelovi}">Incorrect part ID</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('zavrsen')} ? 'form-group has-error' : 'form-group'">
-          <label for="zavrsen" class="col-lg-3 control-label">Da li je servis zavrsen?</label>
+          <label for="zavrsen" class="col-lg-3 control-label" th:text="#{s.msg}">Completed?</label>
             <div class="col-lg-9">
               <select th:field="*{zavrsen}" class="form-control">
-                <option value="true">Da</option>
-                <option value="false">Ne</option>
+                <option value="true" th:text="#{msg.d}">yes</option>
+                <option value="false" th:text="#{msg.n}">no</option>
               </select>
               <p th:if="${#fields.hasErrors('zavrsen')}" class="label label-danger" th:errors="*{zavrsen}">Incorrect checkbox</p>
             </div>
           </div>
           <div class="form-group" th:class="${#fields.hasErrors('lokacijaKilometraza.kilometraza')} ? 'form-group has-error' : 'form-group'">
-          <label for="lokacijaKilometraza.kilometraza" class="col-lg-3 control-label">Trenutna kilometraza</label>
+          <label for="lokacijaKilometraza.kilometraza" class="col-lg-3 control-label" th:text="#{lk.tre}">current mileage</label>
             <div class="col-lg-9">
               	<input type="text" th:field="*{lokacijaKilometraza.kilometraza}" class="form-control input-xlarge" placeholder="Kilometraza"/>
               <p th:if="${#fields.hasErrors('lokacijaKilometraza.kilometraza')}" class="label label-danger" th:errors="*{lokacijaKilometraza.kilometraza}">Incorrect LP</p>
             </div>
           </div>
 		  <div class="form-group" th:class="${#fields.hasErrors('lokacijaKilometraza.lokacija')} ? 'form-group has-error' : 'form-group'">
-          	<label for="lokacijaKilometraza.lokacija" class="col-lg-3 control-label">Lokacija:</label>
+          	<label for="lokacijaKilometraza.lokacija" class="col-lg-3 control-label" th:text="#{lok.one}">Location:</label>
           	<div class="col-lg-9">
 				<select th:field="*{lokacijaKilometraza.lokacija}" class="form-control">
   					<option th:each="lok : ${lAtribut}" 
@@ -91,8 +91,8 @@
 		<hr/>
           <div class="form-actions">
           <label class= "col-lg-1"></label>
-            <button type="submit" class="btn btn-primary">Izmjeni servis</button>
-            <a class="btn btn-default" th:href="@{/admin/servis/lista(vin=${sAtribut.vozilo.vin})}">Odustani</a>
+            <button type="submit" class="btn btn-primary" th:text="#{s.btn}">Save service</button>
+            <a class="btn btn-default" th:href="@{/admin/servis/lista(vin=${sAtribut.vozilo.vin})}" th:text="#{rad.odu}">Cancel</a>
           </div>
 	</form>
 	
@@ -100,7 +100,7 @@
 </section>
 
 <div class="row right">
-  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}">Natrag na listu</a>
+  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}" th:text="#{rad.nal}">Back to the list</a>
 </div> 
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

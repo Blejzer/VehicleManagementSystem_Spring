@@ -16,7 +16,7 @@
 		
 <script th:inline="javascript">
  	function deleteObject(id) {
-		bootbox.confirm("Da li ste sigurni?", function(result) {
+		bootbox.confirm([[#{msg.ask}]], function(result) {
 			if (result) {
 				var url = /*[[ @{'/admin/registracije/izbrisi?id='} ]]*/ "genericUrl";
 				url = url+id;
@@ -27,19 +27,19 @@
 </script>
 
   <div class="page-header">
-    <h1>Registracije za vozilo: <span th:text="${vozilo.vin}+' '+${vozilo.marka}+' '+${vozilo.model}"></span></h1>
-	<a class="btn btn-primary btn-large right" th:href="@{/admin/registracija/novi(vin=${vozilo.vin})}">Nova registracija</a>
+    <h1><span th:text="#{reg.all}+' '+${vozilo.vin}+' '+${vozilo.marka}+' '+${vozilo.model}"></span></h1>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/registracija/novi(vin=${vozilo.vin})}" th:text="#{reg.new}"></a>
   </div>
   
   <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
-        <th th:text="#{registrationList.tablica}">Tablice</th>
-        <th th:text="#{registrationList.regOd}">AAAAAAA</th>
-        <th th:text="#{registrationList.regDo}">License Plates</th>
-        <th th:text="#{registrationList.osigOd}">Make</th>
-        <th th:text="#{registrationList.osigDo}">Model</th>
-        <th th:text="#{registrationList.current}">Year</th>
+        <th th:text="#{reg.tab}">Tablice</th>
+        <th th:text="#{reg.rod}">AAAAAAA</th>
+        <th th:text="#{reg.rdo}">License Plates</th>
+        <th th:text="#{reg.ood}">Make</th>
+        <th th:text="#{reg.odo}">Model</th>
+        <th th:text="#{reg.cur}">Year</th>
         <th th:text="#{rad.na}">Actions</th>
       </tr>
     </thead>
@@ -66,7 +66,7 @@
 		<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
 		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
 		<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
-	        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>Broj stranice</span></a>
+	        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
 	     </li>
 	    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
 		<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
@@ -74,7 +74,7 @@
   </div>
   <div class="page-footer" align="right">
 
-	<a class="btn btn-primary btn-large right" th:href="@{/admin/vozila/}">Natrag na listu vozila</a>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/vozila/}" th:text="#{rad.nal}"></a>
   </div>
   
 </section>

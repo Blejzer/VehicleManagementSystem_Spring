@@ -27,14 +27,14 @@
 </script>
 
   <div class="page-header">
-    <h1>Dijelovi</h1>
-	<a class="btn btn-primary btn-large right" th:href="@{/admin/dio/novi}">Dodaj novi dio</a>
+    <h1 th:text="#{d.ttl1}">Dijelovi</h1>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/dio/novi}" th:text="#{d.ttl2}">Dodaj novi dio</a>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h1>Greska</h1>
-     <h4>Doslo je do neocekivane greske, <a href="#" class="alert-link">molimo kontaktirajte administratora</a>.</h4>
+    <h1 th:text="#{err.msg1}">Greska</h1>
+     <h4 th:text="#{err.msg2}"></h4>
      <div class="alert alert-warning">
      	<p th:text="${error}">error</p>
      </div>
@@ -43,9 +43,9 @@
   <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
-        <th th:text="#{dioTekst.id}">Identifikacijski broj</th>
-        <th th:text="#{dioTekst.naziv}">Naziv dijela</th>
-        <th th:text="#{dioTekst.sb}">Serijski broj</th>
+        <th th:text="#{d.id}">Identifikacijski broj</th>
+        <th th:text="#{d.naz}">Naziv dijela</th>
+        <th th:text="#{d.sb}">Serijski broj</th>
         <th th:text="#{rad.na}">Radnja</th>
         </tr>
     </thead>

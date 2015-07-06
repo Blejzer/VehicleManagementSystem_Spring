@@ -18,8 +18,8 @@
   <!-- START THE FEATURETTES -->
 
   <div class="featurette">
-    <h2 class="featurette-heading">Dobrodosli <span th:text="${user}"></span>,</h2>
-    <p class="lead">Koristite gornji meni da navigirate SUVP-om kako bi ste vidjeli informacije o Vasem vozilu i dobili pomoc.</p>
+    <h2 class="featurette-heading"><span th:text="#{wlk.1}+' '+${user}"></span>,</h2>
+    <p class="lead" th:text="#{info.kor}">help text</p>
   </div>
 
   <hr class="featurette-divider" />
@@ -29,12 +29,12 @@
     <table class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
-        <th th:text="#{vehicleList.vin}">VIN</th>
-        <th th:text="#{vehicleList.plates}">License Plate</th>
-        <th th:text="#{vehicleList.make}">Make</th>
-        <th th:text="#{vehicleList.model}">Model</th>
-        <th th:text="#{vehicleList.year}">Year</th>
-        <th th:text="#{vehicleList.color}">Color</th>
+        <th th:text="#{voz.vin}">VIN</th>
+        <th th:text="#{reg.tab}">License Plate</th>
+        <th th:text="#{voz.mar}">Make</th>
+        <th th:text="#{voz.mod}">Model</th>
+        <th th:text="#{voz.god}">Year</th>
+        <th th:text="#{voz.boj}">Color</th>
         <th th:text="#{rad.na}">Actions</th>
       </tr>
     </thead>

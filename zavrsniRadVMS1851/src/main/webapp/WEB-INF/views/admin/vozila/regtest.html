@@ -11,11 +11,11 @@
 
 			bootbox
 					.dialog({
-						message : "Ukoliko jeste unesite, unesite detalje.",
-						title : "Da li je vozilo registrovano?",
+						message : [[#{voz.msg1}]],
+						title : [[#{voz.msg2}]],
 						buttons : {
 							success : {
-								label : "Jeste",
+								label : [[#{msg.d}]],
 								className : "btn-success",
 								callback : function() {
 									var url = /*[[ @{'/admin/registracija/novi?vin='} ]]*/"genericUrl";
@@ -26,7 +26,7 @@
 								}
 							},
 							danger : {
-								label : "Nije",
+								label : [[#{msg.n}]],
 								className : "btn-danger",
 								callback : function() {
 									var url = /*[[ @{'/admin/vozila/'}]]*/"genericUrl";

@@ -27,14 +27,14 @@
 </script>
 
   <div class="page-header">
-    <h1>Servisi za vozilo <span th:text="${rAtribut.tablica}"></span></h1>
-	<a class="btn btn-primary btn-large right" th:href="@{/admin/servis/novi(vin=${rAtribut.vozilo.vin})}">Dodaj novi servis</a>
+    <h1 th:text="#{s.ttl2}+ ' ' + ${rAtribut.tablica}"></h1>
+	<a class="btn btn-primary btn-large right" th:href="@{/admin/servis/novi(vin=${rAtribut.vozilo.vin})}" th:text="#{s.new}">New servis</a>
   </div>
   
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h1>Error</h1>
-     <h4>An unexpected error occurred, <a href="#" class="alert-link">please contact the support team</a>.</h4>
+    <h1 th:text="#{err.msg1}">Error</h1>
+     <h4 th:text="#{err.msg2}"></h4>
      <div class="alert alert-warning">
      	<p th:text="${error}">error</p>
      </div>
@@ -46,7 +46,7 @@
         <th th:text="#{s.dat}">111111</th>
         <th th:text="#{s.za}">Part name</th>
         <th th:text="#{s.st}">Serial No.</th>
-        <th th:text="#{s.kk}">111111</th>
+        <th th:text="#{rad.klm}">111111</th>
         <th th:text="#{rad.na}">ACTIONS</th>
         </tr>
     </thead>
