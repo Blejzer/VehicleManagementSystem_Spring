@@ -38,6 +38,7 @@ public class KorisnikWebController {
 
 	@Autowired
 	private KorisnikValidatorForme korisnikValidatorForme;
+	
 
 	/**
 	 * Mapiramo view nakon uspjesnog logina koji nam proslijedjuje SigninController
@@ -195,5 +196,135 @@ public class KorisnikWebController {
 		model.addAttribute("pager", korisnikRepository.findAll(pageable));
 		return "/admin/korisnik/lista";
 	}
+	
+	/**
+	 * Get za pretrazivanje korisnika!
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = {"/admin/korisnici/pretraga1"}, method = RequestMethod.GET)
+	public String getPretraga1Korisnici(HttpServletRequest request, HttpServletResponse response, Model model){
 
+		System.out.println("Get pretraga1");
+		System.out.println("letter: "+request.getParameter("letter"));
+		System.out.println("page: "+request.getParameter("page"));
+		
+		String letter = "";
+		
+		if(request.getParameter("letter")!=null){
+			letter = request.getParameter("letter");
+		}
+		
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+		int pageSize = 4;
+		Pageable pageable = new PageRequest(page, pageSize);
+		System.out.println("page: "+pageable.getPageNumber());
+		
+		if(letter!=""){
+			String l = letter+"%";
+			try {
+				model.addAttribute("pager", korisnikRepository.findByImeLikeOrPrezimeLike(l, l, pageable));
+				System.out.println("uradio slovo: "+korisnikRepository.findByImeLikeOrPrezimeLike(l, l, pageable).getTotalElements());
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			
+		}else{
+			try {
+				model.addAttribute("pager", korisnikRepository.findAll(pageable));
+				System.out.println("uradio sve: ");
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		model.addAttribute("letter", letter);
+		return "/admin/korisnik/lista";
+	}
+	
+	/**
+	 * Get za pretrazivanje korisnika!
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = {"/admin/korisnici/pretraga2"}, method = RequestMethod.GET)
+	public String getPretraga2Korisnici(HttpServletRequest request, HttpServletResponse response, Model model){
+
+		System.out.println("Get pretraga1");
+		System.out.println("name: "+request.getParameter("name"));
+		System.out.println("isActive: "+request.getParameter("isActive"));
+		System.out.println("page: "+request.getParameter("page"));
+		
+		String name = "";
+		String isActiveString = "";
+		
+		if(request.getParameter("name")!=null){
+			name = request.getParameter("name");
+		}
+		if(request.getParameter("isActive")!=null){
+			isActiveString = request.getParameter("isActive");
+		}
+		
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+		int pageSize = 4;
+		Pageable pageable = new PageRequest(page, pageSize);
+		System.out.println("page: "+pageable.getPageNumber());
+		
+		if(name!=""){
+			String imePrezime = "%"+name+"%";
+			if(isActiveString!=""){
+				Boolean isActive = Boolean.valueOf(isActiveString);
+				try {
+					if(isActive){
+						model.addAttribute("pager", korisnikRepository.findByImeLikeOrPrezimeLikeAndJeAktivanTrue(imePrezime, imePrezime, pageable));
+					}else{
+						model.addAttribute("pager", korisnikRepository.findByImeLikeOrPrezimeLikeAndJeAktivanFalse(imePrezime, imePrezime, pageable));
+					}
+					System.out.println("uradio imePrezime i jeAktivno: "+imePrezime+" "+request.getParameter("isActive"));
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			} else{
+				try {
+					model.addAttribute("pager", korisnikRepository.findByImeLikeOrPrezimeLike(imePrezime, imePrezime, pageable));
+					System.out.println("uradio imePrezime: "+imePrezime);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		}else{
+			if(isActiveString!=""){
+				Boolean isActive = Boolean.valueOf(request.getParameter("isActive"));
+				try {
+					if(isActive){
+						model.addAttribute("pager", korisnikRepository.findByJeAktivanTrue(pageable));
+					}else{
+						model.addAttribute("pager", korisnikRepository.findByJeAktivanFalse(pageable));
+					}
+					System.out.println("uradio jeAktivno: "+isActiveString);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			} else{
+				try {
+					model.addAttribute("pager", korisnikRepository.findAll(pageable));
+					System.out.println("uradio sve: ");
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+		model.addAttribute("name", name);
+		model.addAttribute("isActive", isActiveString);
+		return "/admin/korisnik/lista";
+	}
 }

@@ -1,23 +1,26 @@
 Za uraditi:
 - Srediti UTF-8 - RIJESENO ( u @Bean(name = "messageSource") dodao messageSource.setDefaultEncoding("UTF-8"); )
-- Tiketi
-  - srediti vezivanje tiketa i odgovore na vezane tikete
-  - dodati view-ove za novi, pregled pretragu 
-- dodati triger na bazu i pozivanje skripti na bazi
 - Frontpage
   - kilometraza - RIJESENO
   - servis - RIJESENO
   - zaduzenja - RIJESENO
-  - tiketi
   - registracije - RIJESENO
 - Servis pretaga bez datuma
   - detaljan pregled iz frontpage-a ne radi - RIJESENO
-- Korisnici
-  - filter u listi korisnika ne radi
 - Kilometraza
   - Detaljan pregled na kolimetraza/Pregled/detaljno / 404 returned for /vms/admin/kilo/izmjena with message Not Found - RIJESENO
   - Pretraga po mjesecima: javax.persistence.NonUniqueResultException: result returns more than one elements - RIJESENO
 
+- Tiketi (Tiketi za korisnika i za admina)
+  - srediti vezivanje tiketa i odgovore na vezane tikete
+  - dodati view-ove za novi, pregled pretragu 
+  - lista otvorenih tiketa na frontpageu
+- dodati triger na bazu i pozivanje skripti na bazi
+
+- Korisnici
+  - filter u listi korisnika ne radi - RIJESENO
+  
+  
 KORISNIK
 Welcome page tabela
 Vozilo u meniju 

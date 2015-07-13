@@ -44,8 +44,7 @@
   </div>
 
 <div id="filter" class="collapse">
-	<form action="#" th:action="@{/admin/korisnici/pretraga}" method="get" class="form-inline well">
-		<div th:if="${letter}!=null"><span th:text="${letter}"></span></div>
+	<form action="#" th:action="@{/admin/korisnici/pretraga1}" method="get" class="form-inline well">
 		<div class="btn-group">
 		  <button type="submit" name="letter" class="btn btn-default" value="A" >A</button>
 		  <button type="submit" name="letter" class="btn btn-default" value="B" >B</button>
@@ -74,22 +73,21 @@
 		  <button type="submit" name="letter" class="btn btn-default" value="Z">Z</button>
 		</div>
 	</form>
-        <form action="#" th:action="@{/admin/korisnici/pretraga}" method="get" class="form-inline well">
+        <form action="#" th:action="@{/admin/korisnici/pretraga2}" method="get" class="form-inline well">
         <div class="col-md-3">
-          	<input th:if="${name}!=null" type="text" name="name" class="form-control" th:value="${name}" />
-          	<input th:if="${name}==null" type="text" name="name" class="form-control" th:placeholder="#{flt.13}" />
+          	<input type="text" name="name" class="form-control" th:value="${name} ? ${name}" th:placeholder="#{flt.13}" />
         </div>
         <div class="col-md-3">
             <div class="controls">
               <select id="select01" name="isActive" class="form-control">
-                <option value="null" th:text="#{flt.6}">Svi</option>
-                <option value="true" th:text="#{flt.7}">Aktivni</option>
-                <option value="false" th:text="#{flt.8}">Nisu aktivni</option>
+                <option value="null" th:text="#{flt.6}">All</option>
+                <option value="true" th:text="#{flt.7}">Active</option>
+                <option value="false" th:text="#{flt.8}">Not active</option>
 
               </select>
             </div>
           </div>     
-        <button type="submit" class="btn btn-default" th:text="#{flt.11}">Pretraga</button>
+        <button type="submit" class="btn btn-default" th:text="#{flt.11}">Search</button>
       </form>
 	</div>
 </section>
