@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -66,13 +66,13 @@ public class HomeController {
 				Korisnik trenutni = korisnikRepository.find(name);
 				
 				// DODIJELJENA VOZILA TAB
-				HashMap<Registracija, KorisnikVozilo> pregled = new LinkedHashMap<Registracija, KorisnikVozilo>();
+				TreeMap<Registracija, KorisnikVozilo> pregled2 = new TreeMap<Registracija, KorisnikVozilo>(); // Ovdje koristimo TreeMap uz implementiran Complerable interfejs u objektu Registracija
 				Registracija reg = new Registracija();
 				List<KorisnikVozilo> dodijeljeni = new ArrayList<KorisnikVozilo>();
 				dodijeljeni = korisnikVoziloRepository.findByVracenoNull();
 				for (KorisnikVozilo kovo : dodijeljeni) {
 					reg = regRepository.findByVozilo_VinAndJeAktivnoTrue(kovo.getVozilo().getVin());
-					pregled.put(reg, kovo);
+					pregled2.put(reg, kovo);
 				}
 				// KRAJ DODIJELJENA VOZILA TAB
 				
@@ -103,6 +103,10 @@ public class HomeController {
 				if (lista.size()>0) {
 					atributi.set(1, true);
 				}
+				
+				List<Vozilo> listaVozila = vRepository.getNeregistrovanaVozila();
+				System.out.println("Broj neregistrovanih vozila: "+listaVozila.size());
+				
 				// KRAJ REGISTRACIJA TAB
 				
 				// SERVISI TAB
@@ -155,8 +159,9 @@ public class HomeController {
 				
 				model.addAttribute("user", trenutni.getIme() + " " + trenutni.getPrezime());
 				model.addAttribute("regAtribut", lista);
+				model.addAttribute("nerRegAtribut", listaVozila);
 				model.addAttribute("report", report);
-				model.addAttribute("dodAtribut", pregled);
+				model.addAttribute("dodAtribut", pregled2);
 				model.addAttribute("slobAtribut", slobReg);
 				model.addAttribute("mileageAtribut", kilometraza);
 				model.addAttribute("boolAtributi", atributi);

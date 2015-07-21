@@ -228,8 +228,8 @@ public class KorisnikWebController {
 		if(letter!=""){
 			String l = letter+"%";
 			try {
-				model.addAttribute("pager", korisnikRepository.findByImeLikeOrPrezimeLike(l, l, pageable));
-				System.out.println("uradio slovo: "+korisnikRepository.findByImeLikeOrPrezimeLike(l, l, pageable).getTotalElements());
+				model.addAttribute("pager", korisnikRepository.findByImeOrPrezimeLike(l, l, pageable));
+				System.out.println("uradio slovo: "+korisnikRepository.findByImeOrPrezimeLike(l, l, pageable).getTotalElements());
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -254,19 +254,20 @@ public class KorisnikWebController {
 	@RequestMapping(value = {"/admin/korisnici/pretraga2"}, method = RequestMethod.GET)
 	public String getPretraga2Korisnici(HttpServletRequest request, HttpServletResponse response, Model model){
 
-		System.out.println("Get pretraga1");
+		System.out.println("Get pretraga2");
 		System.out.println("name: "+request.getParameter("name"));
 		System.out.println("isActive: "+request.getParameter("isActive"));
 		System.out.println("page: "+request.getParameter("page"));
 		
 		String name = "";
-		String isActiveString = "";
+		String isActiveString = "sve";
+		
+		if(request.getParameter("isActive").compareTo(isActiveString)!=0){
+			isActiveString = request.getParameter("isActive");
+		}
 		
 		if(request.getParameter("name")!=null){
 			name = request.getParameter("name");
-		}
-		if(request.getParameter("isActive")!=null){
-			isActiveString = request.getParameter("isActive");
 		}
 		
 		int page;
@@ -281,13 +282,13 @@ public class KorisnikWebController {
 		
 		if(name!=""){
 			String imePrezime = "%"+name+"%";
-			if(isActiveString!=""){
+			if(isActiveString!="sve"){
 				Boolean isActive = Boolean.valueOf(isActiveString);
 				try {
 					if(isActive){
-						model.addAttribute("pager", korisnikRepository.findByImeLikeOrPrezimeLikeAndJeAktivanTrue(imePrezime, imePrezime, pageable));
+						model.addAttribute("pager", korisnikRepository.findByImeOrPrezimeLikeAndJeAktivanTrue(imePrezime, imePrezime, pageable));
 					}else{
-						model.addAttribute("pager", korisnikRepository.findByImeLikeOrPrezimeLikeAndJeAktivanFalse(imePrezime, imePrezime, pageable));
+						model.addAttribute("pager", korisnikRepository.findByImeOrPrezimeLikeAndJeAktivanFalse(imePrezime, imePrezime, pageable));
 					}
 					System.out.println("uradio imePrezime i jeAktivno: "+imePrezime+" "+request.getParameter("isActive"));
 				} catch (Exception e) {
@@ -295,14 +296,15 @@ public class KorisnikWebController {
 				}
 			} else{
 				try {
-					model.addAttribute("pager", korisnikRepository.findByImeLikeOrPrezimeLike(imePrezime, imePrezime, pageable));
+					model.addAttribute("pager", korisnikRepository.findByImeOrPrezimeLike(imePrezime, imePrezime, pageable));
 					System.out.println("uradio imePrezime: "+imePrezime);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 			}
 		}else{
-			if(isActiveString!=""){
+			if(isActiveString!="sve"){
+				System.out.println("isActiveString: "+isActiveString);
 				Boolean isActive = Boolean.valueOf(request.getParameter("isActive"));
 				try {
 					if(isActive){

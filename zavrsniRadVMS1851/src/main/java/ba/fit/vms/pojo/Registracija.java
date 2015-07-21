@@ -19,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "registracija")
-public class Registracija implements Serializable{
+public class Registracija implements Serializable, Comparable<Registracija> {
 
 	/**
 	 * 
@@ -62,6 +62,14 @@ public class Registracija implements Serializable{
 	@JoinColumn(nullable=false)
 	private Vozilo vozilo;
 
+	
+	/**
+	 * Implementacija compareTo metode kako bi mogli sortirati Registracije po tablicama!
+	 */
+	@Override
+	public int compareTo(Registracija o) {
+		return this.getTablica().compareTo(o.getTablica());
+	}
 
 
 	//***********************************************
@@ -168,9 +176,5 @@ public class Registracija implements Serializable{
 	public void setVozilo(Vozilo vozilo) {
 		this.vozilo = vozilo;
 	}
-
-
-
-
 
 }

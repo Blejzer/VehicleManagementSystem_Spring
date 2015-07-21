@@ -115,6 +115,7 @@
 						</div>
 						<div class="tab-pane" id="B">
 							<div  th:if="${not #lists.isEmpty(regAtribut)}">
+							<h4 th:text="#{adm.14}"></h4>
 							<table class="table table-bordered table-striped table-hover">
 								<thead>
 									<tr class="success">
@@ -139,33 +140,38 @@
 								</tbody>
 							</table>
 							</div>
-							<!-- <div  th:if="${not #lists.isEmpty(regAtribut)}">
-							<table class="table table-bordered table-striped table-hover">
-								<thead>
-									<tr class="success">
-										<th th:text="#{reg.tab}">Plates</th>
-										<th th:text="#{reg.rdo}">Reg from</th>
-										<th th:text="#{reg.odo}">Ins to</th>
-										<th th:text="#{rad.na}">Actions</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:if="${registration}"
-										th:each="registration : ${regAtribut}">
-										<td th:text="${registration.tablica}">Plates</td>
-										<td
-											th:text="${#dates.format(registration.regDo, 'dd-MM-yyyy')}"
-											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.regDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.regDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.regDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDo)} ? 'danger' : 'warning')))  : ''"></td>
-										<td
-											th:text="${#dates.format(registration.osigDo, 'dd-MM-yyyy')}"
-											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.osigDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.osigDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.osigDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.osigDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.osigDo)} ? 'danger' : 'warning')))  : ''"></td>
-										<td><a class="btn btn-primary btn-sm" th:href="@{/admin/registracije/(vin=${registration.vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span	th:text="#{rad.izm}">Edit action</span></a></td>
-									</tr>
-								</tbody>
-							</table>
-							</div> -->
 							<div th:if="${#lists.isEmpty(regAtribut)}">
-									<h3 th:text="#{adm.13}"></h3>
+									<h4 th:text="#{adm.13}"></h4><br/><br/>
+							</div>
+							<div>
+								<h4 th:text="#{adm.15}"></h4>
+								<table th:if="${not #lists.isEmpty(nerRegAtribut)}" class="table table-bordered table-striped table-hover">
+							    <thead>
+							      <tr>
+							        <th class="col-lg-2" th:text="#{voz.vin}">VIN broj</th>
+							        <th class="col-lg-2" th:text="#{voz.mar}">Make</th>
+							        <th class="col-lg-2" th:text="#{voz.mod}">Model</th>
+							        <th class="col-lg-2" th:text="#{voz.boj}">Color</th>
+							        <th class="col-lg-2" th:text="#{voz.god}">Year</th>
+							        <th class="col-lg-2" th:text="#{rad.na}">Actions</th>
+							        </tr>
+							    </thead>
+							    <tbody>
+								    <tr th:each="vozilo : ${nerRegAtribut}">
+								    	<td th:text="${vozilo.vin}">123456</td>
+								    	<td th:text="${vozilo.marka}">Gefufna</td>
+								    	<td th:text="${vozilo.model}">GE123</td>
+								    	<td th:text="${vozilo.boja}">GE123</td>
+								    	<td th:text="${vozilo.godina}">GE123</td>
+										<td>
+											<a class="btn btn-sm btn-danger" th:href="@{/admin/registracije/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-certificate"></i> <span th:text="#{rad.reg}">Radnja - Registruj</span></a>
+										</td>
+									</tr>
+							    </tbody>
+							  </table>
+							</div>
+							<div th:if="${#lists.isEmpty(nerRegAtribut)}">
+									<h4 th:text="#{adm.16}"></h4>
 							</div>
 						</div>
 						<div class="tab-pane" id="C">

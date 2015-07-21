@@ -19,7 +19,7 @@ public interface KorisnikRepository extends PagingAndSortingRepository<Korisnik,
 	
 	public Page<Korisnik> findByJeAktivanTrue(Pageable pageable);
 	public Page<Korisnik> findByJeAktivanFalse(Pageable pageable);
-	public Page<Korisnik> findByImeLikeOrPrezimeLikeAndJeAktivanTrue(String ime, String prezime, Pageable pageable);
-	public Page<Korisnik> findByImeLikeOrPrezimeLikeAndJeAktivanFalse(String ime, String prezime, Pageable pageable);
-	public Page<Korisnik> findByImeLikeOrPrezimeLike(String ime, String prezime, Pageable pageable);
+	public Page<Korisnik> findByImeOrPrezimeLikeAndJeAktivanTrue(String ime, String prezime, Pageable pageable);
+	public Page<Korisnik> findByImeOrPrezimeLikeAndJeAktivanFalse(String ime, String prezime, Pageable pageable);
+	public Page<Korisnik> findByImeOrPrezimeLike(String ime, String prezime, Pageable pageable);
 }

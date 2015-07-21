@@ -7,6 +7,8 @@ Za uraditi:
   - registracije - RIJESENO
 - Servis pretaga bez datuma
   - detaljan pregled iz frontpage-a ne radi - RIJESENO
+- Korisnici
+  - filter u listi korisnika ne radi - RIJESENO
 - Kilometraza
   - Detaljan pregled na kolimetraza/Pregled/detaljno / 404 returned for /vms/admin/kilo/izmjena with message Not Found - RIJESENO
   - Pretraga po mjesecima: javax.persistence.NonUniqueResultException: result returns more than one elements - RIJESENO
@@ -17,8 +19,7 @@ Za uraditi:
   - lista otvorenih tiketa na frontpageu
 - dodati triger na bazu i pozivanje skripti na bazi
 
-- Korisnici
-  - filter u listi korisnika ne radi - RIJESENO
+
   
   
 KORISNIK
