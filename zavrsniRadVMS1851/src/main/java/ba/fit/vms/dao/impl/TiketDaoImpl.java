@@ -1,4 +1,4 @@
-package ba.fit.vms.dao.impl;
+/*package ba.fit.vms.dao.impl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -55,3 +55,4 @@ public class TiketDaoImpl implements TiketDao {
 	}
 
 }
+*/

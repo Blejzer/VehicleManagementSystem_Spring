@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Novi tiket</title>
+</head>
+<body>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+<div sec:authorize="hasRole('ROLE_USER')" th:include="dodaci/sabloni :: headerFragment"></div>
+
+<div class="container">
+
+<section id="object">
+  <div class="page-header">
+    <h1>Novi tiket</h1>
+  </div>
+
+<div class="row">
+    
+	<form action="#" th:object="${tAtribut}" th:action="@{/korisnik/tiketi/novi}" method="post" class="form-horizontal well">
+			<input type="hidden" th:field="*{vozilo.vin}" />
+			<input type="hidden" th:field="*{korisnik.id}"/>
+<!-- <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+    <h1>Error</h1>
+	<p th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</p>    
+    </div>  -->
+          <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
+          <label for="rAtribut.tablica" class="col-lg-2 control-label">Registarske oznake: </label>
+            <div class="col-lg-10">
+              	<label th:text="${rAtribut.tablica}" ></label>
+            </div>
+          </div>
+          
+          <div class="form-group" th:class="${#fields.hasErrors('korisnik.id')} ? 'form-group has-error' : 'form-group'">
+          <label for="korisnik.id" class="col-lg-2 control-label">Korisnik: </label>
+            <div class="col-lg-10">
+              	<label th:text="*{korisnik.ime} + ' ' + *{korisnik.prezime}"></label>
+              <p th:if="${#fields.hasErrors('korisnik.id')}" class="label label-danger" th:errors="${korisnik.id}">email nije ispravan</p>
+            </div>
+          </div>
+          
+          <div class="form-group" th:class="${#fields.hasErrors('tiketDatum')} ? 'form-group has-error' : 'form-group'">
+          <label for="tiketDatum" class="col-lg-2 control-label">Datum tiketa: </label>
+            <div class="col-lg-10">
+              <input type="date" th:field="*{tiketDatum}" class="form-control input-xlarge" placeholder="Datum tiketa" />
+              <p th:if="${#fields.hasErrors('tiketDatum')}" class="label label-danger" th:errors="*{tiketDatum}">Greska kod datuma tiketa</p>
+            </div>
+          </div>
+ 		  <div class="form-group" th:class="${#fields.hasErrors('naslov')} ? 'form-group has-error' : 'form-group'">
+ 		  <label for="naslov" class="col-lg-2 control-label">Naslov: </label>
+            <div class="col-lg-10">
+              <input type="text" th:field="*{naslov}" class="form-control input-xlarge" placeholder="Naslov" />
+              <p th:if="${#fields.hasErrors('naslov')}" class="label label-danger" th:errors="*{naslov}">Greska kod datuma vracanja</p>
+            </div>
+          </div>
+          <div class="form-group" th:class="${#fields.hasErrors('sadrzaj')} ? 'form-group has-error' : 'form-group'">
+ 		  <label for="sadrzaj" class="col-lg-2 control-label">Opis: </label>
+            <div class="col-lg-10">
+              <textarea rows="5" th:field="*{sadrzaj}" class="form-control input-xlarge" placeholder="Opis"></textarea>
+              <p th:if="${#fields.hasErrors('sadrzaj')}" class="label label-danger" th:errors="*{sadrzaj}">Greska kod datuma vracanja</p>
+            </div>
+          </div>
+		<hr/>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Otvori tiket</button>
+            <a class="btn btn-default" th:href="@{/korisnik/tiketi/lista(vin=*{vozilo.vin})}">Odustani</a>
+          </div>
+	</form>
+	
+</div>
+
+</section>
+
+<div th:include="dodaci/sabloni :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>

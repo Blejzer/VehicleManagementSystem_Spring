@@ -1,4 +1,4 @@
-package ba.fit.vms.dao;
+/*package ba.fit.vms.dao;
 
 import ba.fit.vms.pojo.Tiket;
 
@@ -11,3 +11,4 @@ public interface TiketDao {
 	public Tiket read(Long id);
 
 }
+*/

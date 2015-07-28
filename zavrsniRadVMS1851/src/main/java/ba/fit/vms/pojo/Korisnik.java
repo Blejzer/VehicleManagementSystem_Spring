@@ -63,8 +63,11 @@ public class Korisnik implements Serializable{
                 inverseJoinColumns={@JoinColumn(name="vozilo_vin")})
 	private Set<Vozilo> vozila = new HashSet<Vozilo>();*/
 	
+	/*@OneToMany(fetch = FetchType.EAGER, mappedBy = "korisnik")
+	private List<Tiket> tiketi = new ArrayList<Tiket>();*/
+	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "korisnik")
-	private List<Tiket> tiketi = new ArrayList<Tiket>();
+	private List<Tiket2> tiketi2 = new ArrayList<Tiket2>();
 
 	
 	//***********************************************
@@ -189,13 +192,21 @@ public class Korisnik implements Serializable{
 
 	/**
 	 * @return lista tiketa
-	 */
+	 *//*
 	public List<Tiket> getTiketi() {
 		return this.tiketi;
 	}
 
 	public void setTiketi(List<Tiket> tiketi) {
 		this.tiketi = tiketi;
+	}*/
+
+	public List<Tiket2> getTiketi2() {
+		return tiketi2;
+	}
+
+	public void setTiketi2(List<Tiket2> tiketi2) {
+		this.tiketi2 = tiketi2;
 	}
 
 	//***********************************************

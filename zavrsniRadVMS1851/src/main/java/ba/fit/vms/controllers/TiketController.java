@@ -1,4 +1,4 @@
-package ba.fit.vms.controllers;
+/*package ba.fit.vms.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class TiketController {
 	}
 	
 	@RequestMapping(value="/korisnik/tiketi/odgovor", method = RequestMethod.GET)
-	public String getOdgovorTiket(@RequestParam(value="id", required=true) Long id, Principal principal, Model model){
+	public String getOdgovorTiket(@RequestParam(value="id", required=true) Long id, Model model){
 		
 		Tiket tiket = tiketRepository.findOne(id);
 		tiket.setRijesenDatum(new Date());
@@ -299,3 +299,4 @@ public class TiketController {
 	}
 
 }
+*/

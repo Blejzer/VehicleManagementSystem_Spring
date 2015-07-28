@@ -51,6 +51,7 @@ public class Vozilo implements Serializable{
 	@NotEmpty
 	@Pattern(regexp="[a-z]*", flags = Pattern.Flag.CASE_INSENSITIVE)
 	private String boja;
+
 	
 	/*@ManyToMany(fetch = FetchType.EAGER, mappedBy = "vozila")
 	private Set<Korisnik> vozaci;*/

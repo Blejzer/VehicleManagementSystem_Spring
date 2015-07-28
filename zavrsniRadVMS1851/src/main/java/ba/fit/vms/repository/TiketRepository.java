@@ -1,4 +1,4 @@
-package ba.fit.vms.repository;
+/*package ba.fit.vms.repository;
 
 import java.util.List;
 
@@ -31,3 +31,4 @@ public interface TiketRepository extends JpaRepository<Tiket, Long> {
 
 	
 }
+*/

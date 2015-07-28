@@ -1,7 +1,9 @@
-/*package ba.fit.vms.pojo;
+package ba.fit.vms.pojo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,19 +13,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "tiket")
-public class Tiket implements Serializable{
-
-	*//**
+@Table(name = "tiket2")
+public class Tiket2 implements Serializable, Comparable<Tiket2>{
+	
+	/**
 	 * 
-	 *//*
+	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -34,13 +37,6 @@ public class Tiket implements Serializable{
 	@Column(name="naslov")
 	@NotNull(message= "Morate unijeti naslov tiketa")
 	private String naslov;
-
-	@Column(name="sadrzaj")
-	@NotNull(message= "Sadrzaj ne moze biti prazan")
-	private String sadrzaj;
-
-	@Column(name="odgovor")
-	private String odgovor;
 	
 	@Column(name = "tiket_datum")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -51,26 +47,31 @@ public class Tiket implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date rijesenDatum;
 	
-	@ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-	@JoinColumn(name = "korisnik_id", nullable = false)
+	@ManyToOne(cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
+	@JoinColumn(nullable=false)
+	@NotNull
 	private Korisnik korisnik;
 	
-	@ManyToOne( cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
-	@JoinColumn(name="vozilo_vin", nullable=false)
+	@ManyToOne(cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
+	@JoinColumn(name="vozilo_vin")
 	private Vozilo vozilo;
 	
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="tiket_id", nullable=true)
-	private Tiket prethodni;
-	
-	@Column(name = "zavrsen")
-	private Boolean zavrsen;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tiket2")
+	@OrderColumn(name = "poruka_id")
+	private List<Poruka> poruke = new ArrayList<Poruka>();	
 
+	/**
+	 * Implementacija compareTo metode kako bi mogli sortirati Registracije po tablicama!
+	 */
+	@Override
+	public int compareTo(Tiket2 o) {
+		return this.id.compareTo(o.id);
+		}
 	
-	//***********************************************
-	//*  			Getteri i Setteri 				*
-	//*                    							*
-	// **********************************************
+	//
+	// GETTERS AND SETTERS
+	//
+
 	public Long getId() {
 		return id;
 	}
@@ -85,22 +86,6 @@ public class Tiket implements Serializable{
 
 	public void setNaslov(String naslov) {
 		this.naslov = naslov;
-	}
-
-	public String getSadrzaj() {
-		return sadrzaj;
-	}
-
-	public void setSadrzaj(String sadrzaj) {
-		this.sadrzaj = sadrzaj;
-	}
-
-	public String getOdgovor() {
-		return odgovor;
-	}
-
-	public void setOdgovor(String odgovor) {
-		this.odgovor = odgovor;
 	}
 
 	public Date getTiketDatum() {
@@ -135,23 +120,12 @@ public class Tiket implements Serializable{
 		this.vozilo = vozilo;
 	}
 
-	public Tiket getPrethodni() {
-		return prethodni;
+	public List<Poruka> getPoruke() {
+		return poruke;
 	}
 
-	public void setPrethodni(Tiket prethodni) {
-		this.prethodni = prethodni;
+	public void setPoruke(List<Poruka> poruke) {
+		this.poruke = poruke;
 	}
-
-	public Boolean getZavrsen() {
-		return zavrsen;
-	}
-
-	public void setZavrsen(Boolean zavrsen) {
-		this.zavrsen = zavrsen;
-	}
-
-	
 
 }
-*/

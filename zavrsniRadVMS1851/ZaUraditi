@@ -12,7 +12,9 @@ Za uraditi:
 - Kilometraza
   - Detaljan pregled na kolimetraza/Pregled/detaljno / 404 returned for /vms/admin/kilo/izmjena with message Not Found - RIJESENO
   - Pretraga po mjesecima: javax.persistence.NonUniqueResultException: result returns more than one elements - RIJESENO
-
+- HOME
+  - dodati na listu registracija i tabelu za neregistrovana vozila - RIJESENO
+  
 - Tiketi (Tiketi za korisnika i za admina)
   - srediti vezivanje tiketa i odgovore na vezane tikete
   - dodati view-ove za novi, pregled pretragu 
@@ -31,8 +33,7 @@ Servis u meniju
 	lista servisa
 	potvrditi uradjen servis
 
-HOME
-dodati na listu registracija i tabelu za neregistrovana vozila
+
 
 KORISNIK VOZILO
 Srediti zaduzivanje i razduzivanje vozila, problemi sa datumima!
