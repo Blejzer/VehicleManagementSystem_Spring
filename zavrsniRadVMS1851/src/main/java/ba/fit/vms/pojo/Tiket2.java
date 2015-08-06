@@ -12,12 +12,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -39,12 +42,12 @@ public class Tiket2 implements Serializable, Comparable<Tiket2>{
 	private String naslov;
 	
 	@Column(name = "tiket_datum")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@NotNull
 	private Date tiketDatum;
 	
 	@Column(name = "rijesen_datum")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date rijesenDatum;
 	
 	@ManyToOne(cascade = {CascadeType.REFRESH}, fetch=FetchType.EAGER )
@@ -56,9 +59,13 @@ public class Tiket2 implements Serializable, Comparable<Tiket2>{
 	@JoinColumn(name="vozilo_vin")
 	private Vozilo vozilo;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tiket2")
-	@OrderColumn(name = "poruka_id")
-	private List<Poruka> poruke = new ArrayList<Poruka>();	
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinTable(name = "tiket2_poruka", joinColumns = { 
+			@JoinColumn(name = "tiket2_id", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "poruka_id", 
+					nullable = false, updatable = false) })
+	private List<Poruka> poruke = new ArrayList<Poruka>();
 
 	/**
 	 * Implementacija compareTo metode kako bi mogli sortirati Registracije po tablicama!

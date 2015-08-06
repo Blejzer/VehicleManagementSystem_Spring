@@ -26,7 +26,7 @@
 		}); 
 	};
 </script>
-<p th:if="${#lists.isEmpty(report)}" th:text="'Nemate kreiranih tiketa!'" class="label label-success"/>
+<p th:if="${#lists.isEmpty(pager)}" th:text="'Nemate kreiranih tiketa!'" class="label label-success"/>
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <h1>Error</h1>
@@ -35,49 +35,55 @@
      	<p th:text="${error}">error</p>
      </div>
     </div>
-    <div th:if="${report}" th:each="tiketi : ${report}">
-				<table class="table table-bordered table-striped table-hover tiket">
+    <div th:if="${(pager.totalElements==0)}">
+				<h1 th:text="#{kor.msg2}"></h1>
+				</div>
+			<div th:if="${(pager.totalElements>0)}">
+				<table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
 					<thead>
-						<tr class="success">
-							<th class="text-indent h3" colspan="5"><a th:href="@{/korisnik/tiketi/tiket(id=${tiketi.key.id})}"><span  th:text="'Naslov: ' + ${tiketi.key.naslov}"></span></a></th>
-						</tr>
-						<tr>
-							<th class="text-center h4">Datum tiketa</th>
-							<th class="text-center h4">Datum odgovora</th>
-							<th class="text-center h4">Upit</th>
-							<th class="text-center h4">Odgovor</th>
-							<th class="text-center h4">Radnja</th>
-							
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="tiket : ${tiketi.value}">
-							<td class="col-md-3" th:text="${#calendars.format(tiket.tiketDatum,'dd MMMM yyyy')}">date</td>
-							<td class="col-md-3" th:text="${tiket.rijesenDatum} ? ${#calendars.format(tiket.rijesenDatum,'dd MMMM yyyy')} : ''">date</td>
-							<td class="col-md-3" th:text="${tiket.sadrzaj}">Type</td>
-							<td class="col-md-3" th:text="${tiket.odgovor}">Type</td>
-							<td class="col-lg-3 center" >
-								<a sec:authorize="hasRole('ROLE_ADMIN')" th:if="not ${tiket.rijesenDatum}" class="btn btn-info btn-sm" th:href="@{/korisnik/tiketi/odgovor(id=${tiket.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.odg}">Radnja - odgovor</span></a>
-								<a sec:authorize="hasRole('ROLE_USER')"  th:if="${tiket.rijesenDatum}"  class="btn btn-info btn-sm" th:href="@{/korisnik/tiketi/nastavi(id=${tiket.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.nov}">Radnja - odgovor</span></a>
+				    	<tr>
+					        <th th:text="#{tk.da}">Ticket Date</th>
+					        <th th:text="#{tk.na}">Title</th>
+					        <th th:text="#{kor.je}">isActive</th>
+					        <th th:text="#{tk.bp}">Number of Messages</th>
+					        <th th:text="#{tk.zp}">Last msg</th>
+					        <th th:text="#{rad.na}">Actions</th>
+				    	</tr>
+				    </thead>
+				    <tbody>
+						<tr th:each="tiket : ${pager}">
+					    	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
+					    	<td th:text="${tiket.naslov}">email@email.com</td>
+					    	<td th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
+					        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
+								<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
+					        </td>
+					    	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#lists.size(tiket.poruke)}: 'Nema poruka'">Doe</td>
+					    	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#dates.format(tiket.poruke[__(${#lists.size(tiket.poruke)}-1)__].datum,'dd MM yyyy HH:mm')} : 'PRAZNO'">Last msg date</td>
+				
+							<td>
+								<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-warning btn-sm" th:href="@{/admin/korisnici/izmjeni(id=${korisnik.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Edit action</span></a>
+							    <!-- <a class="btn btn-danger btn-sm delete" th:href="@{/vehicles/delete(id=${vehicle.vin})}"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>  -->
+								<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${korisnik.id} + '\');'"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a> 
+								<!-- <a class="btn btn-info btn-sm" th:href="@{/admin/korisnici/show(email=${korisnik.email})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>  -->
 							</td>
 						</tr>
-					</tbody>
+				    </tbody>
 				</table>
-			</div>
-			<div th:if="${report !=null}">
-				<div th:if="${report.isEmpty()}">
-
-					<span>
-						<h3>Nemate podnesen ni jedan tiket</h3>
-					</span>
-
+				   
+				<div class="col-lg-12 center">
+					<ul th:if="${pager.totalPages}>1" class="pagination">
+						<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
+						<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
+						<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
+					        <a th:href="@{''(name=${name},letter=${letter},isActive=${isActive},page=${item}-1)}"><span th:text='${item}'>PageNo</span></a> 
+							<!--	<a th:href="@{${page='?page='+(item-1)}}">  -->
+					     </li>
+					    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
+						<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
+					</ul>
 				</div>
-			</div>
-  
-  
-   
-
-  
+			</div>  
 </section>
 
 <div class="row right">

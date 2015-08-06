@@ -2,24 +2,24 @@ package ba.fit.vms.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "poruka")
-public class Poruka  implements Serializable, Comparable<Poruka>{
+public class Poruka  implements Serializable{ //, Comparable<Poruka>
 	
 	/**
 	 * 
@@ -36,7 +36,7 @@ public class Poruka  implements Serializable, Comparable<Poruka>{
 	private String sadrzaj;
 	
 	@Column(name = "datum")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@NotNull
 	private Date datum;
 	
@@ -48,14 +48,14 @@ public class Poruka  implements Serializable, Comparable<Poruka>{
 	@JoinColumn(name="naredna_id", nullable=true)
 	private Poruka naredna;
 	
-	@ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	/*@ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "tiket2_id", nullable = false)
-	private Tiket2 tiket2;
+	private Tiket2 tiket2;*/
 
-	@Override
+	/*@Override
 	public int compareTo(Poruka o) {
 		return this.id.compareTo(o.id);
-	}
+	}*/
 	
 	
 	//
@@ -104,14 +104,20 @@ public class Poruka  implements Serializable, Comparable<Poruka>{
 		this.naredna = naredna;
 	}
 
-
-	public Tiket2 getTiket2() {
-		return tiket2;
-	}
-
-
-	public void setTiket2(Tiket2 tiket2) {
-		this.tiket2 = tiket2;
-	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		return false;
+		}
+		if (getClass() != obj.getClass()) {
+		return false;
+		}
+		final Poruka other = (Poruka) obj;
+		if (!Objects.equals(this.id, other.id)) {
+		return false;
+		}
+		return true;
+		}
+	
 
 }
