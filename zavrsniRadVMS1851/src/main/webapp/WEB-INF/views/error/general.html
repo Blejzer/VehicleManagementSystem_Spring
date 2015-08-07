@@ -4,11 +4,11 @@
 <head th:include="dodaci/sabloni :: headFragment" />
 <body>
 
-<div sec:authorize="hasRole('ROLE_ADMIN')" th:include="dodaci/sabloni :: adminHeaderFragment"></div>
-<div sec:authorize="hasRole('ROLE_USER')" th:include="dodaci/sabloni :: headerFragment"></div>
+<!-- <div sec:authorize="hasRole('ROLE_ADMIN')" th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+<div sec:authorize="hasRole('ROLE_USER')" th:include="dodaci/sabloni :: headerFragment"></div> -->
 
 <div class="container">
-    <p th:text="${errorMessage}">Error has occured</p>
+    <p th:text="${errorMessage}">Error has occured. Please click on the back button to return to the application</p>
     <div th:include="dodaci/footer :: footer">&copy; 2014 The Static Templates</div>
 
 	<div th:include="dodaci/sabloni :: footerFragment"></div>

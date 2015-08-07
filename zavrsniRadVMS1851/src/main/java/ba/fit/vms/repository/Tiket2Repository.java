@@ -10,5 +10,8 @@ import ba.fit.vms.pojo.Tiket2;
 public interface Tiket2Repository extends JpaRepository<Tiket2, Long> {
 	
 	public Page<Tiket2> findByRijesenDatumIsNullAndKorisnikOrderByTiketDatumDesc(Korisnik korisnik, Pageable pageable);
+	public Page<Tiket2> findByRijesenDatumIsNullOrderByTiketDatumDesc(Pageable pageable);
+	public Page<Tiket2> findByRijesenDatumIsNotNullAndKorisnikOrderByTiketDatumDesc(Korisnik korisnik, Pageable pageable);
+	public Page<Tiket2> findByRijesenDatumIsNotNullOrderByTiketDatumDesc(Pageable pageable);
 
 }

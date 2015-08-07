@@ -18,45 +18,47 @@
 <div class="row">
     
 	<form action="#" th:object="${tAtribut}"
-		th:action="@{/korisnik/tiketi/novi}" method="post" class="form-horizontal well">
+		th:action="@{/korisnik/{id}/tiketi/novi(id=*{korisnik.id})}" method="post" id="1" class="form-horizontal well">
 		<input type="hidden" th:field="*{korisnik.id}"/>
 		<input type="hidden" th:field="*{tiketDatum}"/>
+		<input type="hidden" th:field="${pAtribut.datum}" />
     
-          <div class="form-group" th:class="${#fields.hasErrors('naslov')} ? 'form-group has-error' : 'form-group'">
-          <label for="naslov" class="col-lg-2 control-label" th:text="#{tk.na}">Ticket title: </label>
-            <div class="col-lg-10">
-              <input type="text" th:field="*{naslov}" class="form-control input-xlarge" th:placeholder="#{tk.na}" />
-              <p th:if="${#fields.hasErrors('naslov')}" class="label label-danger" th:errors="*{naslov}">Incorrect title</p>
+        <div class="form-group" th:class="${#fields.hasErrors('naslov')} ? 'form-group has-error' : 'form-group'">
+        	<label for="naslov" class="col-lg-2 control-label" th:text="#{tk.na}">Ticket title: </label>
+        	<div class="col-lg-10">
+            	<input type="text" th:field="*{naslov}" class="form-control input-xlarge" th:placeholder="#{tk.na}" />
+            	<p th:if="${#fields.hasErrors('naslov')}" class="label label-danger" th:errors="*{naslov}">Incorrect title</p>
             </div>
-          </div>
-          <div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
-          <label for="vozilo.vin" class="col-lg-2 control-label"  th:text="#{reg.tab}">VIN</label>
+		</div>
+		<div class="form-group" th:class="${#fields.hasErrors('vozilo.vin')} ? 'form-group has-error' : 'form-group'">
+        	<label for="vozilo.vin" class="col-lg-2 control-label"  th:text="#{reg.tab}">VIN</label>
             <div th:if="${rsAtribut}" class="col-lg-10">
               	<select th:field="*{vozilo.vin}" class="form-control">
   				<option th:each="reg : ${rsAtribut}" 
   						th:value="${reg.vozilo.vin}" 
           				th:text="${reg.tablica}">License Plate</option>
 				</select>
-              <p th:if="${#fields.hasErrors('reg.vozilo.vin')}" class="label label-danger" th:errors="${reg.vozilo.vin}">Incorrect VIN</p>
+            	<p th:if="${#fields.hasErrors('reg.vozilo.vin')}" class="label label-danger" th:errors="${reg.vozilo.vin}">Incorrect VIN</p>
             </div>
             <div th:if="${rAtribut}" class="col-lg-10">
             	<input type="hidden" th:field="*{vozilo.vin}" th:value="${rAtribut.vozilo.vin}"/>
             	<input type="text" th:field="${rAtribut.tablica}" class="form-control input-xlarge" placeholder="#{tk.na}" />
             	<p th:if="${#fields.hasErrors('vozilo.vin')}" class="label label-danger" th:errors="*{vozilo.vin}">Incorrect VIN</p>
             </div>
-          </div>
-          <div>
-          	<div class="form-group" th:class="'form-group'">
-          		<label for="sadrzaj" class="col-lg-3 control-label" th:text="'Poruka'">Parts</label>
-			   <input type="hidden" th:field="${pAtribut.datum}"/>
-			   <input type="text" th:field="${pAtribut.sadrzaj}" />
+		</div>
+		<div class="form-group" th:class="${#fields.hasErrors('${pAtribut.sadrzaj}')} ? 'form-group has-error' : 'form-group'">
+        		<label for="naslov" class="col-lg-2 control-label" th:text="'Poruka'">Message: </label>
+        		<div class="col-lg-10">
+	            	<textarea onkeyup="textCounter(this,'counter',254);" th:field="${pAtribut.sadrzaj}" class="form-control input-xlarge" th:placeholder="'Tekst poruke'" ></textarea>
+	            	<p th:if="${#fields.hasErrors('${pAtribut.sadrzaj}')}" class="label label-danger" th:errors="${pAtribut.sadrzaj}">Incorrect title</p>
+	            </div>
 			</div>
-          </div>
-          <div class="form-actions right">
+          
+		<div class="form-actions right">
           	<label class= "col-lg-2"></label>
             <button type="submit" class="btn btn-primary" th:text="#{tk.new}">Open new ticket</button>
             <a class="btn btn-default" th:href="@{/admin/lokacije/}" th:text="#{rad.odu}">Cancel</a>
-          </div>
+		</div>
 	</form>
 	
 </div>
@@ -70,6 +72,18 @@
 </div>
 <!-- /.container -->
 <div th:include="dodaci/sabloni :: jsFragment"></div>
+<script>
+function textCounter(field,field2,maxlimit)
+{
+ var countfield = document.getElementById(field2);
+ if ( field.value.length > maxlimit ) {
+  field.value = field.value.substring( 0, maxlimit );
+  return false;
+ } else {
+  countfield.value = maxlimit - field.value.length;
+ }
+}
+</script>
 
 </body>
 </html>

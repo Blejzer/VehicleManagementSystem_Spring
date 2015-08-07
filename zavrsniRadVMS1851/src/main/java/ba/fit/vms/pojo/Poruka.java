@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.joda.time.DateTime;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -31,8 +31,8 @@ public class Poruka  implements Serializable{ //, Comparable<Poruka>
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="sadrzaj")
-	@NotNull(message= "Sadrzaj ne moze biti prazan")
+	@Column(name="sadrzaj", length = 255)
+	@NotEmpty(message= "Sadrzaj ne moze biti prazan")
 	private String sadrzaj;
 	
 	@Column(name = "datum")

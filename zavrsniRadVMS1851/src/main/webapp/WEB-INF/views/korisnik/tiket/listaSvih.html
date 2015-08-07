@@ -44,6 +44,7 @@
 				    	<tr>
 					        <th th:text="#{tk.da}">Ticket Date</th>
 					        <th th:text="#{tk.na}">Title</th>
+					        <th th:text="#{kv.kor}">User</th>					        
 					        <th th:text="#{kor.je}">isActive</th>
 					        <th th:text="#{tk.bp}">Number of Messages</th>
 					        <th th:text="#{tk.zp}">Last msg</th>
@@ -54,6 +55,7 @@
 						<tr th:each="tiket : ${pager}">
 					    	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
 					    	<td th:text="${tiket.naslov}">email@email.com</td>
+					    	<td th:text="${tiket.korisnik.ime} + ' ' + ${tiket.korisnik.prezime}"></td>
 					    	<td th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
 					        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
 								<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
@@ -62,9 +64,9 @@
 					    	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#dates.format(tiket.poruke[__(${#lists.size(tiket.poruke)}-1)__].datum,'dd MM yyyy HH:mm')} : 'PRAZNO'">Last msg date</td>
 				
 							<td>
-								<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-warning btn-sm" th:href="@{/admin/korisnici/izmjeni(id=${korisnik.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Edit action</span></a>
+								<!-- <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-warning btn-sm" th:href="@{/admin/korisnici/izmjeni(id=${korisnik.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Edit action</span></a>  -->
 							    <!-- <a class="btn btn-danger btn-sm delete" th:href="@{/vehicles/delete(id=${vehicle.vin})}"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>  -->
-								<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${korisnik.id} + '\');'"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a> 
+								<!-- <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${korisnik.id} + '\');'"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>  --> 
 								<!-- <a class="btn btn-info btn-sm" th:href="@{/admin/korisnici/show(email=${korisnik.email})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>  -->
 							</td>
 						</tr>

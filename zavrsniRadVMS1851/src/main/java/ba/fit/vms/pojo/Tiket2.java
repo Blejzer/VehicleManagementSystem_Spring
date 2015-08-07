@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.joda.time.DateTime;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -38,7 +38,7 @@ public class Tiket2 implements Serializable, Comparable<Tiket2>{
 	private Long id;
 
 	@Column(name="naslov")
-	@NotNull(message= "Morate unijeti naslov tiketa")
+	@NotEmpty(message= "Morate unijeti naslov tiketa")
 	private String naslov;
 	
 	@Column(name = "tiket_datum")

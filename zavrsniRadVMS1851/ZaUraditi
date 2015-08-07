@@ -21,7 +21,8 @@ Za uraditi:
   - lista otvorenih tiketa na frontpageu
 - dodati triger na bazu i pozivanje skripti na bazi
 
-
+SABLONI
+- Rijesiti problem sa kv atributom koji se trazi u headerFragment za korisnika!
   
   
 KORISNIK
