@@ -18,10 +18,11 @@
 <div class="row">
     
 	<form action="#" th:object="${tAtribut}"
-		th:action="@{/korisnik/{id}/tiketi/novi(id=*{korisnik.id})}" method="post" id="1" class="form-horizontal well">
-		<input type="hidden" th:field="*{korisnik.id}"/>
-		<input type="hidden" th:field="*{tiketDatum}"/>
+		th:action="@{/korisnik/{kid}/tiketi/novi(kid=${tAtribut.korisnik.id})}" method="post" class="form-horizontal well">
+		<input type="hidden" th:field="${tAtribut.korisnik.id}"/>
+		<input type="hidden" th:field="${tAtribut.tiketDatum}"/>
 		<input type="hidden" th:field="${pAtribut.datum}" />
+		<input type="hidden" th:field="${pAtribut.korisnik.id}"/>
     
         <div class="form-group" th:class="${#fields.hasErrors('naslov')} ? 'form-group has-error' : 'form-group'">
         	<label for="naslov" class="col-lg-2 control-label" th:text="#{tk.na}">Ticket title: </label>
@@ -49,7 +50,7 @@
 		<div class="form-group" th:class="${#fields.hasErrors('${pAtribut.sadrzaj}')} ? 'form-group has-error' : 'form-group'">
         		<label for="naslov" class="col-lg-2 control-label" th:text="'Poruka'">Message: </label>
         		<div class="col-lg-10">
-	            	<textarea onkeyup="textCounter(this,'counter',254);" th:field="${pAtribut.sadrzaj}" class="form-control input-xlarge" th:placeholder="'Tekst poruke'" ></textarea>
+	            	<textarea onkeyup="textCounter(this,'counter',253);" th:field="${pAtribut.sadrzaj}" class="form-control input-xlarge" th:placeholder="'Tekst poruke'" ></textarea>
 	            	<p th:if="${#fields.hasErrors('${pAtribut.sadrzaj}')}" class="label label-danger" th:errors="${pAtribut.sadrzaj}">Incorrect title</p>
 	            </div>
 			</div>

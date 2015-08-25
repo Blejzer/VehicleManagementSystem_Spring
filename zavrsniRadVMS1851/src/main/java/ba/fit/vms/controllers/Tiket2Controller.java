@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ba.fit.vms.pojo.Korisnik;
 import ba.fit.vms.pojo.KorisnikVozilo;
@@ -52,13 +53,15 @@ public class Tiket2Controller {
 	@Autowired
 	private KorisnikVoziloRepository kvRepository;
 	
-	@RequestMapping(value={"/korisnik/{id}/tiketi/novi", "/korisnik/tiketi/novi"}, method = RequestMethod.GET)
-	public String getNoviTiket(@PathVariable("id") Long id, Principal principal, Model model){
+	@RequestMapping(value={"/korisnik/{kid}/tiketi/novi"}, method = RequestMethod.GET)
+	public String getNoviTiket(@PathVariable("kid") Long kid, @RequestParam(value="vin", required=true) String vin, Model model){
 		Korisnik k;
-		if(id!=null){
-			k = korisnikRepository.findOne(id);
+		System.out.println("kid = "+kid);
+		System.out.println("vin = "+vin);
+		if(kid!=null){
+			k = korisnikRepository.findOne(kid);
 		}else{
-			k = korisnikRepository.find(principal.getName());
+			k = kvRepository.findByVozilo_VinAndVracenoNull(vin).getKorisnik();
 		}
 		System.out.println(k.getEmail());
 		KorisnikVozilo kvTemp = new KorisnikVozilo();
@@ -66,6 +69,7 @@ public class Tiket2Controller {
 		tiket2.setTiketDatum(new DateTime().toDate());
 		Poruka prva = new Poruka();
 		prva.setDatum(new DateTime().toDate());
+		prva.setKorisnik(k);
 		List<Poruka> poruke = new ArrayList<Poruka>();
 		poruke.add(prva);
 		tiket2.setPoruke(poruke);
@@ -76,31 +80,34 @@ public class Tiket2Controller {
 			model.addAttribute("rAtribut", rRepository.findByVozilo_VinAndJeAktivnoTrue(kvTemp.getVozilo().getVin()));
 			System.out.println("dodao korisnika: "+kvTemp.getKorisnik().getEmail());
 		} catch (Exception e) {
-			tiket2.setKorisnik(korisnikRepository.find(k.getEmail()));
+			tiket2.setKorisnik(k);
 			tiket2.setVozilo(null);
 			model.addAttribute("rsAtribut", rRepository.findAllByJeAktivnoTrueOrderByRegDoDesc());
 		}
-		System.out.println(new DateTime().toDate());
-		System.out.println(new DateTime());
+		System.out.println("tiket2 id = "+tiket2.getId());
 		model.addAttribute("tAtribut", tiket2);
+		System.out.println("poruka id = "+prva.getId());
 		model.addAttribute("pAtribut", prva);
 		
 		return "korisnik/tiket/novi";
 	}
 	
-	@RequestMapping(value="/korisnik/{id}/tiketi/novi", method = RequestMethod.POST)
-	public String postNoviTiket(@PathVariable("id") Long id, @ModelAttribute("pAtribut") @Valid Poruka poruka,  BindingResult porukaRezultat, @ModelAttribute("tAtribut") @Valid Tiket2 tiket2,  BindingResult tiketRezultat, Model model){
+	@RequestMapping(value="/korisnik/{kid}/tiketi/novi", method = RequestMethod.POST)
+	public String postNoviTiket(@PathVariable("kid") Long kid, @ModelAttribute("pAtribut") @Valid Poruka poruka,  BindingResult porukaRezultat, @ModelAttribute("tAtribut") @Valid Tiket2 tiket2,  BindingResult tiketRezultat, Model model){
+		System.out.println("tiket2 id = "+tiket2.getId());
+		System.out.println("poruka id = "+poruka.getId());
+		System.out.println("kid = "+kid);
 		String link;
-		if(id!=null){
-			link = "korisnik/{id}/tiketi/";
+		if(kid!=null){
+			link = "korisnik/"+kid.toString()+"/tiketi/";
 		}else{
 			link = "korisnik/tiketi/";
 		}
 		if(tiketRezultat.hasErrors() || porukaRezultat.hasErrors()){
-			String email = korisnikRepository.findOne(id).getEmail();
+			String email = korisnikRepository.findOne(kid).getEmail();
 			KorisnikVozilo kvTemp = new KorisnikVozilo();
-			System.out.println(tiketRezultat.toString());
-			System.out.println(porukaRezultat.toString());
+			System.out.println("tiket greske: " + tiketRezultat.toString());
+			System.out.println("poruka greske: " + porukaRezultat.toString());
 			try {
 				kvTemp = kvRepository.findByKorisnik_EmailAndVracenoNull(email);
 				model.addAttribute("rAtribut", rRepository.findByVozilo_VinAndJeAktivnoTrue(kvTemp.getVozilo().getVin()));
@@ -112,16 +119,22 @@ public class Tiket2Controller {
 			}
 			
 			model.addAttribute("tAtribut", tiket2);
+			model.addAttribute("pAtribut", poruka);
 			
-			return link;
+			return "/"+link;
 		}
 		List<Poruka> poruke = new ArrayList<Poruka>();
 		if(!poruka.getSadrzaj().isEmpty()){
-			pRepository.saveAndFlush(poruka);
+			//pRepository.saveAndFlush(poruka);
 			poruke.add(poruka);
+			tiket2.setPoruke(poruke);
+			try {
+				tiket2Repository.saveAndFlush(tiket2);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
-		tiket2.setPoruke(poruke);
-		tiket2Repository.saveAndFlush(tiket2);
+		
 		
 			return "redirect:/"+link;
 	}
@@ -145,9 +158,9 @@ public class Tiket2Controller {
 		
 		
 		Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNullOrderByTiketDatumDesc(pageable);
-		for (Tiket2 tiket2 : pages) {
+		/*for (Tiket2 tiket2 : pages) {
 			System.out.println(tiket2.getPoruke().size());			
-		}
+		}*/
 		
 		
 		model.addAttribute("pager", pages);
@@ -170,9 +183,9 @@ public class Tiket2Controller {
 		
 		KorisnikVozilo  kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
 		Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNullAndKorisnikOrderByTiketDatumDesc(kv.getKorisnik(), pageable);
-		for (Tiket2 tiket2 : pages) {
+		/*for (Tiket2 tiket2 : pages) {
 			System.out.println(tiket2.getPoruke().size());			
-		}
+		}*/
 		
 		
 		model.addAttribute("pager", pages);

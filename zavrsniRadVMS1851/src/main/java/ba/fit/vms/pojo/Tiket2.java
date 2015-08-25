@@ -12,20 +12,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "tiket2")
-public class Tiket2 implements Serializable, Comparable<Tiket2>{
+public class Tiket2 implements Serializable {
 	
 	/**
 	 * 
@@ -59,21 +59,20 @@ public class Tiket2 implements Serializable, Comparable<Tiket2>{
 	@JoinColumn(name="vozilo_vin")
 	private Vozilo vozilo;
 	
-	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
+	/*@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JoinTable(name = "tiket2_poruka", joinColumns = { 
 			@JoinColumn(name = "tiket2_id", nullable = false, updatable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "poruka_id", 
 					nullable = false, updatable = false) })
+	@GenericGenerator(name="uuid-gen", strategy = "increment")
+    @CollectionId(columns = @Column(name = "collection_id"), generator = "uuid-gen", type = @Type(type = "long"))
+    
+    Hibernate problem kod kreiranja veza XxxToMany */
+	
+	@OneToMany(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER )
+	@GenericGenerator(name="uuid-gen", strategy = "increment") 
+    @CollectionId(columns = @Column(name = "collection_id"), generator = "uuid-gen", type = @Type(type = "long"))
 	private List<Poruka> poruke = new ArrayList<Poruka>();
-
-	/**
-	 * Implementacija compareTo metode kako bi mogli sortirati Registracije po tablicama!
-	 */
-	@Override
-	public int compareTo(Tiket2 o) {
-		return this.id.compareTo(o.id);
-		}
 	
 	//
 	// GETTERS AND SETTERS

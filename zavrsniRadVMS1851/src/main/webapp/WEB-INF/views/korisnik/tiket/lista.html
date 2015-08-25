@@ -54,7 +54,7 @@
 						<tr th:each="tiket : ${pager}">
 					    	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
 					    	<td th:text="${tiket.naslov}">email@email.com</td>
-					    	<td th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
+					    	<td th:switch="${tiket.rijesenDatum!=null} ? ${false} : ${true}">
 					        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
 								<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
 					        </td>
@@ -65,7 +65,7 @@
 								<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-warning btn-sm" th:href="@{/admin/korisnici/izmjeni(id=${korisnik.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Edit action</span></a>
 							    <!-- <a class="btn btn-danger btn-sm delete" th:href="@{/vehicles/delete(id=${vehicle.vin})}"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>  -->
 								<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${korisnik.id} + '\');'"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a> 
-								<!-- <a class="btn btn-info btn-sm" th:href="@{/admin/korisnici/show(email=${korisnik.email})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>  -->
+								<a class="btn btn-info btn-sm" th:href="@{/korisnik/{kid}/tiket/{tid}/poruke(kid=${kvAtribut.korisnik.id}, tid=${tiket.id})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
 							</td>
 						</tr>
 				    </tbody>

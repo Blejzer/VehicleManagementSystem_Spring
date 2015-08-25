@@ -204,6 +204,10 @@ input::-moz-focus-inner {
 }
 
 textarea {
+  text-align: justify; 
+  white-space: normal;
+  min-width:95%;
+  width:100%;
   overflow: auto;
   vertical-align: top;
 }
@@ -6803,3 +6807,8 @@ td.visible-print {
     display: none !important;
   }
 }
+confinedSpace textarea { 
+	min-height:200px;
+	margin:0px; 
+	width:100% 
+	}

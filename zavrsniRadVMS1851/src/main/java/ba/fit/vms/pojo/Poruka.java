@@ -41,6 +41,10 @@ public class Poruka  implements Serializable{ //, Comparable<Poruka>
 	private Date datum;
 	
 	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="korisnik_id", nullable=true)
+	private Korisnik korisnik;
+	
+	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="prethodna_id", nullable=true)
 	private Poruka prethodni;
 	
@@ -84,6 +88,14 @@ public class Poruka  implements Serializable{ //, Comparable<Poruka>
 
 	public void setDatum(Date datum) {
 		this.datum = datum;
+	}
+
+	public Korisnik getKorisnik() {
+		return korisnik;
+	}
+
+	public void setKorisnik(Korisnik korisnik) {
+		this.korisnik = korisnik;
 	}
 
 	public Poruka getPrethodni() {
