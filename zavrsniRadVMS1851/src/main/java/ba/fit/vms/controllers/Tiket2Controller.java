@@ -70,9 +70,10 @@ public class Tiket2Controller {
 		Poruka prva = new Poruka();
 		prva.setDatum(new DateTime().toDate());
 		prva.setKorisnik(k);
-		List<Poruka> poruke = new ArrayList<Poruka>();
-		poruke.add(prva);
-		tiket2.setPoruke(poruke);
+		//List<Poruka> poruke = new ArrayList<Poruka>();
+		//poruke.add(prva);
+		tiket2.getPoruke().add(prva);
+		//tiket2.setPoruke(poruke);
 		try {
 			kvTemp = kvRepository.findByKorisnik_EmailAndVracenoNull(k.getEmail());
 			tiket2.setKorisnik(kvTemp.getKorisnik());

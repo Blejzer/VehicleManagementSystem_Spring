@@ -48,10 +48,6 @@ public class Poruka  implements Serializable{ //, Comparable<Poruka>
 	@JoinColumn(name="prethodna_id", nullable=true)
 	private Poruka prethodni;
 	
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="naredna_id", nullable=true)
-	private Poruka naredna;
-	
 	/*@ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "tiket2_id", nullable = false)
 	private Tiket2 tiket2;*/
@@ -106,16 +102,6 @@ public class Poruka  implements Serializable{ //, Comparable<Poruka>
 		this.prethodni = prethodni;
 	}
 
-
-	public Poruka getNaredna() {
-		return naredna;
-	}
-
-
-	public void setNaredna(Poruka naredna) {
-		this.naredna = naredna;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -130,6 +116,4 @@ public class Poruka  implements Serializable{ //, Comparable<Poruka>
 		}
 		return true;
 		}
-	
-
 }

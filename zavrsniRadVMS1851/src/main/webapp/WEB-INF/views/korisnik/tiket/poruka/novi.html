@@ -1,0 +1,79 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Novi Tiket</title>
+</head>
+<body>
+
+<div th:include="dodaci/sabloni :: headerFragment"></div>
+
+<div class="container">
+
+<section id="object">
+  <div class="page-header">
+    <table>
+			<tr>
+		        <th class="col-lg-2"><p th:text="${#dates.format(tAtribut.tiketDatum,'dd.MM.yyyy HH:mm')}"></p><p th:text="${tAtribut.korisnik.ime}+' '+${tAtribut.korisnik.prezime}"></p></th>
+		    	<th class="col-lg-8 center" ><h2 th:text="${tAtribut.naslov}"></h2></th>
+		    	<th class="col-lg-2" th:switch="${tAtribut.rijesenDatum!=null} ? ${false} : ${true}">
+		        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
+					<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
+		        </th>
+	    	</tr>
+	    	<tr th:each="poruka:${tAtribut.poruke}">
+	    	<th class="col-lg-2"><p>zadnja poruka</p></th>
+	    	<th class="col-lg-10"><textarea rows="3" cols="1" th:text="${poruka.sadrzaj}" readonly="readonly"></textarea></th>
+	    	</tr>
+		</table>
+  </div>
+
+<div class="row">
+    
+	<form action="#" th:object="${pAtribut}"
+		th:action="@{/korisnik/{kid}/tiket/{tid}/novi(kid=${tAtribut.korisnik.id}, tid=${tAtribut.id})}" method="post" class="form-horizontal well">
+		<input type="hidden" th:field="*{datum}" />
+		<input type="hidden" th:field="*{korisnik.id}"/>
+		<input type="hidden" th:field="*{prethodni.id}"/>
+
+		<div class="form-group" th:class="${#fields.hasErrors('*{sadrzaj}')} ? 'form-group has-error' : 'form-group'">
+        		<label for="naslov" class="col-lg-2 control-label" th:text="'Poruka'">Message: </label>
+        		<div class="col-lg-10">
+	            	<textarea rows="3" cols="1" onkeyup="textCounter(this,'counter',253);" th:field="*{sadrzaj}" class="form-control input-xlarge" th:placeholder="'Tekst poruke'" ></textarea>
+	            	<p th:if="${#fields.hasErrors('*{sadrzaj}')}" class="label label-danger" th:errors="*{sadrzaj}">Incorrect title</p>
+	            </div>
+			</div>
+          
+		<div class="form-actions right">
+          	<label class= "col-lg-2"></label>
+            <button type="submit" class="btn btn-primary" th:text="#{tk.new}">Add new msg</button>
+            <a class="btn btn-default" th:href="@{/admin/lokacije/}" th:text="#{rad.odu}">Cancel</a>
+		</div>
+	</form>
+	
+</div>
+</section>
+
+<div class="row right">
+  <a class="btn btn-primary btn-large" th:href="@{/admin/lokacije/}" th:text="#{rad.nal}">Back to the list</a>
+</div> 
+
+<div th:include="dodaci/sabloni :: footerFragment"></div>
+</div>
+<!-- /.container -->
+<div th:include="dodaci/sabloni :: jsFragment"></div>
+<script>
+function textCounter(field,field2,maxlimit)
+{
+ var countfield = document.getElementById(field2);
+ if ( field.value.length > maxlimit ) {
+  field.value = field.value.substring( 0, maxlimit );
+  return false;
+ } else {
+  countfield.value = maxlimit - field.value.length;
+ }
+}
+</script>
+
+</body>
+</html>

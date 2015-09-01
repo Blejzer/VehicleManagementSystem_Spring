@@ -41,14 +41,15 @@
 			<div th:if="${not #lists.isEmpty(pager.pageList)}">
 			<table>
 			
-						<tr>
-					        <th class="col-lg-2"><p th:text="${#dates.format(tAtribut.tiketDatum,'dd.MM.yyyy HH:mm')}"></p><p th:text="${tAtribut.korisnik.ime}+' '+${tAtribut.korisnik.prezime}"></p></th>
-					    	<th class="col-lg-6 center" ><h2 th:text="${tAtribut.naslov}"></h2></th>
-					    	<th class="col-lg-2" th:switch="${tAtribut.rijesenDatum!=null} ? ${false} : ${true}">
-					        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
-								<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
-					        </th>
-				    	</tr></table>
+				<tr>
+			        <th class="col-lg-2"><p th:text="${#dates.format(tAtribut.tiketDatum,'dd.MM.yyyy HH:mm')}"></p><p th:text="${tAtribut.korisnik.ime}+' '+${tAtribut.korisnik.prezime}"></p></th>
+			    	<th class="col-lg-6 center" ><h2 th:text="${tAtribut.naslov}"></h2></th>
+			    	<th class="col-lg-2" th:switch="${tAtribut.rijesenDatum!=null} ? ${false} : ${true}">
+			        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
+						<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
+			        </th>
+		    	</tr>
+			</table>
 				<table th:if="${not #lists.isEmpty(pager.pageList)}" class="table ">
 					<thead>
 				    	<tr>
