@@ -103,13 +103,14 @@
 									data-toggle="dropdown"><span th:text="#{mn.6}">Support</span> <b class="caret"></b></a>
 									<ul th:if="${kvAtribut}" class="dropdown-menu">
 									"KVATRIBUT"
-									<li><a th:href="@{/korisnik/{kid}/tiketi/(kid=${kvAtribut.korisnik.id})}" th:text="#{mn.6.1}">Svi tiketi</a></li>
+									<li><a th:href="@{/korisnik/{kid}/tiketi/(kid=${kvAtribut.korisnik.id})}" >Moji tiketi</a></li>
+										<li><a th:href="@{/korisnik//tiketi/}" >Svi tiketi</a></li>
 										<li><a th:href="@{/korisnik/{kid}/tiketi/nerijeseni(kid=${kvAtribut.korisnik.id})}" th:text="#{mn.6.2}">Tiketi na čekanju</a></li>
 										<li><a th:href="@{/korisnik/{kid}/tiketi/rijeseni(kid=${kvAtribut.korisnik.id})}" th:text="#{mn.6.3}">Riješeni tiketi</a></li>
 										<li class="divider"></li>
 										<li th:if="${kvAtribut}"><a th:href="@{/korisnik/{kid}/tiketi/novi(kid=${kvAtribut.korisnik.id}, vin=${kvAtribut.vozilo.vin})}" th:text="#{mn.6.4}">Novi tiket</a></li>
 									</ul>
-									<ul th:if="${tAtribut}" class="dropdown-menu">
+									<ul th:if="not ${kvAtribut}" class="dropdown-menu">
 									"TATRIBUT"
 									<li><a th:href="@{/korisnik/{kid}/tiketi/(kid=${tAtribut.korisnik.id})}" th:text="#{mn.6.1}">Svi tiketi</a></li>
 										<li><a th:href="@{/korisnik/{kid}/tiketi/nerijeseni(kid=${tAtribut.korisnik.id})}" th:text="#{mn.6.2}">Tiketi na čekanju</a></li>

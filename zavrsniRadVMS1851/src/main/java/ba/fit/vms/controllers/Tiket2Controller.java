@@ -157,14 +157,15 @@ public class Tiket2Controller {
 
 		Pageable pageable = new PageRequest(page, pageSize);
 		
+		try {
+			Page<Tiket2> pages = tiket2Repository.findAll(pageable);
+			model.addAttribute("pager", pages);
+		} catch (Exception e) {
+			System.out.println("Poruka o gresci: "+e.getMessage());
+		}
 		
-		Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNullOrderByTiketDatumDesc(pageable);
-		/*for (Tiket2 tiket2 : pages) {
-			System.out.println(tiket2.getPoruke().size());			
-		}*/
+		model.addAttribute("kvAtribut", kvRepository.findByKorisnik_EmailAndVracenoNull(email));
 		
-		
-		model.addAttribute("pager", pages);
 		
 		return "/korisnik/tiket/listaSvih";
 	}
