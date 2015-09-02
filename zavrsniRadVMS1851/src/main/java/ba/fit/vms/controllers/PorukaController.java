@@ -11,9 +11,6 @@ import org.hibernate.SessionException;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import ba.fit.vms.pojo.Korisnik;
 import ba.fit.vms.pojo.KorisnikVozilo;
 import ba.fit.vms.pojo.Poruka;
 import ba.fit.vms.pojo.Tiket2;
@@ -88,7 +84,7 @@ public class PorukaController {
 	
 	
 	@RequestMapping(value={"/korisnik/{kid}/tiket/{tid}/novi"}, method = RequestMethod.POST)
-	public String postNovaPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, @ModelAttribute("pAtribut") @Valid Poruka poruka,  BindingResult porukaRezultat, Principal principal, Model model ){
+	public String postNovaPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, @ModelAttribute("pAtribut") @Valid Poruka poruka, HttpServletRequest request,  BindingResult porukaRezultat, Principal principal, Model model ){
 	
 		System.out.println("POST: prethodni id = "+poruka.getPrethodni().getId());
 		System.out.println("POST: poruka id = "+poruka.getId());
@@ -114,14 +110,80 @@ public class PorukaController {
 			return link;
 			
 		}
-		
 		String link = "redirect:/korisnik/"+kid+"/tiket/"+tid+"/poruka";
+		if(request.getParameter("page")!=null){
+			link = link.concat("?page="+request.getParameter("page"));
+		}else{
+			link = "redirect:/korisnik/"+kid+"/tiket/"+tid+"/poruka";
+		}
 		System.out.println("POST: "+link);
 		
 		return link;
 	}
 	
 	
+	
+	@RequestMapping(value={"/korisnik/{kid}/tiket/{tid}/poruka"}, method = RequestMethod.GET)
+	public String getListPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, Principal principal, HttpServletRequest request, Model model){
+		KorisnikVozilo kv;
+		if(kid!=null){
+			kv = kvRepository.findByKorisnik_EmailAndVracenoNull(korisnikRepository.findOne(kid).getEmail());
+		}else{
+			kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
+		}
+		
+		Tiket2 t2;
+		if(tid!=null){
+			t2 = tRepository.findOne(tid);
+		}else{
+			System.out.println("nema tiketa sa tim brojem");
+			return "redirect:/korisnik/"+kid+"/tiketi/novi";
+		}
+		System.out.println(t2.getId());
+		Poruka slijedeca = new Poruka();
+		slijedeca.setDatum(new DateTime().toDate());
+		slijedeca.setKorisnik(kv.getKorisnik());
+		String link = "/korisnik/tiket/poruka/list";
+		if(request.getParameter("page")==null)
+		{
+			PagedListHolder<Poruka> poruke = new PagedListHolder<Poruka>(t2.getPoruke());
+			poruke.setPageSize(10);
+			request.getSession().setAttribute("Tiket2Controller_poruke", poruke);
+			model.addAttribute("tAtribut", t2);
+			model.addAttribute("pager", poruke);
+			model.addAttribute("kvAtribut", kv);
+			
+			if(poruke.isLastPage()){
+				slijedeca.setPrethodni(poruke.getPageList().get(poruke.getPageList().size()-1));
+				model.addAttribute("pAtribut", slijedeca);
+			}
+		}
+		else 
+		{
+			String page = request.getParameter("page");
+			System.out.println("else petlja");
+			PagedListHolder<Poruka> poruke = (PagedListHolder<Poruka>) request.getSession().getAttribute("Tiket2Controller_poruke");
+			if (poruke == null) 
+			{
+				throw new SessionException("Vasa sesija je istekla, molimo pokusajte ponoviti pretragu");
+			}
+			else
+			{
+				poruke.setPage(Integer.parseInt(page));
+				model.addAttribute("tAtribut", t2);
+				model.addAttribute("pager", poruke);
+				model.addAttribute("kvAtribut", kv);
+				if(poruke.isLastPage()){
+					slijedeca.setPrethodni(poruke.getPageList().get(poruke.getPageList().size()-1));
+					model.addAttribute("pAtribut", slijedeca);
+				}
+			}
+		}
+			return link;
+		
+	}
+	
+
 	
 	/*@RequestMapping(value={"/korisnik/{kid}/tiket/{tid}/poruke"}, method = RequestMethod.GET)
 	public String getListaPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, Principal principal, HttpServletRequest request, Model model){
@@ -172,62 +234,5 @@ public class PorukaController {
 		}
 		
 	}*/
-	
-	@RequestMapping(value={"/korisnik/{kid}/tiket/{tid}/poruka"}, method = RequestMethod.GET)
-	public String getListPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, Principal principal, HttpServletRequest request, Model model){
-		KorisnikVozilo kv;
-		if(kid!=null){
-			kv = kvRepository.findByKorisnik_EmailAndVracenoNull(korisnikRepository.findOne(kid).getEmail());
-		}else{
-			kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
-		}
-		
-		Tiket2 t2;
-		if(tid!=null){
-			t2 = tRepository.findOne(tid);
-		}else{
-			System.out.println("nema tiketa sa tim brojem");
-			return "redirect:/korisnik/"+kid+"/tiketi/novi";
-		}
-		System.out.println(t2.getId());
-		
-		int page;
-		if(request.getParameter("page")==null){
-			page=0;
-		} else{
-			page = Integer.parseInt(request.getParameter("page"));
-		}
-		int pageSize = 4;
-
-		Pageable pageable = new PageRequest(page, pageSize);
-		try {
-			Page<Poruka> pages = pRepository.findAllPoruke(tid, pageable);
-			System.out.println(pages.getTotalElements());
-			model.addAttribute("pager", pages);
-			model.addAttribute("tAtribut", t2);
-			if(pages.isLastPage()){
-				Poruka slijedeca = new Poruka();
-				
-				slijedeca.setKorisnik(kv.getKorisnik());
-				slijedeca.setDatum(new DateTime().toDate());
-				if(!t2.getPoruke().isEmpty()){
-					slijedeca.setPrethodni(t2.getPoruke().get(t2.getPoruke().size()-1));
-				}
-				model.addAttribute("pAtribut", slijedeca);
-			}
-			
-			for (Poruka poruka : pages) {
-				System.out.println(poruka.getClass());
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		
-		
-		
-			return "/korisnik/tiket/poruka/list";
-		
-	}
 
 }
