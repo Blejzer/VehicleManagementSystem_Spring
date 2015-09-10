@@ -12,20 +12,6 @@
 <div class="container"> 
 
 	<section id="tables">
-
-		<script src="/resources/bootstrap/js/bootbox.min.js" th:src="@{/resources/js/bootbox.min.js}"></script>
-				
-		<script th:inline="javascript">
-		 	function deleteObject(id) {
-				bootbox.confirm("Are you sure?", function(result) {
-					if (result) {
-						var url = /*[[ @{'/admin/dodjeljivanje/izbrisi?id='} ]]*/ "genericUrl";
-						url = url+id;
-						document.location = url;
-					}
-				}); 
-			};
-		</script>
 		
 		<p th:if="${#lists.isEmpty(pager)}" th:text="'Tiket nema poruka!'" class="label label-success"/>
 		<div class="alert alert-danger alert-dismissable" th:if="${error != null}">
@@ -41,33 +27,30 @@
 		</div>
 		<div class="page-header">
 	    	<table>
+		    	<tr>
+		    		<th class="col-lg-2 center" ><h2 ></h2>STARTED BY</th>
+		    		<th class="col-lg-7 center" ><h2 ></h2>TITLE</th>
+		    		<th class="col-lg-1 center" ><h2 ></h2>ACTIVE</th>
+		    		<th class="col-lg-2 center" ><h2 ></h2>ACTION</th>
+		    	</tr>
+	    		
 				<tr>
-			        <th class="col-lg-2"><p th:text="${#dates.format(tAtribut.tiketDatum,'dd.MM.yyyy HH:mm')}"></p><p th:text="${tAtribut.korisnik.ime}+' '+${tAtribut.korisnik.prezime}"></p></th>
+			        <th class="col-lg-1"><p th:text="${#dates.format(tAtribut.tiketDatum,'dd.MM.yyyy HH:mm')}"></p><p th:text="${tAtribut.korisnik.ime}+' '+${tAtribut.korisnik.prezime}"></p></th>
 			    	<th class="col-lg-8 center" ><h2 th:text="${tAtribut.naslov}"></h2></th>
-			    	<th class="col-lg-2" th:switch="${tAtribut.rijesenDatum!=null} ? ${false} : ${true}">
+			    	<th class="col-lg-1" th:switch="${tAtribut.rijesenDatum!=null} ? ${false} : ${true}">
 			        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
 						<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
 			        </th>
+			        <th class="col-lg-2">
+			        	<form action="#" th:object="${tAtribut}" th:action="@{/korisnik/{kid}/tiket/{tid}/zatvori(kid=${tAtribut.korisnik.id}, tid=${tAtribut.id}, page=${pager.page})}" method="post">       
+						<input type="hidden" th:field="*{id}"/>
+				        <button type="submit" class="btn btn-primary" th:text="'zatvori tiket'" th:disabled="${#httpServletRequest.remoteUser!=tAtribut.korisnik.email}">Add new msg</button>
+					</form>
+					</th>
 		    	</tr>
 			</table>
 		</div>	
-		<div th:if="${not #lists.isEmpty(pager.pageList)}">
-			<table class="table table-bordered table-striped table-hover">
-				<thead>
-			    	<tr>
-				        <th><p>User / Date</p></th>
-				        <th>Message</th>
-			    	</tr>
-			    </thead>
-			    <tbody>
-					<tr th:each="poruka : ${pager.pageList}">
-						<th class="col-lg-2"><p th:text="${poruka.korisnik.ime}+' '+${poruka.korisnik.prezime}"></p><p th:text="${#dates.format(poruka.datum, 'dd.MM.yyyy HH:mm:ss')}"></p></th>
-						<th class="col-lg-10" th:text="${poruka.sadrzaj}"></th>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div th:if="${pager.lastPage}" class="row">
+		<div th:if="${pager.firstPage}" class="row">
 		    <form action="#" th:object="${pAtribut}" th:action="@{/korisnik/{kid}/tiket/{tid}/novi(kid=${tAtribut.korisnik.id}, tid=${tAtribut.id})}" method="post" class="form-horizontal well">
 				<input type="hidden" th:field="*{datum}" />
 				<input type="hidden" th:field="*{korisnik.id}"/>
@@ -76,7 +59,7 @@
 				<div class="form-group" th:class="${#fields.hasErrors('*{sadrzaj}')} ? 'form-group has-error' : 'form-group'">
 	        		<label for="naslov" class="col-lg-2 control-label" th:text="'Poruka'">Message: </label>
 	        		<div class="col-lg-10">
-		            	<textarea rows="3" cols="1" onkeyup="textCounter(this,'counter',253);" th:field="*{sadrzaj}" class="form-control input-xlarge" th:placeholder="'Tekst poruke'" ></textarea>
+		            	<textarea rows="3" cols="1" onkeyup="textCounter(this,'counter',2048);" th:field="*{sadrzaj}" class="form-control input-xlarge" th:placeholder="'Tekst poruke'" ></textarea>
 		            	<p th:if="${#fields.hasErrors('*{sadrzaj}')}" class="label label-danger" th:errors="*{sadrzaj}">Incorrect title</p>
 		            </div>
 				</div>
@@ -87,6 +70,35 @@
 		            <a class="btn btn-default" th:href="@{/admin/lokacije/}" th:text="#{rad.odu}">Cancel</a>
 				</div>
 			</form>
+		</div>
+		<!-- Paginacija pocinje -->
+		<div class="col-lg-12 center">
+			<ul class="pagination">
+				<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
+				<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.page-1)}}">«</a></li>
+				<li th:each="item : ${#numbers.sequence(1,pager.pageCount)}" th:class="${pager.page == item-1} ? 'active' : ''">
+			        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
+			     </li>
+			    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
+				<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.page+1)}}">»</a></li>
+			</ul>
+		</div>
+		<!-- Paginacija zavrsava -->
+		<div class="containerone" th:if="${not #lists.isEmpty(pager.pageList)}">
+			<table class="table table-bordered table-striped table-hover">
+				<thead>
+			    	<tr>
+				        <th><p>User / Date</p></th>
+				        <th>Message</th>
+			    	</tr>
+			    </thead>
+			    <tbody>
+					<tr th:each="poruka : ${pager.pageList}">
+						<td class="col-lg-2"><p th:text="${poruka.korisnik.ime}+' '+${poruka.korisnik.prezime}"></p><p th:text="${#dates.format(poruka.datum, 'dd.MM.yyyy HH:mm:ss')}"></p></td>
+						<td class="col-lg-10 textareaone" th:text="${poruka.sadrzaj}"></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 
 		<!-- Paginacija pocinje -->
@@ -101,17 +113,31 @@
 				<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.page+1)}}">»</a></li>
 			</ul>
 		</div>
+		<!-- Paginacija zavrsava -->
 	</section>
 	 <!-- sekcija zavrsena --> 
 	 
 	<div class="row right">
 	  <a class="btn btn-primary btn-large" th:href="@{/admin/vozila/}">Lista vozila</a>
 	</div> 
-</div>  
+	<div class="row">
+		    
+		</div>
+</div>
+	<script>
+		function textCounter(field, field2, maxlimit) {
+			var countfield = document.getElementById(field2);
+			if (field.value.length > maxlimit) {
+				field.value = field.value.substring(0, maxlimit);
+				return false;
+			} else {
+				countfield.value = maxlimit - field.value.length;
+			}
+		}
+	</script>
 
 
-
-<div th:include="dodaci/sabloni :: footerFragment"></div>
+	<div th:include="dodaci/sabloni :: footerFragment"></div>
 <!-- /.container -->
 <div th:include="dodaci/sabloni :: jsFragment"></div>
 

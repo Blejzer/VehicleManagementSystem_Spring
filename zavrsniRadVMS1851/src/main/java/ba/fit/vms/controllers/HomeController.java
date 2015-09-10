@@ -11,6 +11,9 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +25,14 @@ import ba.fit.vms.pojo.KorisnikVozilo;
 import ba.fit.vms.pojo.LokacijaKilometraza;
 import ba.fit.vms.pojo.Registracija;
 import ba.fit.vms.pojo.Servis1;
+import ba.fit.vms.pojo.Tiket2;
 import ba.fit.vms.pojo.Vozilo;
 import ba.fit.vms.repository.KorisnikRepository;
 import ba.fit.vms.repository.KorisnikVoziloRepository;
 import ba.fit.vms.repository.LokacijaKilometrazaRepository;
 import ba.fit.vms.repository.RegistracijaRepository;
 import ba.fit.vms.repository.Servis1Repository;
+import ba.fit.vms.repository.Tiket2Repository;
 import ba.fit.vms.repository.VoziloRepository;
 import ba.fit.vms.util.ServisPretraga;
 
@@ -52,6 +57,9 @@ public class HomeController {
 	
 	@Autowired
 	private LokacijaKilometrazaRepository lokiRepository;
+	
+	@Autowired
+	private Tiket2Repository tRepository;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(SecurityContextHolderAwareRequestWrapper principal, Model model) {
@@ -156,6 +164,19 @@ public class HomeController {
 					}
 				}
 				// KRAJ KILOMETRAZA TAB
+				
+				// TIKET TAB
+				
+				int page=0;
+				int pageSize = 4;
+				Pageable pageable = new PageRequest(page, pageSize);
+				try {
+					Page<Tiket2> pages = tRepository.findByRijesenDatumIsNullOrderByTiketDatumDesc(pageable);
+					model.addAttribute("tAtribut", pages);
+					atributi.set(5, true);
+				} catch (Exception e) {
+					System.out.println("Poruka o gresci: "+e.getMessage());
+				}
 				
 				model.addAttribute("user", trenutni.getIme() + " " + trenutni.getPrezime());
 				model.addAttribute("regAtribut", lista);

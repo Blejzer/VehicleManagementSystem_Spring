@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "poruka")
-public class Poruka  implements Serializable{ //, Comparable<Poruka>
+public class Poruka  implements Serializable, Comparable<Poruka>{ //
 	
 	/**
 	 * 
@@ -31,7 +32,8 @@ public class Poruka  implements Serializable{ //, Comparable<Poruka>
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="sadrzaj", length = 255)
+	@Lob
+	@Column(name="sadrzaj", columnDefinition="TEXT")
 	@NotEmpty(message= "Sadrzaj ne moze biti prazan")
 	private String sadrzaj;
 	
@@ -47,15 +49,11 @@ public class Poruka  implements Serializable{ //, Comparable<Poruka>
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="prethodna_id", nullable=true)
 	private Poruka prethodni;
-	
-	/*@ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-	@JoinColumn(name = "tiket2_id", nullable = false)
-	private Tiket2 tiket2;*/
 
-	/*@Override
+	@Override
 	public int compareTo(Poruka o) {
-		return this.id.compareTo(o.id);
-	}*/
+		return this.datum.compareTo(o.datum);
+	}
 	
 	
 	//

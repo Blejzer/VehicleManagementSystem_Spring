@@ -2,6 +2,7 @@ package ba.fit.vms.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import ba.fit.vms.pojo.Korisnik;
 import ba.fit.vms.pojo.KorisnikVozilo;
 import ba.fit.vms.pojo.Poruka;
 import ba.fit.vms.pojo.Tiket2;
@@ -113,9 +115,8 @@ public class PorukaController {
 		String link = "redirect:/korisnik/"+kid+"/tiket/"+tid+"/poruka";
 		if(request.getParameter("page")!=null){
 			link = link.concat("?page="+request.getParameter("page"));
-		}else{
-			link = "redirect:/korisnik/"+kid+"/tiket/"+tid+"/poruka";
 		}
+		
 		System.out.println("POST: "+link);
 		
 		return link;
@@ -125,12 +126,9 @@ public class PorukaController {
 	
 	@RequestMapping(value={"/korisnik/{kid}/tiket/{tid}/poruka"}, method = RequestMethod.GET)
 	public String getListPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, Principal principal, HttpServletRequest request, Model model){
-		KorisnikVozilo kv;
-		if(kid!=null){
-			kv = kvRepository.findByKorisnik_EmailAndVracenoNull(korisnikRepository.findOne(kid).getEmail());
-		}else{
-			kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
-		}
+		
+		KorisnikVozilo kv = kvRepository.findByKorisnik_EmailAndVracenoNull(korisnikRepository.findOne(kid).getEmail());
+		Korisnik k = korisnikRepository.find(principal.getName());
 		
 		Tiket2 t2;
 		if(tid!=null){
@@ -142,18 +140,20 @@ public class PorukaController {
 		System.out.println(t2.getId());
 		Poruka slijedeca = new Poruka();
 		slijedeca.setDatum(new DateTime().toDate());
-		slijedeca.setKorisnik(kv.getKorisnik());
+		slijedeca.setKorisnik(k);
 		String link = "/korisnik/tiket/poruka/list";
 		if(request.getParameter("page")==null)
 		{
-			PagedListHolder<Poruka> poruke = new PagedListHolder<Poruka>(t2.getPoruke());
+			List<Poruka> lista = t2.getPoruke();
+			Collections.sort(lista, Collections.reverseOrder());
+			PagedListHolder<Poruka> poruke = new PagedListHolder<Poruka>(lista);
 			poruke.setPageSize(10);
 			request.getSession().setAttribute("Tiket2Controller_poruke", poruke);
 			model.addAttribute("tAtribut", t2);
 			model.addAttribute("pager", poruke);
 			model.addAttribute("kvAtribut", kv);
 			
-			if(poruke.isLastPage()){
+			if(poruke.isFirstPage()){
 				slijedeca.setPrethodni(poruke.getPageList().get(poruke.getPageList().size()-1));
 				model.addAttribute("pAtribut", slijedeca);
 			}
@@ -161,7 +161,9 @@ public class PorukaController {
 		else 
 		{
 			String page = request.getParameter("page");
-			System.out.println("else petlja");
+			//System.out.println("else petlja");
+			
+			@SuppressWarnings("unchecked")
 			PagedListHolder<Poruka> poruke = (PagedListHolder<Poruka>) request.getSession().getAttribute("Tiket2Controller_poruke");
 			if (poruke == null) 
 			{
@@ -173,7 +175,7 @@ public class PorukaController {
 				model.addAttribute("tAtribut", t2);
 				model.addAttribute("pager", poruke);
 				model.addAttribute("kvAtribut", kv);
-				if(poruke.isLastPage()){
+				if(poruke.isFirstPage()){
 					slijedeca.setPrethodni(poruke.getPageList().get(poruke.getPageList().size()-1));
 					model.addAttribute("pAtribut", slijedeca);
 				}
@@ -185,54 +187,23 @@ public class PorukaController {
 	
 
 	
-	/*@RequestMapping(value={"/korisnik/{kid}/tiket/{tid}/poruke"}, method = RequestMethod.GET)
-	public String getListaPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, Principal principal, HttpServletRequest request, Model model){
-		KorisnikVozilo kv;
-		if(kid!=null){
-			kv = kvRepository.findByKorisnik_EmailAndVracenoNull(korisnikRepository.findOne(kid).getEmail());
-		}else{
-			kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
-		}
+	@RequestMapping(value={"/korisnik/{kid}/tiket/{tid}/zatvori"}, method = RequestMethod.POST)
+	public String postZatvoriTiket(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, Principal principal, HttpServletRequest request, Model model){
 		
 		Tiket2 t2;
 		if(tid!=null){
 			t2 = tRepository.findOne(tid);
+			t2.setRijesenDatum(new DateTime().toDate());
+			tRepository.saveAndFlush(t2);
 		}else{
 			System.out.println("nema tiketa sa tim brojem");
-			return "redirect:/korisnik/"+kid+"/tiketi/novi";
+			return "redirect:/korisnik/"+kid+"/tiketi/";
 		}
-		System.out.println(t2.getId());
+		System.out.println("Zatvori.t2.brojPoruka: "+tRepository.findOne(t2.getId()).getPoruke().size());
+		System.out.println("redirect:/korisnik/"+kid+"/tiketi/");
 		
-		if(request.getParameter("page")==null)
-		{
-			PagedListHolder poruke = new PagedListHolder(t2.getPoruke());
-			poruke.setPageSize(4);
-			request.getSession().setAttribute("Tiket2Controller_poruke", poruke);
-			model.addAttribute("tAtribut", t2);
-			model.addAttribute("pager", poruke);
-			model.addAttribute("kvAtribut", kv);
-			
-			return "/korisnik/tiket/poruka/lista";
-		}
-		else 
-		{
-			String page = request.getParameter("page");
-			System.out.println("else petlja");
-			PagedListHolder poruke = (PagedListHolder) request.getSession().getAttribute("Tiket2Controller_poruke");
-			if (poruke == null) 
-			{
-				throw new SessionException("Vasa sesija je istekla, molimo pokusajte ponoviti pretragu");
-			}
-			else
-			{
-				poruke.setPage(Integer.parseInt(page));
-				model.addAttribute("tAtribut", t2);
-				model.addAttribute("pager", poruke);
-				model.addAttribute("kvAtribut", kv);
-			}
-			return "/korisnik/tiket/poruka/lista";
-		}
+		return "redirect:/korisnik/"+kid.toString()+"/tiketi/";
 		
-	}*/
+	}
 
 }

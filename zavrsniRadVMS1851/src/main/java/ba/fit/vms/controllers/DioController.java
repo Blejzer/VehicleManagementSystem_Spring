@@ -57,9 +57,9 @@ public class DioController {
 	 * @return
 	 */
 	@RequestMapping(value={"/admin/dio/novi"}, method = RequestMethod.GET)
-	public String getDodajDio(Model model){
+	public String getDodajDio(@ModelAttribute("dioAtribut") Dio dio){
 
-		model.addAttribute("dioAtribut", new Dio());
+		//model.addAttribute("dioAtribut", new Dio());
 		return "/admin/servis/dio/novi";
 	}
 
@@ -72,8 +72,8 @@ public class DioController {
 	 * @param rezultat
 	 * @return
 	 */
-	@RequestMapping(value="/admin/dio/novi", method = RequestMethod.POST)
-	public String postDodajDio(@ModelAttribute("dioAtribut") @Valid Dio dio, BindingResult rezultat){
+	@RequestMapping(value="/admin/dio/novi", params={"save"})
+	public String postDodajDio(@ModelAttribute("dioAtribut") @Valid Dio dio, final BindingResult rezultat){
 
 		if (rezultat.hasErrors()) 
 		{		

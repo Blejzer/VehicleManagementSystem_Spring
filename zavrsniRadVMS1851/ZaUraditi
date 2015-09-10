@@ -16,13 +16,16 @@ Za uraditi:
   - dodati na listu registracija i tabelu za neregistrovana vozila - RIJESENO
   
 - Tiketi (Tiketi za korisnika i za admina)
-  - srediti vezivanje tiketa i odgovore na vezane tikete
-  - dodati view-ove za novi, pregled pretragu 
-  - lista otvorenih tiketa na frontpageu
+  - srediti vezivanje tiketa i odgovore na vezane tikete - RIJESENO
+  - zatvori tiket - RIJESENO
+  - dodati view-ove za novi, pregled - RIJESENO
+  - lista otvorenih tiketa na frontpageu za admina  - RIJESENO
+  - lista svih / otvorenih / zatvorenih tiketa za admina i za korisnika
+  
 - dodati triger na bazu i pozivanje skripti na bazi
 
 SABLONI
-- Rijesiti problem sa kv atributom koji se trazi u headerFragment za korisnika!
+- Rijesiti problem sa kv atributom koji se trazi u headerFragment za korisnika! - RIJESENO
   
   
 KORISNIK

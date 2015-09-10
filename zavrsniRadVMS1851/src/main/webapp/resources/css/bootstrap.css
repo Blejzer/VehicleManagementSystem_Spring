@@ -206,8 +206,8 @@ input::-moz-focus-inner {
 textarea {
   text-align: justify; 
   white-space: normal;
-  min-width:95%;
-  width:100%;
+  min-width:98%;
+  resize:vertical;
   overflow: auto;
   vertical-align: top;
   border: none;
@@ -6808,8 +6808,9 @@ td.visible-print {
     display: none !important;
   }
 }
-confinedSpace textarea { 
-	min-height:200px;
-	margin:0px; 
-	width:100% 
-	}
+.textareaone {
+	overflow: hidden;
+    resize: none;
+    min-height: 20px;
+    height: auto;
+}

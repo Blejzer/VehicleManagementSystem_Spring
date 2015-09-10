@@ -42,7 +42,7 @@
 					<li><a href="#B" data-toggle="tab"><span th:class="${boolAtributi[1]} ? text-danger:text-success" th:text="#{adm.4}">Registracije</span></a></li>
 					<li><a href="#C" data-toggle="tab"><span th:class="${boolAtributi[2]} ? text-danger:text-success" th:text="#{adm.5(${#dates.monthName(#dates.createNow())})}"></span></a></li>
 					<li><a href="#D" data-toggle="tab"><span th:class="${boolAtributi[3]} ? text-danger:text-success" th:text="#{adm.6}">Servisi</span></a></li>
-<!-- 					<li><a href="#E" data-toggle="tab">Support</a></li> -->
+					<li><a href="#E" data-toggle="tab"><span th:class="${boolAtributi[5]} ? text-danger:text-success" >Tiketi</span></a></li>
 				</ul>
 				<div class="tabbable">
 					<div class="tab-content">
@@ -250,49 +250,37 @@
 								</div>
 							</div>
 						</div>
-<!-- 						<div class="tab-pane" id="E"> -->
-<!-- 							<table th:if="${not #lists.isEmpty(pager.pageList)}" -->
-<!-- 								class="table table-bordered table-striped table-hover"> -->
-<!-- 								<thead> -->
-<!-- 									<tr class="success"> -->
-<!-- 										<th class="center" th:text="#{ticketList.ticketDate}">Date</th> -->
-<!-- 										<th class="center" th:text="#{ticketList.solvedDate}">Date</th> -->
-<!-- 										<th class="center" th:text="#{ticketList.subject}">Subject</th> -->
-<!-- 										<th class="center" th:text="#{ticketList.completed}">Y/N</th> -->
-<!-- 										<th class="center" th:text="#{actions.title}">Actions</th> -->
-<!-- 									</tr> -->
-<!-- 								</thead> -->
-
-<!-- 								<tbody> -->
-<!-- 									<tr th:each="ticket : ${pager.pageList}"> -->
-<!-- 										<td -->
-<!-- 											th:text="${ticket.ticketDate} ? ${#dates.format(ticket.ticketDate, 'dd/MM/yyyy')} : ''">Ticket -->
-<!-- 											Date</td> -->
-<!-- 										<td -->
-<!-- 											th:text="${ticket.solvedDate} ? ${#dates.format(ticket.solvedDate, 'dd/MM/yyyy')} : ''">Solved -->
-<!-- 											Date</td> -->
-<!-- 										<td th:text="${ticket.subject}">Ticket Subject</td> -->
-<!-- 										<td th:switch="${ticket.isCompleted}"> -->
-<!-- 											<p th:case="true"> -->
-<!-- 												<i class="glyphicon glyphicon-ok"></i> -->
-<!-- 											</p> -->
-<!-- 											<p th:case="false"> -->
-<!-- 												<i class="glyphicon glyphicon-minus"></i> -->
-<!-- 											</p> -->
-<!-- 										</td> -->
-<!-- 										<td><a sec:authorize="hasRole('ROLE_USER')" -->
-<!-- 											class="btn btn-info btn-sm" -->
-<!-- 											th:href="@{/support/show(id=${ticket.id})}"><span -->
-<!-- 												th:text="#{actions.show}">Show action</span></a> <a -->
-<!-- 											sec:authorize="hasRole('ROLE_ADMIN')" -->
-<!-- 											class="btn btn-warning btn-sm" -->
-<!-- 											th:href="@{/support/edit(id=${ticket.id})}"><i -->
-<!-- 												class="glyphicon glyphicon-edit"></i> <span -->
-<!-- 												th:text="#{actions.edit}">Edit action</span></a></td> -->
-<!-- 									</tr> -->
-<!-- 								</tbody> -->
-<!-- 							</table> -->
-<!-- 						</div> -->
+						<div class="tab-pane" id="E">
+							<table th:if="${not #lists.isEmpty(tAtribut)}" class="table table-bordered table-striped table-hover">
+								<thead>
+									<tr>
+								     <th th:text="#{tk.da}">Ticket Date</th>
+								     <th th:text="#{tk.na}">Title</th>
+								     <th th:text="#{kv.kor}">User</th>					        
+								     <th th:text="#{kor.je}">isActive</th>
+								     <th th:text="#{tk.bp}">Number of Messages</th>
+								     <th th:text="#{tk.zp}">Last msg</th>
+								     <th th:text="#{rad.na}">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="tiket : ${tAtribut}">
+									 	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
+									 	<td th:text="${tiket.naslov}">email@email.com</td>
+									 	<td th:text="${tiket.korisnik.ime} + ' ' + ${tiket.korisnik.prezime}"></td>
+									 	<td th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
+									     	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
+											<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
+									     </td>
+									 	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#lists.size(tiket.poruke)}: 'Nema poruka'">Doe</td>
+									 	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#dates.format(tiket.poruke[__(${#lists.size(tiket.poruke)}-1)__].datum,'dd MM yyyy HH:mm')} : 'PRAZNO'">Last msg date</td>
+										<td>
+										<a class="btn btn-info btn-sm" th:href="@{/korisnik/{kid}/tiket/{tid}/poruka(kid=${tiket.korisnik.id}, tid=${tiket.id})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<!-- /tabbable -->

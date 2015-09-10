@@ -169,9 +169,10 @@ public class Tiket2Controller {
 		
 		return "/korisnik/tiket/listaSvih";
 	}
-	@RequestMapping(value="/korisnik/{id}/tiketi/", method=RequestMethod.GET)
-	public String getListaKorisnikTiketa(Principal principal, HttpServletRequest request,  Model model){
+	@RequestMapping(value="/korisnik/{kid}/tiketi/", method=RequestMethod.GET)
+	public String getListaKorisnikTiketa(@PathVariable("kid") Long kid, Principal principal, HttpServletRequest request,  Model model){
 		System.out.println("/korisnik/{id}/tiketi/");
+		Korisnik k = korisnikRepository.findOne(kid);
 		int page;
 		if(request.getParameter("page")==null){
 			page=0;
@@ -182,17 +183,16 @@ public class Tiket2Controller {
 		int pageSize = 4;
 
 		Pageable pageable = new PageRequest(page, pageSize);
-		
-		KorisnikVozilo  kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
-		Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNullAndKorisnikOrderByTiketDatumDesc(kv.getKorisnik(), pageable);
-		/*for (Tiket2 tiket2 : pages) {
-			System.out.println(tiket2.getPoruke().size());			
-		}*/
-		
-		
-		model.addAttribute("pager", pages);
-		model.addAttribute("kvAtribut", kv);
-		
+		try {
+			KorisnikVozilo  kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
+			Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNullAndKorisnikOrderByTiketDatumDesc(k, pageable);
+			
+			model.addAttribute("pager", pages);
+			model.addAttribute("kvAtribut", kv);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "redirect:/korisnik/tiketi/";
+		}
 		return "/korisnik/tiket/lista";
 	}
 
