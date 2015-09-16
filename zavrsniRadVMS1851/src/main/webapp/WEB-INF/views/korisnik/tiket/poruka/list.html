@@ -23,14 +23,14 @@
 		    </div>
 		</div>
 	    <div th:if="${#lists.isEmpty(pager.pageList)}">
-			<h1 th:text="#{kor.msg2}"></h1>
+			<h1 th:text="#{pk.no}"></h1>
 		</div>
 		<div class="page-header">
 	    	<table>
 		    	<tr>
 		    		<th class="col-lg-2 center" ><h2 ></h2>STARTED BY</th>
 		    		<th class="col-lg-7 center" ><h2 ></h2>TITLE</th>
-		    		<th class="col-lg-1 center" ><h2 ></h2>ACTIVE</th>
+		    		<th class="col-lg-1 center" ><h2 ></h2>OPEN</th>
 		    		<th class="col-lg-2 center" ><h2 ></h2>ACTION</th>
 		    	</tr>
 	    		
@@ -44,13 +44,13 @@
 			        <th class="col-lg-2">
 			        	<form action="#" th:object="${tAtribut}" th:action="@{/korisnik/{kid}/tiket/{tid}/zatvori(kid=${tAtribut.korisnik.id}, tid=${tAtribut.id}, page=${pager.page})}" method="post">       
 						<input type="hidden" th:field="*{id}"/>
-				        <button type="submit" class="btn btn-primary" th:text="'zatvori tiket'" th:disabled="${#httpServletRequest.remoteUser!=tAtribut.korisnik.email}">Add new msg</button>
+				        <button type="submit" class="btn btn-primary" th:text="'zatvori tiket'" th:disabled="(${#httpServletRequest.remoteUser!=tAtribut.korisnik.email}) ? true :(${tAtribut.rijesenDatum}!=null ? true : false)">Add new msg</button>
 					</form>
 					</th>
 		    	</tr>
 			</table>
 		</div>	
-		<div th:if="${pager.firstPage}" class="row">
+		<div th:if="(${tAtribut.rijesenDatum}==null ? (${pager.firstPage} ? true : false) : false) " class="row">
 		    <form action="#" th:object="${pAtribut}" th:action="@{/korisnik/{kid}/tiket/{tid}/novi(kid=${tAtribut.korisnik.id}, tid=${tAtribut.id})}" method="post" class="form-horizontal well">
 				<input type="hidden" th:field="*{datum}" />
 				<input type="hidden" th:field="*{korisnik.id}"/>
@@ -66,7 +66,7 @@
 			          
 				<div class="form-actions right">
 		          	<label class= "col-lg-2"></label>
-		            <button type="submit" class="btn btn-primary" th:text="#{tk.new}">Add new msg</button>
+		            <button type="submit" class="btn btn-primary" th:text="#{pk.add}">Add new msg</button>
 		            <a class="btn btn-default" th:href="@{/admin/lokacije/}" th:text="#{rad.odu}">Cancel</a>
 				</div>
 			</form>

@@ -189,11 +189,29 @@ public class HomeController {
 				return "admin/welcome";
 			}else{
 				if(principal.isUserInRole("ROLE_USER")){
-					String name = principal.getRemoteUser(); // kupimo logiranog korisnika
-					Korisnik trenutni = korisnikRepository.find(name);
-					KorisnikVozilo kv = korisnikVoziloRepository.findByKorisnik_EmailAndVracenoNull(name);
-					model.addAttribute("user", trenutni.getIme() + " " + trenutni.getPrezime());
-					model.addAttribute("kvAtribut", kv);
+					try {
+						String name = principal.getRemoteUser(); // kupimo logiranog korisnika
+						Korisnik trenutni = korisnikRepository.find(name);
+						System.out.println(trenutni.getIme());
+						KorisnikVozilo kv = korisnikVoziloRepository.findByKorisnik_EmailAndVracenoNull(name);
+						System.out.println(kv.getId());
+						LokacijaKilometraza lk = lokiRepository.getMaxMileage(kv.getVozilo().getVin());
+						model.addAttribute("lkAtribut", lk);
+						model.addAttribute("boolAtributi", atributi);
+						
+						model.addAttribute("user", trenutni);
+						model.addAttribute("kvAtribut", kv);
+						model.addAttribute("rAtribut", regRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin()));
+						model.addAttribute("servisAtribut", servisRepository.findByZavrsenFalseAndVozilo_vinAndDatumLessThanEqualOrderByDatumAsc(kv.getVozilo().getVin(), new Date()));
+						int page=0;
+						int pageSize = 4;
+						Pageable pageable = new PageRequest(page, pageSize);
+						
+						model.addAttribute("tAtribut", tRepository.findByRijesenDatumIsNotNullAndKorisnikOrderByTiketDatumDesc(trenutni, pageable));
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
+					
 					return "auth/welcome";
 				}
 			}

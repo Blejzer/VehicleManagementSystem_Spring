@@ -153,7 +153,7 @@ public class Tiket2Controller {
 			page = Integer.parseInt(request.getParameter("page"));
 		}
 
-		int pageSize = 4;
+		int pageSize = 10;
 
 		Pageable pageable = new PageRequest(page, pageSize);
 		
@@ -180,12 +180,65 @@ public class Tiket2Controller {
 			page = Integer.parseInt(request.getParameter("page"));
 		}
 
-		int pageSize = 4;
+		int pageSize = 10;
+
+		Pageable pageable = new PageRequest(page, pageSize);
+		try {
+			KorisnikVozilo  kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
+			Page<Tiket2> pages = tiket2Repository.findByKorisnikOrderByTiketDatumDesc(k, pageable);
+			
+			model.addAttribute("pager", pages);
+			model.addAttribute("kvAtribut", kv);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "redirect:/korisnik/tiketi/";
+		}
+		return "/korisnik/tiket/lista";
+	}
+	@RequestMapping(value="/korisnik/{kid}/tiketi/otvoreni", method=RequestMethod.GET)
+	public String getListaKorisnikTiketaOtvoreni(@PathVariable("kid") Long kid, Principal principal, HttpServletRequest request,  Model model){
+		System.out.println("/korisnik/{id}/tiketi/otvoreni");
+		Korisnik k = korisnikRepository.findOne(kid);
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+
+		int pageSize = 10;
 
 		Pageable pageable = new PageRequest(page, pageSize);
 		try {
 			KorisnikVozilo  kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
 			Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNullAndKorisnikOrderByTiketDatumDesc(k, pageable);
+			
+			model.addAttribute("pager", pages);
+			model.addAttribute("kvAtribut", kv);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "redirect:/korisnik/tiketi/";
+		}
+		return "/korisnik/tiket/lista";
+	}
+	
+	@RequestMapping(value="/korisnik/{kid}/tiketi/rijeseni", method=RequestMethod.GET)
+	public String getListaKorisnikTiketaRijeseni(@PathVariable("kid") Long kid, Principal principal, HttpServletRequest request,  Model model){
+		System.out.println("/korisnik/{id}/tiketi/rijeseni");
+		Korisnik k = korisnikRepository.findOne(kid);
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+
+		int pageSize = 10;
+
+		Pageable pageable = new PageRequest(page, pageSize);
+		try {
+			KorisnikVozilo  kv = kvRepository.findByKorisnik_EmailAndVracenoNull(principal.getName());
+			Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNotNullAndKorisnikOrderByTiketDatumDesc(k, pageable);
 			
 			model.addAttribute("pager", pages);
 			model.addAttribute("kvAtribut", kv);

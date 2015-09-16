@@ -36,25 +36,25 @@
      </div>
     </div>
     <div th:if="${(pager.totalElements==0)}">
-				<h1 th:text="#{kor.msg2}"></h1>
+				<h1 th:text="#{tk.no}"></h1>
 				</div>
 			<div th:if="${(pager.totalElements>0)}">
 				<table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
 					<thead>
 				    	<tr>
-					        <th th:text="#{tk.da}">Ticket Date</th>
-					        <th th:text="#{tk.na}">Title</th>
-					        <th th:text="#{kor.je}">isActive</th>
-					        <th th:text="#{tk.bp}">Number of Messages</th>
-					        <th th:text="#{tk.zp}">Last msg</th>
-					        <th th:text="#{rad.na}">Actions</th>
+					        <th class="center" th:text="#{tk.da}">Ticket Date</th>
+					        <th class="center" th:text="#{tk.na}">Title</th>
+					        <th class="center" th:text="#{tk.za}">isActive</th>
+					        <th class="center" th:text="#{tk.bp}">Number of Messages</th>
+					        <th class="center" th:text="#{tk.zp}">Last msg</th>
+					        <th class="center" th:text="#{rad.na}">Actions</th>
 				    	</tr>
 				    </thead>
 				    <tbody>
 						<tr th:each="tiket : ${pager}">
 					    	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
-					    	<td th:text="${tiket.naslov}">email@email.com</td>
-					    	<td th:switch="${tiket.rijesenDatum!=null} ? ${false} : ${true}">
+					    	<td th:text="${tiket.naslov}">Ticket title</td>
+					    	<td class="center" th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
 					        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
 								<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
 					        </td>
