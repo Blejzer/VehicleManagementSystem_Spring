@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ba.fit.vms.pojo.Korisnik;
 import ba.fit.vms.pojo.KorisnikVozilo;
@@ -37,6 +38,7 @@ import ba.fit.vms.repository.VoziloRepository;
 import ba.fit.vms.util.ServisPretraga;
 
 @Controller
+@SessionAttributes("userAtribut")
 public class HomeController {
 	
 	protected static Logger logger = Logger.getLogger("repo");
@@ -178,7 +180,7 @@ public class HomeController {
 					System.out.println("Poruka o gresci: "+e.getMessage());
 				}
 				
-				model.addAttribute("user", trenutni.getIme() + " " + trenutni.getPrezime());
+				model.addAttribute("userAtribut", trenutni);
 				model.addAttribute("regAtribut", lista);
 				model.addAttribute("nerRegAtribut", listaVozila);
 				model.addAttribute("report", report);
@@ -189,28 +191,68 @@ public class HomeController {
 				return "admin/welcome";
 			}else{
 				if(principal.isUserInRole("ROLE_USER")){
+					String name = principal.getRemoteUser(); // kupimo logiranog korisnika
+					Korisnik trenutni = korisnikRepository.find(name);
+					System.out.println(trenutni.getIme());
+					model.addAttribute("userAtribut", trenutni);
+					
+					int page=0;
+					int pageSize = 4;
+					Pageable pageable = new PageRequest(page, pageSize);
+						
+					
+					
 					try {
-						String name = principal.getRemoteUser(); // kupimo logiranog korisnika
-						Korisnik trenutni = korisnikRepository.find(name);
-						System.out.println(trenutni.getIme());
 						KorisnikVozilo kv = korisnikVoziloRepository.findByKorisnik_EmailAndVracenoNull(name);
-						System.out.println(kv.getId());
-						LokacijaKilometraza lk = lokiRepository.getMaxMileage(kv.getVozilo().getVin());
-						model.addAttribute("lkAtribut", lk);
-						model.addAttribute("boolAtributi", atributi);
-						
-						model.addAttribute("user", trenutni);
 						model.addAttribute("kvAtribut", kv);
-						model.addAttribute("rAtribut", regRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin()));
-						model.addAttribute("servisAtribut", servisRepository.findByZavrsenFalseAndVozilo_vinAndDatumLessThanEqualOrderByDatumAsc(kv.getVozilo().getVin(), new Date()));
-						int page=0;
-						int pageSize = 4;
-						Pageable pageable = new PageRequest(page, pageSize);
+						atributi.add(0, true);
+						try {
+							LokacijaKilometraza lk = lokiRepository.getMaxMileage(kv.getVozilo().getVin());
+							model.addAttribute("lkAtribut", lk);
+						} catch (Exception e) {
+							atributi.add(1, false);
+						}
+						try {
+							Date d1 = new DateTime().plusMonths(1).toDate();
+							Registracija r = regRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin());
+							if(r.getOsigDo().before(d1) || r.getRegDo().before(d1)){
+								atributi.add(2, true);
+							}else{
+								atributi.add(2, false);
+							}
+							model.addAttribute("rAtribut", r);
+						} catch (Exception e) {
+							atributi.add(2, false);
+						}
+						try {
+							List<Servis1> s = servisRepository.findByZavrsenFalseAndVozilo_vin(kv.getVozilo().getVin());
+							model.addAttribute("sAtribut", s);
+							if(s.size()>0){
+								atributi.set(3, true);
+							}
+						} catch (Exception e) {
+							atributi.add(3, false);
+						}
+						try {
+							Page<Tiket2> pages = tRepository.findByRijesenDatumIsNullAndKorisnikOrderByTiketDatumDesc(trenutni, pageable);
+							model.addAttribute("tAtribut", pages);
+							System.out.println(pages.getSize());
+							System.out.println(pages.hasContent());
+							System.out.println(pages.getContent().size());
+							System.out.println(pages.getNumberOfElements());
+							if(pages.getNumberOfElements()>0){
+								atributi.set(4, true);
+							}
+						} catch (Exception e) {
+							System.out.println("Poruka o gresci: "+e.getMessage());
+						}
 						
-						model.addAttribute("tAtribut", tRepository.findByRijesenDatumIsNotNullAndKorisnikOrderByTiketDatumDesc(trenutni, pageable));
+						
+						
 					} catch (Exception e) {
-						System.out.println(e.getMessage());
+						atributi.add(0, false);
 					}
+					model.addAttribute("boolAtributi", atributi);
 					
 					return "auth/welcome";
 				}

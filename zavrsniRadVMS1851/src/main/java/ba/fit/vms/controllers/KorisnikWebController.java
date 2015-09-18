@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ba.fit.vms.pojo.Korisnik;
 import ba.fit.vms.repository.KorisnikRepository;
 import ba.fit.vms.util.KorisnikValidatorForme;
 
 @Controller
+@SessionAttributes("userAtribut")
 public class KorisnikWebController {
 
 	@Inject
@@ -61,7 +63,8 @@ public class KorisnikWebController {
 	@RequestMapping(value="/admin/korisnici/novi", method = RequestMethod.GET)
 	public String getNoviKorisnik(SecurityContextHolderAwareRequestWrapper request, Model model){
 
-		if(request.isUserInRole("ROLE_ADMIN")){
+		Korisnik k = (Korisnik) request.getSession().getAttribute("userAtribut");
+		if(k.getRola().equalsIgnoreCase("ROLE_ADMIN")){
 			model.addAttribute("korisnikAtribut", new Korisnik());
 			return "/admin/korisnik/novi";
 
@@ -142,10 +145,8 @@ public class KorisnikWebController {
 
 	@RequestMapping(value="/admin/korisnici/izmjeni", method = RequestMethod.POST)
 	public String postIzmjeniKorisnika(@ModelAttribute("korisnikAtribut") @Valid Korisnik korisnik, BindingResult rezultat, SecurityContextHolderAwareRequestWrapper request){
+		
 		if(request.isUserInRole("ROLE_ADMIN")){
-			
-			System.out.println("lozinka u orginalu: " + korisnik.getLozinka());
-			System.out.println("lozinka u orginalu: " + korisnik.getLozinka().isEmpty());
 			
 			Korisnik stari = korisnikRepository.findOne(korisnik.getId());
 			if(!(stari.getEmail().equals(korisnik.getEmail()))){
@@ -159,10 +160,8 @@ public class KorisnikWebController {
 			}
 			if(korisnik.getLozinka()==null || korisnik.getLozinka().isEmpty()){
 				korisnik.setLozinka(stari.getLozinka());
-				System.out.println("lozinka nije enkodirana. stara lozinka je: " + stari.getLozinka());
 			}else{
 				korisnik.setLozinka(passwordEncoder.encode(korisnik.getLozinka()));
-				System.out.println("lozinka enkodirana u: " + korisnik.getLozinka());
 				
 			}
 			korisnikRepository.save(korisnik);

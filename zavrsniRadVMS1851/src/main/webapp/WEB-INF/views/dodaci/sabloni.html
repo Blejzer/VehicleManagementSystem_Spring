@@ -76,7 +76,7 @@
 								<li th:if="${#authorization.expression('!isAuthenticated()')}"><a
 									href="/signin" th:href="@{/signin}" th:text="#{mn.7}">Sign in</a></li>
 								<li th:if="${#authorization.expression('isAuthenticated()')}"><a
-									href="/logout" th:href="@{/logout}" th:text="#{mn.8}">Logout</a></li>
+									href="/logout" th:href="@{/logout}" th:text="#{mn.8(${userAtribut.email})}">Logout</a></li>
 							</ul>
 							</li>
 							<li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
@@ -101,20 +101,13 @@
 							<li th:if="${#authorization.expression('isAuthenticated()')}">
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
 									data-toggle="dropdown"><span th:text="#{mn.6}">Support</span> <b class="caret"></b></a>
-									<ul th:if="${kvAtribut}" class="dropdown-menu">
-									<li><a th:href="@{/korisnik/{kid}/tiketi/(kid=${kvAtribut.korisnik.id})}" th:text="#{tk.my}">Moji tiketi</a></li>
+									<ul class="dropdown-menu">
+										<li><a th:href="@{/korisnik/{kid}/tiketi/(kid=${userAtribut.id})}" th:text="#{tk.my}">Moji tiketi</a></li>
 										<li><a th:href="@{/korisnik//tiketi/}" >Svi tiketi</a></li>
-										<li><a th:href="@{/korisnik/{kid}/tiketi/otvoreni(kid=${kvAtribut.korisnik.id})}" th:text="#{mn.6.2}">Tiketi na čekanju</a></li>
-										<li><a th:href="@{/korisnik/{kid}/tiketi/rijeseni(kid=${kvAtribut.korisnik.id})}" th:text="#{mn.6.3}">Riješeni tiketi</a></li>
+										<li><a th:href="@{/korisnik/{kid}/tiketi/otvoreni(kid=${userAtribut.id})}" th:text="#{mn.6.2}">Tiketi na čekanju</a></li>
+										<li><a th:href="@{/korisnik/{kid}/tiketi/rijeseni(kid=${userAtribut.id})}" th:text="#{mn.6.3}">Riješeni tiketi</a></li>
 										<li class="divider"></li>
 										<li th:if="${kvAtribut}"><a th:href="@{/korisnik/{kid}/tiketi/novi(kid=${kvAtribut.korisnik.id}, vin=${kvAtribut.vozilo.vin})}" th:text="#{mn.6.4}">Novi tiket</a></li>
-									</ul>
-									<ul th:if="not ${kvAtribut}" class="dropdown-menu">
-									<li><a th:href="@{/korisnik/{kid}/tiketi/(kid=${tAtribut.korisnik.id})}" th:text="#{mn.6.1}">Svi tiketi</a></li>
-										<li><a th:href="@{/korisnik/{kid}/tiketi/otvoreni(kid=${tAtribut.korisnik.id})}" th:text="#{mn.6.2}">Tiketi na čekanju</a></li>
-										<li><a th:href="@{/korisnik/{kid}/tiketi/rijeseni(kid=${tAtribut.korisnik.id})}" th:text="#{mn.6.3}">Riješeni tiketi</a></li>
-										<li class="divider"></li>
-										<li><a th:href="@{/korisnik/{kid}/tiketi/novi(kid=${tAtribut.korisnik.id}, vin=${tAtribut.vozilo.vin})}" th:text="#{mn.6.4}">Novi tiket</a></li>
 									</ul>
 								</li>
 							</li>
@@ -124,7 +117,7 @@
 										th:if="${#authorization.expression('!isAuthenticated()')}"><a
 										href="/signin" th:href="@{/signin}" th:text="#{mn.7}">Sign in</a></li>
 									<li th:if="${#authorization.expression('isAuthenticated()')}"><a
-										href="/logout" th:href="@{/logout}" th:text="#{mn.8}">Logout</a></li>
+									href="/logout" th:href="@{/logout}" th:text="#{mn.8(${userAtribut.email})}">Logout</a></li>
 								</ul>
 							</li>
 							<li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>

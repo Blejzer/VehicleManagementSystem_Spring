@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ba.fit.vms.pojo.Korisnik;
 import ba.fit.vms.pojo.KorisnikVozilo;
@@ -33,6 +34,7 @@ import ba.fit.vms.repository.Tiket2Repository;
 import ba.fit.vms.repository.VoziloRepository;
 
 @Controller
+@SessionAttributes("userAtribut")
 public class Tiket2Controller {
 	
 	@Autowired
@@ -195,6 +197,7 @@ public class Tiket2Controller {
 		}
 		return "/korisnik/tiket/lista";
 	}
+	
 	@RequestMapping(value="/korisnik/{kid}/tiketi/otvoreni", method=RequestMethod.GET)
 	public String getListaKorisnikTiketaOtvoreni(@PathVariable("kid") Long kid, Principal principal, HttpServletRequest request,  Model model){
 		System.out.println("/korisnik/{id}/tiketi/otvoreni");
@@ -242,6 +245,54 @@ public class Tiket2Controller {
 			
 			model.addAttribute("pager", pages);
 			model.addAttribute("kvAtribut", kv);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "redirect:/korisnik/tiketi/";
+		}
+		return "/korisnik/tiket/lista";
+	}
+	
+	@RequestMapping(value="/korisnik/tiketi/otvoreni", method=RequestMethod.GET)
+	public String getListaTiketaOtvoreni(HttpServletRequest request,  Model model){
+		System.out.println("/korisnik/tiketi/otvoreni");
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+
+		int pageSize = 10;
+
+		Pageable pageable = new PageRequest(page, pageSize);
+		try {
+			Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNullOrderByTiketDatumDesc(pageable);
+			
+			model.addAttribute("pager", pages);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "redirect:/korisnik/tiketi/";
+		}
+		return "/korisnik/tiket/lista";
+	}
+	
+	@RequestMapping(value="/korisnik/tiketi/rijeseni", method=RequestMethod.GET)
+	public String getListaKorisnikTiketaRijeseni(HttpServletRequest request,  Model model){
+		System.out.println("/korisnik/tiketi/rijeseni");
+		int page;
+		if(request.getParameter("page")==null){
+			page=0;
+		} else{
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+
+		int pageSize = 10;
+
+		Pageable pageable = new PageRequest(page, pageSize);
+		try {
+			Page<Tiket2> pages = tiket2Repository.findByRijesenDatumIsNotNullOrderByTiketDatumDesc(pageable);
+			
+			model.addAttribute("pager", pages);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return "redirect:/korisnik/tiketi/";

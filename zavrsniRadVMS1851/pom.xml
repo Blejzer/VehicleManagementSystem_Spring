@@ -34,6 +34,14 @@
 		</repository>
 	</repositories>
 	<dependencies>
+	
+		<!-- Apache Log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -47,12 +55,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Apache Log4j -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
+        <groupId>org.springframework.session</groupId>
+        <artifactId>spring-session-data-redis</artifactId>
+        <version>1.0.2.RELEASE</version>
+        <type>pom</type>
+        </dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>

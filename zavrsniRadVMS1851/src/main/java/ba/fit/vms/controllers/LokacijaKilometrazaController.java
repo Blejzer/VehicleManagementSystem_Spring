@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ba.fit.vms.pojo.KorisnikVozilo;
 import ba.fit.vms.pojo.LokacijaKilometraza;
@@ -33,6 +34,7 @@ import ba.fit.vms.util.KilometrazaPretraga;
 import ba.fit.vms.util.LokacijaKilometrazaValidator;
 
 @Controller
+@SessionAttributes("userAtribut")
 public class LokacijaKilometrazaController {
 	
 	@Autowired

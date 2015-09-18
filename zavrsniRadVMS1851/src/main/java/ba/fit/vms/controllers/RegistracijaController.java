@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ba.fit.vms.pojo.Registracija;
 import ba.fit.vms.pojo.Vozilo;
@@ -24,6 +25,7 @@ import ba.fit.vms.util.RegistracijaValidator;
 
 
 @Controller
+@SessionAttributes("userAtribut")
 public class RegistracijaController {
 	
 	protected static Logger logger = Logger.getLogger("controller");

@@ -13,23 +13,9 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/nikola/.m2/repository/org/springframework/data/spring-data-commons/1.6.1.RELEASE/spring-data-commons-1.6.1.RELEASE.jar" sourcepath="/Users/nikola/.m2/repository/org/springframework/data/spring-data-commons/1.6.1.RELEASE/spring-data-commons-1.6.1.RELEASE-sources.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="org.springframework.data"/>
-			<attribute name="maven.artifactId" value="spring-data-commons"/>
-			<attribute name="maven.version" value="1.6.1.RELEASE"/>
-			<attribute name="maven.scope" value="compile"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/Users/nikola/.m2/repository/org/springframework/security/spring-security-config/3.2.5.RELEASE/spring-security-config-3.2.5.RELEASE.jar">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="org.springframework.security"/>
-			<attribute name="maven.artifactId" value="spring-security-config"/>
-			<attribute name="maven.version" value="3.2.5.RELEASE"/>
-			<attribute name="maven.scope" value="compile"/>
+			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>

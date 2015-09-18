@@ -7,9 +7,18 @@
 <div sec:authorize="hasRole('ROLE_ADMIN')" th:include="dodaci/sabloni :: adminHeaderFragment"></div>
 <div sec:authorize="hasRole('ROLE_USER')" th:include="dodaci/sabloni :: headerFragment"></div>
 
-    
-<!-- Marketing messaging and featurettes
-================================================== -->
+<div class="container">
+<!-- START THE FEATURETTES -->
+
+<div class="featurette">
+	<h2 class="featurette-heading" th:text="#{wlk.1} + ' ' + ${userAtribut.ime} + ' ' + ${userAtribut.prezime}"></h2>
+	<p class="lead" th:text="#{wlk.3}"></p>
+</div>
+
+<hr class="featurette-divider" />
+
+<!-- /END THE FEATURETTES -->
+
 <!-- Wrap the rest of the page in another container to center all the content. -->
 
 <div class="container">
@@ -20,128 +29,79 @@
 				<h3 id="tabs" th:text="#{adm.1}">Summary</h3>
 				<ul class="nav nav-tabs">
 					<li class="active disabled"><a href="#TEST" data-toggle="tab"><i class="glyphicon glyphicon-arrow-right"></i></a></li>
-					<li><a href="#B" data-toggle="tab"><span th:class="${boolAtributi[1]} ? text-danger:text-success" th:text="#{adm.4}">Vehicle info</span></a></li>
-					<li><a href="#C" data-toggle="tab"><span th:class="${boolAtributi[2]} ? text-danger:text-success" th:text="#{adm.5(${#dates.monthName(#dates.createNow())})}"></span></a></li>
-					<li><a href="#D" data-toggle="tab"><span th:class="${boolAtributi[3]} ? text-danger:text-success" th:text="#{adm.6}">Service</span></a></li>
-					<li><a href="#E" data-toggle="tab"><span th:class="${boolAtributi[5]} ? text-danger:text-success" >Tickets</span></a></li>
+					<li><a href="#A" data-toggle="tab"><span th:class="${boolAtributi[2]} ? text-danger:text-success" th:text="#{adm.4}">Vehicle info</span></a></li>
+					<li><a href="#B" data-toggle="tab"><span th:class="${boolAtributi[1]} ? text-danger:text-success" th:text="#{adm.5(${#dates.monthName(#dates.createNow())})}"></span></a></li>
+					<li><a href="#C" data-toggle="tab"><span th:class="${boolAtributi[3]} ? text-danger:text-success" th:text="#{adm.6}">Service</span></a></li>
+					<li><a href="#D" data-toggle="tab"><span th:class="${boolAtributi[4]} ? text-danger:text-success" th:text="#{adm.19}"> Your Tickets</span></a></li>
 				</ul>
 				<div class="tabbable">
 					<div class="tab-content">
 						<div class="tab-pane active" id="TEST">
 							<h1 class="center" th:text="#{adm.7}">Select tab to view content!</h1>
 						</div>
-						<div class="tab-pane" id="B">
+						<div class="tab-pane" id="A">
 							<div  th:if="${not #lists.isEmpty(rAtribut)}">
-							<h4 th:text="#{adm.14}"></h4>
+							<h4 th:text="#{adm.17}">Vehicle registration is about to expire!</h4>
 							<table class="table table-bordered table-striped table-hover">
 								<thead>
 									<tr class="success">
 										<th th:text="#{reg.tab}">Plates</th>
 										<th th:text="#{reg.rdo}">Reg from</th>
 										<th th:text="#{reg.odo}">Ins to</th>
-										<th th:text="#{rad.na}">Actions</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:if="${registration}"
-										th:each="registration : ${regAtribut}">
-										<td th:text="${registration.tablica}">Plates</td>
+									<tr>
+										<td th:text="${rAtribut.tablica}">Plates</td>
 										<td
-											th:text="${#dates.format(registration.regDo, 'dd-MM-yyyy')}"
-											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.regDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.regDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.regDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.regDo)} ? 'danger' : 'warning')))  : ''"></td>
+											th:text="${#dates.format(rAtribut.regDo, 'dd-MM-yyyy')}"
+											th:class="${#dates.year(#dates.createNow()) ge #dates.year(rAtribut.regDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(rAtribut.regDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(rAtribut.regDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(rAtribut.regDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(rAtribut.regDo)} ? 'danger' : 'warning')))  : ''"></td>
 										<td
-											th:text="${#dates.format(registration.osigDo, 'dd-MM-yyyy')}"
-											th:class="${#dates.year(#dates.createNow()) ge #dates.year(registration.osigDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(registration.osigDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(registration.osigDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(registration.osigDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(registration.osigDo)} ? 'danger' : 'warning')))  : ''"></td>
-										<td><a class="btn btn-primary btn-sm" th:href="@{/admin/registracije/(vin=${registration.vozilo.vin})}"><i class="glyphicon glyphicon-edit"></i> <span	th:text="#{rad.izm}">Edit action</span></a></td>
+											th:text="${#dates.format(rAtribut.osigDo, 'dd-MM-yyyy')}"
+											th:class="${#dates.year(#dates.createNow()) ge #dates.year(rAtribut.osigDo)} ? (${#dates.month(#dates.createNow()) lt #dates.month(rAtribut.osigDo)} ? (${#dates.day(#dates.createNow()) ge #dates.day(rAtribut.osigDo)} ? 'danger' : 'warning') : (${#dates.month(#dates.createNow()) ge #dates.month(rAtribut.osigDo)} ? 'danger' : (${#dates.day(#dates.createNow()) ge #dates.day(rAtribut.osigDo)} ? 'danger' : 'warning')))  : ''"></td>
 									</tr>
 								</tbody>
 							</table>
 							</div>
-							<div th:if="${#lists.isEmpty(regAtribut)}">
+							<div th:if="${#lists.isEmpty(rAtribut)}">
 									<h4 th:text="#{adm.13}"></h4><br/><br/>
 							</div>
-							<div>
-								<h4 th:text="#{adm.15}"></h4>
-								<table th:if="${not #lists.isEmpty(nerRegAtribut)}" class="table table-bordered table-striped table-hover">
-							    <thead>
-							      <tr>
-							        <th class="col-lg-2" th:text="#{voz.vin}">VIN broj</th>
-							        <th class="col-lg-2" th:text="#{voz.mar}">Make</th>
-							        <th class="col-lg-2" th:text="#{voz.mod}">Model</th>
-							        <th class="col-lg-2" th:text="#{voz.boj}">Color</th>
-							        <th class="col-lg-2" th:text="#{voz.god}">Year</th>
-							        <th class="col-lg-2" th:text="#{rad.na}">Actions</th>
-							        </tr>
-							    </thead>
-							    <tbody>
-								    <tr th:each="vozilo : ${nerRegAtribut}">
-								    	<td th:text="${vozilo.vin}">123456</td>
-								    	<td th:text="${vozilo.marka}">Gefufna</td>
-								    	<td th:text="${vozilo.model}">GE123</td>
-								    	<td th:text="${vozilo.boja}">GE123</td>
-								    	<td th:text="${vozilo.godina}">GE123</td>
-										<td>
-											<a class="btn btn-sm btn-danger" th:href="@{/admin/registracije/(vin=${vozilo.vin})}"><i class="glyphicon glyphicon-certificate"></i> <span th:text="#{rad.reg}">Radnja - Registruj</span></a>
-										</td>
-									</tr>
-							    </tbody>
-							  </table>
-							</div>
-							<div th:if="${#lists.isEmpty(nerRegAtribut)}">
-									<h4 th:text="#{adm.16}"></h4>
-							</div>
 						</div>
-						<div class="tab-pane" id="C">
-							
-							<div th:if="${mileages}" th:each="mileages : ${mileageAtribut}">
+						
+						<div class="tab-pane" id="B">
+							<div  th:if="${not #lists.isEmpty(lkAtribut)}">
 								<table class="table table-bordered table-striped table-hover">
 									<thead>
-										<tr class="success">
-											<th class="col-md-6 text-center h3" colspan="2" th:text="${mileages.key.tablica}">Vehicle</th>
-											<th class="col-md-6 text-center h3" colspan="2" ><a
-												class="btn btn-success btn-sm btn-large right"
-												th:href="@{/admin/kilo/lista(vin=${mileages.key.vozilo.vin})}" th:text="#{rad.prk}">Show</a></th>
-										</tr>
 										<tr>
 											<th class="text-center h4" th:text="#{lk.dat}">Date</th>
 											<th class="text-center h4" th:text="#{lok.one}">Location</th>
-											<th class="text-center h4" th:text="#{kv.kor}">User</th>
 											<th class="text-center h4" th:text="#{lk.zad}">Last mileage</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr th:each="mileage,iterStat : ${mileages.value}">
-											<td th:class="${iterStat.odd}? 'hidden'" th:text="${#dates.format(mileage.datum, 'dd-MM-yyyy')}"></td>
-											<td th:class="${iterStat.even}? 'hidden warning'" colspan="3"><strong th:text="#{adm.10}">Total</strong></td>
-											<td th:class="${iterStat.odd}? 'hidden'" th:text="${mileage.lokacija.naziv}"></td>
-											<td th:class="${iterStat.odd}? 'hidden'" th:text="${mileage.korisnikVozilo.korisnik.ime} + ' ' + ${mileage.korisnikVozilo.korisnik.prezime}"></td>
-											<td th:text="${mileage.kilometraza}"></td>
+										<tr>
+											<td th:text="${#dates.format(lkAtribut.datum, 'dd-MM-yyyy')}"></td>
+											<td th:text="${lkAtribut.lokacija.naziv}"></td>
+											<td th:text="${lkAtribut.kilometraza}"></td>
 										</tr>
 										
 									</tbody>
 								</table>
 							</div>
-							<h3 th:text="#{adm.11}">no mileage placeholder</h3>
+							<h3   th:if="${#lists.isEmpty(lkAtribut)}" th:text="#{adm.18(${rAtribut.tablica}, ${#dates.monthName(#dates.createNow())})}">no mileage placeholder</h3>
 						</div>
-						<div class="tab-pane" id="D">
-							<div th:if="${report}" th:each="servisi : ${report}">
+						<div class="tab-pane" id="C">
+							<div  th:if="${not #lists.isEmpty(sAtribut)}">
 								<table class="table table-bordered table-striped table-hover">
 									<thead>
-										<tr class="success">
-											<th class="col-md-6 text-center h3" colspan="2" th:text="${servisi.key.tablica}">Vozilo</th>
-											<th class="col-md-6 text-center h3" colspan="2" ><a
-												class="btn btn-success btn-sm btn-large right"
-												th:href="@{/admin/servisi/addServis(id=${servisi.key.vozilo.vin})}" th:text="#{s.ttl4}">new service</a></th>
-										</tr>
 										<tr>
 											<th class="text-center h4" th:text="#{s.za}">Completed?</th>
 											<th class="text-center h4" th:text="#{s.dat}">Date</th>
 											<th class="text-center h4" th:text="#{s.st}">Service type</th>
-											<th class="text-center h4" th:text="#{rad.na}">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr th:each="servis : ${servisi.value}">
+										<tr th:each="servis : ${sAtribut}">
 											<td class="col-md-3" th:class="${servis.zavrsen} ? primary:danger" th:switch="${servis.zavrsen}">
 												<p th:case="true">
 													<i class="glyphicon glyphicon-ok"></i>
@@ -153,28 +113,24 @@
 											<td class="col-md-3"
 												th:text="${#calendars.format(servis.datum,'dd MMMM yyyy')}">date</td>
 											<td class="col-md-3" th:text="${servis.vrstaServisa.naziv}">Type</td>
-											<td class="col-md-3"><a class="btn btn-info btn-sm"
-												th:href="@{/admin/servis/izmjena(id=${servis.id})}"><i
-													class="glyphicon glyphicon-list-alt"></i> <span
-													th:text="#{rad.prk}">Show action</span></a></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
-							<div th:if="${report !=null}">
-								<div th:if="${report.isEmpty()}"> 
+							<div th:if="${sAtribut !=null}">
+								<div th:if="${#lists.isEmpty(sAtribut)}"> 
 									<h3 th:text="#{adm.12(${#calendars.monthName(#calendars.createToday())})}"></h3>
 								</div>
 							</div>
 						</div>
-						<div class="tab-pane" id="E">
-							<table th:if="${not #lists.isEmpty(tAtribut)}" class="table table-bordered table-striped table-hover">
+						<div class="tab-pane" id="D">
+							<table th:if="${tAtribut.content}" class="table table-bordered table-striped table-hover">
 								<thead>
 									<tr>
 								     <th th:text="#{tk.da}">Ticket Date</th>
 								     <th th:text="#{tk.na}">Title</th>
 								     <th th:text="#{kv.kor}">User</th>					        
-								     <th th:text="#{kor.je}">isActive</th>
+								     <th th:text="#{tk.za}">isActive</th>
 								     <th th:text="#{tk.bp}">Number of Messages</th>
 								     <th th:text="#{tk.zp}">Last msg</th>
 								     <th th:text="#{rad.na}">Actions</th>
@@ -204,11 +160,12 @@
 			</div>
 		</div>
 	</div>
-	<!-- /.container -->
   
-<div th:include="dodaci/sabloni :: footerFragment"></div>
+	<div th:include="dodaci/sabloni :: footerFragment"></div>
 
-<div th:include="dodaci/sabloni :: jsFragment"></div>
+	<div th:include="dodaci/sabloni :: jsFragment"></div>
 
+</div>
+<!-- /.container -->
 </body>
 </html>

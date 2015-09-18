@@ -20,6 +20,10 @@ public interface Servis1Repository extends JpaRepository<Servis1, Long> {
 	
 	List<Servis1> findByZavrsenFalseAndVozilo_vinAndDatumLessThanEqualOrderByDatumAsc(String vin, Date datum);
 	
+	Page<Servis1> findByZavrsenFalseAndVozilo_vinAndDatumLessThanEqualOrderByDatumAsc(String vin, Date datum, Pageable pageable);
+	
 	List<Servis1> findByVozilo_vinAndDatumBetweenOrderByDatumAsc(String vin, Date datum1, Date datum2);
+	
+	List<Servis1> findByZavrsenFalseAndVozilo_vin(String vin);
 
 }
