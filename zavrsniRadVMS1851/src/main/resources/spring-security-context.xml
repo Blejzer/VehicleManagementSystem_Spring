@@ -8,7 +8,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	
 	<security:http auto-config="true" disable-url-rewriting="true" use-expressions="true">
 		<security:form-login login-page="/signin" authentication-failure-url="/signin?error=1"/>
-		<security:logout logout-url="/logout" logout-success-url="/" invalidate-session="true" />
+		<security:logout logout-url="/logout" logout-success-url="/" invalidate-session="true" delete-cookies="JSESSIONID" />
 		<security:remember-me services-ref="rememberMeServices" key="remember-me-key"/>
 		<security:intercept-url pattern="/" access="permitAll" />
         <security:intercept-url pattern="/favicon.ico" access="permitAll" />
@@ -19,7 +19,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<security:intercept-url pattern="/**" access="isAuthenticated()" />
 		<security:access-denied-handler ref="mojZabranjenPristupHandler"/>
 		<security:session-management invalid-session-url="/signin?error=sessionExpired" session-authentication-error-url="/signin?error=alreadyLogin">
-       		<security:concurrency-control max-sessions="1"  expired-url="/signin?error=sessionExpiredDuplicateLogin" error-if-maximum-exceeded="false"/>
+<!--        		<security:concurrency-control max-sessions="1"  expired-url="/signin?error=sessionExpiredDuplicateLogin" error-if-maximum-exceeded="false"/> -->
 		</security:session-management>
 	</security:http>
 	

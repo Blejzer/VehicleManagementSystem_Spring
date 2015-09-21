@@ -20,7 +20,7 @@ Za uraditi:
   - zatvori tiket - RIJESENO
   - dodati view-ove za novi, pregled - RIJESENO
   - lista otvorenih tiketa na frontpageu za admina  - RIJESENO
-  - lista svih / otvorenih / zatvorenih tiketa za admina i za korisnika
+  - lista svih / otvorenih / zatvorenih tiketa za admina i za korisnika - RIJESENO
   
 - dodati triger na bazu i pozivanje skripti na bazi
 
@@ -29,7 +29,7 @@ SABLONI
   
   
 KORISNIK
-Welcome page tabela
+Welcome page tabela  - RIJESENO
 Vozilo u meniju 
 	dodati kilometrazu
 	izmijeniti kilometrazu

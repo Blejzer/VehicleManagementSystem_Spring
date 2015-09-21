@@ -80,17 +80,27 @@ public class KorisnikVoziloController {
 	
 	@RequestMapping(value="/admin/dodjeljivanje/novi", method = RequestMethod.POST)
 	public String postDodjelaVozila(@ModelAttribute("kvAtribut") @Valid KorisnikVozilo kv, BindingResult rezultat, Model model){
+		logger.debug("Post metoda start!");
+		KorisnikVozilo kVk = new KorisnikVozilo();
+		try {
+			kVk = kvRepository.findLast(kv.getVozilo().getVin());
+		} catch (Exception e) {
+			logger.debug("KorisnikVozilo kVk = kvRepository.findLast();" + e.getMessage());
+		}
 		
-		KorisnikVozilo kVk = kvRepository.findLast();
 		if(kVk!=null){
 			if(kVk.getVraceno().after(kv.getDodijeljeno())){
 				rezultat.rejectValue("dodijeljeno", "after");
+				logger.debug("kvk != null");
 			}
 		}
 		if(rezultat.hasErrors()){
 			model.addAttribute("korisnici", kvRepository.findAllUnassigned());
+			logger.debug("kvRepository.findAllUnassigned()) - DONE!");
 			model.addAttribute("regAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin()));
+			logger.debug("registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin()) - DONE!");
 			model.addAttribute("prethodni", kvRepository.findAllByVozilo_VinOrderByVracenoDesc(kv.getVozilo().getVin()));
+			logger.debug("kvRepository.findAllByVozilo_VinOrderByVracenoDesc(kv.getVozilo().getVin()) - DONE!");
 			return "/admin/assigning/novi";
 		}
 		logger.debug("nema gresaka, pokusavam snimiti dodjelu!");
@@ -129,7 +139,7 @@ public class KorisnikVoziloController {
 		}
 		model.addAttribute("trenutnoAtribut", kv);
 		model.addAttribute("regAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
-		model.addAttribute("pager", kvRepository.findAllByVozilo_VinOrderByVracenoDesc(vin, pageable));
+		model.addAttribute("pager", kvRepository.findAllByVozilo_VinAndVracenoIsNotNullOrderByVracenoAsc(vin, pageable));
 		return "/admin/assigning/lista";
 		}else{
 			return "redirect:/admin/vozila/";
@@ -158,11 +168,10 @@ public class KorisnikVoziloController {
 			rezultat.rejectValue("vraceno", "before");
 		}
 		if(rezultat.hasErrors()){
-			String vin = kv.getVozilo().getVin();
-			model.addAttribute("regAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(vin));
-			model.addAttribute("prethodni", kvRepository.findAllByVozilo_VinOrderByVracenoDesc(vin));
+			model.addAttribute("regAtribut", registracijaRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin()));
 			return "/admin/assigning/izmjeni";
 		}
+		model.addAttribute("prethodni", kvRepository.findAllByVozilo_VinOrderByVracenoDesc(kv.getVozilo().getVin()));
 		logger.debug("nema gresaka, pokusavam snimiti dodjelu!");
 		kvRepository.save(kv);
 		logger.debug("snimio dodjelu");

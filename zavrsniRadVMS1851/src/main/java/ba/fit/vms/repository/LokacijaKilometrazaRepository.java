@@ -44,11 +44,11 @@ public interface LokacijaKilometrazaRepository extends
 	LokacijaKilometraza getMaxKilo1(String vin, Date d1, Date d2);
 
 	// Odaberi maksimalnu kilometrazu prije datuma
-	@Query(value="SELECT t1.* FROM lokacija_kilometraza t1 INNER JOIN (SELECT * FROM lokacija_kilometraza WHERE `korisnikVozilo_id` IN (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1)) t2 ON t1.id = t2.id WHERE t1.kilometraza = (SELECT max(kilometraza) from lokacija_kilometraza WHERE `korisnikVozilo_id` in (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1 AND datum < ?2 )) group by t1.id", nativeQuery=true)
+	@Query(value="SELECT t1.* FROM lokacija_kilometraza t1 INNER JOIN (SELECT * FROM lokacija_kilometraza WHERE `korisnikVozilo_id` IN (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1)) t2 ON t1.id = t2.id WHERE t1.kilometraza = (SELECT max(kilometraza) from lokacija_kilometraza WHERE `korisnikVozilo_id` in (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1 AND datum <= ?2 )) group by t1.id", nativeQuery=true)
 	LokacijaKilometraza getMaxKilo2(String vin, Date d);
 	
 	// Odaberi minimalnu kilometrazu nakon datuma
-	@Query(value="SELECT t1.* FROM lokacija_kilometraza t1 INNER JOIN (SELECT * FROM lokacija_kilometraza WHERE `korisnikVozilo_id` IN (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1)) t2 ON t1.id = t2.id WHERE t1.kilometraza = (SELECT min(kilometraza) from lokacija_kilometraza WHERE `korisnikVozilo_id` in (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1 AND datum > ?2 )) group by t1.id", nativeQuery=true)
+	@Query(value="SELECT t1.* FROM lokacija_kilometraza t1 INNER JOIN (SELECT * FROM lokacija_kilometraza WHERE `korisnikVozilo_id` IN (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1)) t2 ON t1.id = t2.id WHERE t1.kilometraza = (SELECT min(kilometraza) from lokacija_kilometraza WHERE `korisnikVozilo_id` in (SELECT id FROM korisnik_vozilo WHERE `vozilo_vin`=?1 AND datum >= ?2 )) group by t1.id", nativeQuery=true)
 	LokacijaKilometraza getMaxKilo3(String vin, Date d);
 
 }

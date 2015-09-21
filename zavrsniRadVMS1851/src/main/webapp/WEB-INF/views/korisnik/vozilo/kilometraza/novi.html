@@ -1,0 +1,71 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="dodaci/sabloni :: headFragment">
+<title>Nova kilometraza</title>
+</head>
+<body>
+
+	<div th:include="dodaci/sabloni :: headerFragment"></div>
+
+	<div class="container">
+
+		<section id="object">
+			<div class="page-header">
+				<h1 th:text="#{lk.but}">Add new mileage</h1>
+			</div>
+
+			<div class="row">
+
+				<form action="#" th:object="${lkAtribut}"
+					th:action="@{/korisnik/kilo/nova}" method="post"
+					class="form-horizontal well">
+
+					<input type="hidden" th:field="*{korisnikVozilo.id}" />
+
+					<div class="form-group" th:class="${#fields.hasErrors('datum')} ? 'form-group has-error' : 'form-group'">
+						<label for="datum" class="col-lg-2 control-label" th:text="#{lk.dat}">Datum: </label>
+						<div class="col-lg-10">
+							<input type="date" th:field="*{datum}" class="form-control input-xlarge" placeholder="Datum" />
+							<p th:if="${#fields.hasErrors('datum')}" class="label label-danger" th:errors="*{datum}">neispravan datum</p>
+						</div>
+					</div>
+					<div class="form-group" th:class="${#fields.hasErrors('kilometraza')} ? 'form-group has-error' : 'form-group'">
+						<label for="kilometraza" class="col-lg-2 control-label" th:text="#{lk.kil}">Kilometraza: </label>
+						<div class="col-lg-10">
+							<input type="text" th:field="*{kilometraza}" class="form-control input-xlarge" placeholder="Kilometraza" />
+							<p th:if="${#fields.hasErrors('kilometraza')}" class="label label-danger" th:errors="*{kilometraza}">neispravna kilometraza</p>
+						</div>
+					</div>
+					<div class="form-group" th:class="${#fields.hasErrors('lokacija')} ? 'form-group has-error' : 'form-group'">
+						<label for="kilometraza" class="col-lg-2 control-label" th:text="#{lok.one}">Lokacija: </label>
+						<div class="col-lg-10">
+							<select th:field="*{lokacija}" class="form-control">
+  								<option th:each="lok : ${lAtribut}" 
+  									th:value="${lok.id}" 
+          							th:text="${lok.naziv}">Lokacija</option>
+							</select>
+							<p th:if="${#fields.hasErrors('lokacija')}" class="label label-danger" th:errors="*{lokacija}">neispravna kilometraza</p>
+						</div>
+					</div>
+					<hr />
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary" th:text="#{lk.btn}">Unesi kilometrazu</button>
+						<a class="btn btn-default" th:href="@{/korisnik/{kid}/kilo/pregled(kid=${userAtribut.id}, vin=${lkAtribut.korisnikVozilo.vozilo.vin})}" th:text="#{rad.odu}">Odustani</a>
+					</div>
+				</form>
+
+			</div>
+		</section>
+
+		<div class="row right">
+			<a class="btn btn-primary btn-large" th:href="@{/}" th:text="#{rad.nal}">Natrag na listu</a>
+		</div>
+
+		<div th:include="dodaci/sabloni :: footerFragment"></div>
+	</div>
+	<!-- /.container -->
+	<div th:include="dodaci/sabloni :: jsFragment"></div>
+
+</body>
+</html>

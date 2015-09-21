@@ -18,6 +18,7 @@ public class ZabranjenPristup extends AccessDeniedHandlerImpl{
 		// Svaki put kada korisnik pokusa da pristupi dijelu aplikacije za koji nemaju prava mozemo dodati kastomizirani kod 
 		// kojim cemo zakljucati njihov racun
 		// <kastomizirani kod za zakljucavanje racuna>
+		System.out.println("test");
 		
 		super.handle(_request, _response, _exception);
 	}

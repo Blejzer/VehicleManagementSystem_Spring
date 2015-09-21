@@ -93,7 +93,7 @@ public class LokacijaKilometrazaValidator implements Validator{
 					System.out.println("naredna: end if");
 				}else {
 					if (prethodna.getId()!=0) {
-						System.out.println("prethodna: start if");
+						System.out.println("prethodna: start if" + prethodna.getKilometraza());
 						if(prethodna.getKilometraza()>=lk.getKilometraza()){
 							String[] args = new String[] {prethodna.getKilometraza().toString()};
 							try {

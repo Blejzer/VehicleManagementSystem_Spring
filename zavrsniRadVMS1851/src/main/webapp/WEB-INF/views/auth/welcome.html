@@ -64,7 +64,7 @@
 							</table>
 							</div>
 							<div th:if="${#lists.isEmpty(rAtribut)}">
-									<h4 th:text="#{adm.13}"></h4><br/><br/>
+									<h3 th:text="${rAtribut} ? #{adm.13} : #{adm.20}"></h3><br/><br/>
 							</div>
 						</div>
 						
@@ -76,6 +76,7 @@
 											<th class="text-center h4" th:text="#{lk.dat}">Date</th>
 											<th class="text-center h4" th:text="#{lok.one}">Location</th>
 											<th class="text-center h4" th:text="#{lk.zad}">Last mileage</th>
+											<th class="text-center h4" th:text="#{rad.na}">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -83,12 +84,13 @@
 											<td th:text="${#dates.format(lkAtribut.datum, 'dd-MM-yyyy')}"></td>
 											<td th:text="${lkAtribut.lokacija.naziv}"></td>
 											<td th:text="${lkAtribut.kilometraza}"></td>
+											<td><a class="btn btn-primary btn-large right" th:href="@{/korisnik/kilo/nova(vin=${rAtribut.vozilo.vin})}" th:text="#{lk.but}">Add mileage</a></td>
 										</tr>
 										
 									</tbody>
 								</table>
 							</div>
-							<h3   th:if="${#lists.isEmpty(lkAtribut)}" th:text="#{adm.18(${rAtribut.tablica}, ${#dates.monthName(#dates.createNow())})}">no mileage placeholder</h3>
+							<h3   th:if="${#lists.isEmpty(lkAtribut)}" th:text="${rAtribut}? #{adm.18(${rAtribut.tablica}, ${#dates.monthName(#dates.createNow())})} : #{adm.20}">no mileage placeholder</h3>
 						</div>
 						<div class="tab-pane" id="C">
 							<div  th:if="${not #lists.isEmpty(sAtribut)}">
@@ -117,42 +119,45 @@
 									</tbody>
 								</table>
 							</div>
-							<div th:if="${sAtribut !=null}">
 								<div th:if="${#lists.isEmpty(sAtribut)}"> 
-									<h3 th:text="#{adm.12(${#calendars.monthName(#calendars.createToday())})}"></h3>
+									<h3 th:text="${rAtribut} ? #{adm.12(${#calendars.monthName(#calendars.createToday())})} : #{adm.20}"></h3>
 								</div>
-							</div>
 						</div>
 						<div class="tab-pane" id="D">
-							<table th:if="${tAtribut.content}" class="table table-bordered table-striped table-hover">
-								<thead>
-									<tr>
-								     <th th:text="#{tk.da}">Ticket Date</th>
-								     <th th:text="#{tk.na}">Title</th>
-								     <th th:text="#{kv.kor}">User</th>					        
-								     <th th:text="#{tk.za}">isActive</th>
-								     <th th:text="#{tk.bp}">Number of Messages</th>
-								     <th th:text="#{tk.zp}">Last msg</th>
-								     <th th:text="#{rad.na}">Actions</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="tiket : ${tAtribut}">
-									 	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
-									 	<td th:text="${tiket.naslov}">email@email.com</td>
-									 	<td th:text="${tiket.korisnik.ime} + ' ' + ${tiket.korisnik.prezime}"></td>
-									 	<td th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
-									     	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
-											<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
-									     </td>
-									 	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#lists.size(tiket.poruke)}: 'Nema poruka'">Doe</td>
-									 	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#dates.format(tiket.poruke[__(${#lists.size(tiket.poruke)}-1)__].datum,'dd MM yyyy HH:mm')} : 'PRAZNO'">Last msg date</td>
-										<td>
-										<a class="btn btn-info btn-sm" th:href="@{/korisnik/{kid}/tiket/{tid}/poruka(kid=${tiket.korisnik.id}, tid=${tiket.id})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+							<div th:if="${tAtribut.numberOfElements}>0">
+								<table th:if="${tAtribut.content}" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+									     <th th:text="#{tk.da}">Ticket Date</th>
+									     <th th:text="#{tk.na}">Title</th>
+									     <th th:text="#{kv.kor}">User</th>					        
+									     <th th:text="#{tk.za}">isActive</th>
+									     <th th:text="#{tk.bp}">Number of Messages</th>
+									     <th th:text="#{tk.zp}">Last msg</th>
+									     <th th:text="#{rad.na}">Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="tiket : ${tAtribut}">
+										 	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
+										 	<td th:text="${tiket.naslov}">email@email.com</td>
+										 	<td th:text="${tiket.korisnik.ime} + ' ' + ${tiket.korisnik.prezime}"></td>
+										 	<td th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
+										     	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
+												<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
+										     </td>
+										 	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#lists.size(tiket.poruke)}: 'Nema poruka'">Doe</td>
+										 	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#dates.format(tiket.poruke[__(${#lists.size(tiket.poruke)}-1)__].datum,'dd MM yyyy HH:mm')} : 'PRAZNO'">Last msg date</td>
+											<td>
+											<a class="btn btn-info btn-sm" th:href="@{/korisnik/{kid}/tiket/{tid}/poruka(kid=${tiket.korisnik.id}, tid=${tiket.id})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div th:if="${tAtribut.numberOfElements}==0"> 
+									<h3 th:text="#{tk.no}"></h3>
+								</div>
 						</div>
 					</div>
 				</div>
