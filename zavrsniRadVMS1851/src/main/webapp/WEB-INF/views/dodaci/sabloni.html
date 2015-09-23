@@ -26,9 +26,8 @@
 			<div class="container">
 				<div class="navbar navbar-inverse navbar-static-top">
 					<div class="navbar-collapse collapse">
+						<ul style="list-style-type:none" class="left"><li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/fit.png}" /></li></ul>
 						<ul class="nav navbar-nav navbar-test">
-							<li class="navbar-brand"><img class="info"
-							height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
 							<li><a th:href="@{/}" th:text="#{mn.1}">Start</a></li>
 							<li th:if="${#authorization.expression('isAuthenticated()')}">
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -79,7 +78,6 @@
 									href="/logout" th:href="@{/logout}" th:text="#{mn.8(${userAtribut.email})}">Logout</a></li>
 							</ul>
 							</li>
-							<li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
 						</ul>
 					</div>
 				</div>
@@ -95,10 +93,10 @@
 			<div class="container">
 				<div class="navbar navbar-inverse navbar-static-top">
 					<div class="navbar-collapse collapse">
+						<ul  style="list-style-type:none" class="left"><li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/fit.png}" /></li></ul>
 						<ul class="nav navbar-nav navbar-test">
-							<li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
 							<li><a th:href="@{/}" th:text="#{mn.1}">Start</a></li>
-							<li th:if="${#authorization.expression('isAuthenticated()')}">
+							<li th:if="${#authorization.expression('isAuthenticated()')} and ${userAtribut.jeAktivan}">
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
 									data-toggle="dropdown"><span th:text="#{mn.6}">Support</span> <b class="caret"></b></a>
 									<ul class="dropdown-menu">
@@ -120,7 +118,6 @@
 									href="/logout" th:href="@{/logout}" th:text="#{mn.8(${userAtribut.email})}">Logout</a></li>
 								</ul>
 							</li>
-							<li class="navbar-brand"><img height="30" width="30" th:src="@{/resources/img/main-auto.png}" /></li>
 						</ul>
 					</div>
 

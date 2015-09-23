@@ -1,5 +1,7 @@
 package ba.fit.vms.controllers;
 
+import java.util.TreeMap;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +12,7 @@ import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +27,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ba.fit.vms.pojo.Korisnik;
+import ba.fit.vms.pojo.KorisnikVozilo;
+import ba.fit.vms.pojo.Registracija;
 import ba.fit.vms.repository.KorisnikRepository;
+import ba.fit.vms.repository.KorisnikVoziloRepository;
+import ba.fit.vms.repository.RegistracijaRepository;
 import ba.fit.vms.util.KorisnikValidatorForme;
 
 @Controller
@@ -37,6 +44,12 @@ public class KorisnikWebController {
 	protected static Logger logger = Logger.getLogger("controller");
 	@Autowired
 	private KorisnikRepository korisnikRepository;
+	
+	@Autowired
+	private KorisnikVoziloRepository kvRepository;
+	
+	@Autowired
+	private RegistracijaRepository rRepository;
 
 	@Autowired
 	private KorisnikValidatorForme korisnikValidatorForme;
@@ -192,7 +205,24 @@ public class KorisnikWebController {
 		int pageSize = 4;
 
 		Pageable pageable = new PageRequest(page, pageSize);
-		model.addAttribute("pager", korisnikRepository.findAll(pageable));
+		//model.addAttribute("pager", korisnikRepository.findAll(pageable));
+		Page<Korisnik> korisnici = korisnikRepository.findAll(pageable);
+		TreeMap<Korisnik, Registracija> pregled2 = new TreeMap<Korisnik, Registracija>();
+		for (Korisnik korisnik : korisnici) {
+			try {
+				KorisnikVozilo kv = kvRepository.findByKorisnik_IdAndVracenoNull(korisnik.getId());
+				Registracija r = rRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin());
+
+				pregled2.put(korisnik, r);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				KorisnikVozilo kv = new KorisnikVozilo();
+				kv.setKorisnik(korisnik);
+				pregled2.put(korisnik, null);
+			}
+		}
+		model.addAttribute("pager", korisnici);
+		model.addAttribute("korAtribut", pregled2);
 		return "/admin/korisnik/lista";
 	}
 	
@@ -222,24 +252,39 @@ public class KorisnikWebController {
 		}
 		int pageSize = 4;
 		Pageable pageable = new PageRequest(page, pageSize);
-		System.out.println("page: "+pageable.getPageNumber());
 		
 		if(letter!=""){
 			String l = letter+"%";
 			try {
-				model.addAttribute("pager", korisnikRepository.findByImeOrPrezimeLike(l, l, pageable));
-				System.out.println("uradio slovo: "+korisnikRepository.findByImeOrPrezimeLike(l, l, pageable).getTotalElements());
+				Page<Korisnik> korisnici = korisnikRepository.findByImeLikeOrPrezimeLike(l, l, pageable);
+				TreeMap<Korisnik, Registracija> pregled2 = new TreeMap<Korisnik, Registracija>();
+				if(korisnici.getTotalElements()>0){
+					for (Korisnik korisnik : korisnici) {
+						try {
+							KorisnikVozilo kv = kvRepository.findByKorisnik_IdAndVracenoNull(korisnik.getId());
+							Registracija r = rRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin());
+
+							pregled2.put(korisnik, r);
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+							KorisnikVozilo kv = new KorisnikVozilo();
+							kv.setKorisnik(korisnik);
+							pregled2.put(korisnik, null);
+						}
+					}
+					model.addAttribute("korAtribut", pregled2);
+					System.out.println("uradio slovo: "+pregled2.size());
+				}else{
+					model.addAttribute("korAtribut", null);					
+				}
+				model.addAttribute("pager", korisnici);
+
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			
+
 		}else{
-			try {
-				model.addAttribute("pager", korisnikRepository.findAll(pageable));
-				System.out.println("uradio sve: ");
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
+			return"redirect:/admin/korisnici/";
 		}
 		model.addAttribute("letter", letter);
 		return "/admin/korisnik/lista";
@@ -251,7 +296,7 @@ public class KorisnikWebController {
 	 * @return
 	 */
 	@RequestMapping(value = {"/admin/korisnici/pretraga2"}, method = RequestMethod.GET)
-	public String getPretraga2Korisnici(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String getPretraga2Korisnici(HttpServletRequest request, Model model){
 
 		System.out.println("Get pretraga2");
 		System.out.println("name: "+request.getParameter("name"));
@@ -283,45 +328,100 @@ public class KorisnikWebController {
 			String imePrezime = "%"+name+"%";
 			if(isActiveString!="sve"){
 				Boolean isActive = Boolean.valueOf(isActiveString);
+				
 				try {
-					if(isActive){
-						model.addAttribute("pager", korisnikRepository.findByImeOrPrezimeLikeAndJeAktivanTrue(imePrezime, imePrezime, pageable));
+					Page<Korisnik> korisnici = korisnikRepository.findByImeLikeOrPrezimeLikeAndJeAktivan(imePrezime, imePrezime, isActive, pageable);
+					TreeMap<Korisnik, Registracija> pregled2 = new TreeMap<Korisnik, Registracija>();
+					if(korisnici.getTotalElements()>0){
+						for (Korisnik korisnik : korisnici) {
+							try {
+								KorisnikVozilo kv = kvRepository.findByKorisnik_IdAndVracenoNull(korisnik.getId());
+								Registracija r = rRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin());
+
+								pregled2.put(korisnik, r);
+							} catch (Exception e) {
+								System.out.println(e.getMessage());
+								KorisnikVozilo kv = new KorisnikVozilo();
+								kv.setKorisnik(korisnik);
+								pregled2.put(korisnik, null);
+							}
+						}
+						model.addAttribute("korAtribut", pregled2);
+						System.out.println("uradio ime/prezime: "+pregled2.size());
 					}else{
-						model.addAttribute("pager", korisnikRepository.findByImeOrPrezimeLikeAndJeAktivanFalse(imePrezime, imePrezime, pageable));
+						model.addAttribute("korAtribut", null);					
 					}
+					model.addAttribute("pager", korisnici);
 					System.out.println("uradio imePrezime i jeAktivno: "+imePrezime+" "+request.getParameter("isActive"));
+
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 			} else{
 				try {
-					model.addAttribute("pager", korisnikRepository.findByImeOrPrezimeLike(imePrezime, imePrezime, pageable));
-					System.out.println("uradio imePrezime: "+imePrezime);
+					Page<Korisnik> korisnici = korisnikRepository.findByImeLikeOrPrezimeLike(imePrezime, imePrezime, pageable);
+					TreeMap<Korisnik, Registracija> pregled2 = new TreeMap<Korisnik, Registracija>();
+					if(korisnici.getTotalElements()>0){
+						for (Korisnik korisnik : korisnici) {
+							try {
+								KorisnikVozilo kv = kvRepository.findByKorisnik_IdAndVracenoNull(korisnik.getId());
+								Registracija r = rRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin());
+
+								pregled2.put(korisnik, r);
+							} catch (Exception e) {
+								System.out.println(e.getMessage());
+								KorisnikVozilo kv = new KorisnikVozilo();
+								kv.setKorisnik(korisnik);
+								pregled2.put(korisnik, null);
+							}
+						}
+						model.addAttribute("korAtribut", pregled2);
+						System.out.println("uradio ime/prezime: "+pregled2.size());
+					}else{
+						model.addAttribute("korAtribut", null);					
+					}
+					model.addAttribute("pager", korisnici);
+					System.out.println("uradio imePrezime i jeAktivno: "+imePrezime+" "+request.getParameter("isActive"));
+
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 			}
 		}else{
 			if(isActiveString!="sve"){
+				try{
 				System.out.println("isActiveString: "+isActiveString);
 				Boolean isActive = Boolean.valueOf(request.getParameter("isActive"));
-				try {
-					if(isActive){
-						model.addAttribute("pager", korisnikRepository.findByJeAktivanTrue(pageable));
-					}else{
-						model.addAttribute("pager", korisnikRepository.findByJeAktivanFalse(pageable));
+				Page<Korisnik> korisnici = korisnikRepository.findByJeAktivan(isActive, pageable);
+				TreeMap<Korisnik, Registracija> pregled2 = new TreeMap<Korisnik, Registracija>();
+				if(korisnici.getTotalElements()>0){
+					for (Korisnik korisnik : korisnici) {
+						try {
+							KorisnikVozilo kv = kvRepository.findByKorisnik_IdAndVracenoNull(korisnik.getId());
+							Registracija r = rRepository.findByVozilo_VinAndJeAktivnoTrue(kv.getVozilo().getVin());
+
+							pregled2.put(korisnik, r);
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+							KorisnikVozilo kv = new KorisnikVozilo();
+							kv.setKorisnik(korisnik);
+							pregled2.put(korisnik, null);
+						}
 					}
-					System.out.println("uradio jeAktivno: "+isActiveString);
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
+					model.addAttribute("korAtribut", pregled2);
+					System.out.println("uradio jeAktivno: "+pregled2.size());
+				}else{
+					model.addAttribute("korAtribut", null);					
 				}
+				model.addAttribute("pager", korisnici);
+				System.out.println("uradio jeAktivno: "+request.getParameter("isActive"));
+
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+				
 			} else{
-				try {
-					model.addAttribute("pager", korisnikRepository.findAll(pageable));
-					System.out.println("uradio sve: ");
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
+				return "redirect:/admin/korisnici/";
 			}
 		}
 		model.addAttribute("name", name);

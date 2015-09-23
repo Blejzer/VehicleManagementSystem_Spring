@@ -30,12 +30,9 @@ SABLONI
   
 KORISNIK
 Welcome page tabela  - RIJESENO
-Vozilo u meniju 
-	dodati kilometrazu
-	izmijeniti kilometrazu
-Servis u meniju
-	lista servisa
-	potvrditi uradjen servis
+dodati kilometrazu  - RIJESENO
+izmijeniti kilometrazu  - RIJESENO
+potvrditi uradjen servis  - NIJE RIJESENO
 
 
 

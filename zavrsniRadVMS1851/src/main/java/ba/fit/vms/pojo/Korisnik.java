@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "korisnik")
 @NamedQuery(name = Korisnik.READ_BY_EMAIL, query = "select k from Korisnik k where k.email = :email")
-public class Korisnik implements Serializable{
+public class Korisnik implements Serializable, Comparable<Korisnik>{
 
 	/**
 	 * 
@@ -232,4 +232,12 @@ public class Korisnik implements Serializable{
 		}
 		return true;
 		}
+
+	/**
+	 * Implementacija prilagodjene compareTo metode kako bi mogli sortirati Registracije po tablicama!
+	 */
+	@Override
+	public int compareTo(Korisnik o) {
+		return this.getId().compareTo(o.getId());
+	}
 }

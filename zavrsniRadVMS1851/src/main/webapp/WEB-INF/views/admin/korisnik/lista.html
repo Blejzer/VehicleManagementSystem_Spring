@@ -3,16 +3,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head th:include="dodaci/sabloni :: headFragment" />
 <body>
-
-<div sec:authorize="hasRole('ROLE_ADMIN')" th:include="dodaci/sabloni :: adminHeaderFragment"></div>
-<div sec:authorize="hasRole('ROLE_USER')" th:include="dodaci/sabloni :: headerFragment"></div>
-
-<div class="container"> 
-
-<div th:include="dodaci/filters :: korisnikLista"></div>
- 
-<section id="tables">
-	
 <script src="/resources/js/bootbox.min.js" th:src="@{/resources/js/bootbox.min.js}" />
 		
 <script th:inline="javascript">
@@ -27,23 +17,81 @@
 	};
 </script>
 
-  <div class="page-header">
-    <h1 th:text="#{mn.3}">Users</h1>
-    <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-large right" th:href="@{/admin/korisnici/novi}" th:text="#{kor.new}">New user</a>
-  </div>
+<script>
+    function rowClicked(value) {
+        location.href = "izmjeni?id=" + value;
+    }
+</script>
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:include="dodaci/sabloni :: adminHeaderFragment"></div>
+<div sec:authorize="hasRole('ROLE_USER')" th:include="dodaci/sabloni :: headerFragment"></div>
+
+<div class="container"> 
+
+	<div th:include="dodaci/filters :: korisnikLista"></div>
+	 
+	<section id="tables">
+	
+
+
+	  <div class="page-header">
+	    <h1 th:text="#{mn.3}">Users</h1>
+	    <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-large right" th:href="@{/admin/korisnici/novi}" th:text="#{kor.new}">New user</a>
+	  </div>
   
-  <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
-  	<button type="button" class="close" data-dismiss="alert" area-hidden="true">&times;</button>
-    <h1 th:text="#{err.msg1}">Greska</h1>
-    <h4 th:text="#{err.msg2}"></h4>
-    <div class="alert alert-warning">
-    	<p th:text="${error}">error</p>
-    </div>
-  </div>
-  <div th:if="${(pager.totalElements==0)}">
-  	<h1 th:text="#{kor.msg2}"></h1>
-  </div>
-  <div th:if="${(pager.totalElements>0)}">
+  	<div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+  		<button type="button" class="close" data-dismiss="alert" area-hidden="true">&times;</button>
+    	<h1 th:text="#{err.msg1}">Greska</h1>
+    	<h4 th:text="#{err.msg2}"></h4>
+	    <div class="alert alert-warning">
+	    	<p th:text="${error}">error</p>
+	    </div>
+  	</div>
+	<div th:if="not ${korAtribut}">
+		<h1 th:text="#{kor.msg2}"></h1>
+	</div>
+	<div th:if="${korAtribut}">
+		<table class="table table-bordered table-striped table-hover">
+			<thead>
+				<tr>
+					<th class="col-md-1 text-center h4" th:text="#{kor.id}">123456</th>
+					<th class="col-md-3 text-center h4" th:text="#{kv.kor}">User</th>
+					<th class="col-md-3 text-center h4" th:text="#{sign.eml}">email</th>
+					<th class="col-md-2 text-center h4" th:text="#{kor.rol}">Role</th>
+					<th class="col-md-1 text-center h4" th:text="#{kor.je}">Active</th>
+					<th class="col-md-2 text-center h4" th:text="#{kv.voz}">Plates</th>
+				</tr>
+				
+			</thead>
+			<tbody>
+				<tr th:each="korisnik : ${korAtribut}" style="cursor: pointer" th:onclick="'javascript:rowClicked(\'' + ${korisnik.key.id} + '\');'">
+					<td th:text="${korisnik.key.id}">email</td>
+					<td th:text="${korisnik.key.ime}+' '+${korisnik.key.prezime}">User</td>
+					<td th:text="${korisnik.key.email}">email</td>
+					<td th:switch="${korisnik.key.rola}">
+			        	<span th:case="'ROLE_ADMIN'" th:text="#{kor.rol1}">ADMINISTRATOR</span> 
+						<span th:case="'ROLE_USER'" th:text="#{kv.kor}">User</span>
+	   							</td>
+	   							<td class="center" th:switch="${korisnik.key.jeAktivan} ? ${true} : ${false}">
+			        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
+						<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
+			        </td>
+					<td th:text="${korisnik.value} ? ${korisnik.value.tablica} : 'Nema dodijeljeno vozilo!'">Vehicle assigned</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div th:if="${pager.totalPages}>1" class="col-lg-12 center">
+		<ul class="pagination">
+			<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
+			<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
+			<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
+		        <a th:href="@{${page='?page='+(item-1)}}"><span th:text='${item}'>PageNo</span></a>
+		     </li>
+		    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
+			<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
+		</ul>
+	</div>
+  <!-- <div>
 	  <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
 	    <thead>
 	      <tr>
@@ -62,22 +110,21 @@
 		    	<td th:text="${korisnik.email}">email@email.com</td>
 		    	<td th:text="${korisnik.ime}">John</td>
 		    	<td th:text="${korisnik.prezime}">Doe</td>
-		    	<!-- Thymeleaf th:switch metoda 1 -->
+		    	Thymeleaf th:switch metoda 1
 		    	<td th:switch="${korisnik.rola}">
 		        	<span th:case="'ROLE_ADMIN'" th:text="#{kor.rol1}">ADMINISTRATOR</span> 
 					<span th:case="'ROLE_USER'" th:text="#{kv.kor}">User</span>
 		        </td>
-		        <!-- Thymeleaf th:switch metoda 2 -->
+		        Thymeleaf th:switch metoda 2
 		        <td th:switch="${korisnik.jeAktivan} ? ${true} : ${false}">
 		        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
 					<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
 		        </td>
 	
-				<td>
+				<td class="center">
 					<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-warning btn-sm" th:href="@{/admin/korisnici/izmjeni(id=${korisnik.id})}"><i class="glyphicon glyphicon-edit"></i> <span th:text="#{rad.izm}">Edit action</span></a>
-				    <!-- <a class="btn btn-danger btn-sm delete" th:href="@{/vehicles/delete(id=${vehicle.vin})}"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>  -->
-					<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${korisnik.id} + '\');'"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a> 
-					<a class="btn btn-info btn-sm" th:href="@{/admin/korisnici/show(email=${korisnik.email})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
+				    <a class="btn btn-danger btn-sm delete" th:href="@{/vehicles/delete(id=${vehicle.vin})}"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a> 
+					<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" href="#" th:onclick="'javascript:deleteObject(\'' + ${korisnik.id} + '\');'"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>
 				</td>
 			</tr>
 	    </tbody>
@@ -89,13 +136,13 @@
 			<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
 			<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
 		        <a th:href="@{''(name=${name},letter=${letter},isActive=${isActive},page=${item}-1)}"><span th:text='${item}'>PageNo</span></a> 
-<!-- 		        <a th:href="@{${page='?page='+(item-1)}}">  -->
+		        <a th:href="@{${page='?page='+(item-1)}}"> 
 		     </li>
 		    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
 			<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
 		</ul>
 	  </div>
-  </div>
+  </div> -->
 </section>
 
 <div th:include="dodaci/sabloni :: footerFragment"></div>

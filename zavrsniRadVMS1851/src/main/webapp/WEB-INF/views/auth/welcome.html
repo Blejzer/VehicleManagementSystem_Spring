@@ -12,7 +12,7 @@
 
 <div class="featurette">
 	<h2 class="featurette-heading" th:text="#{wlk.1} + ' ' + ${userAtribut.ime} + ' ' + ${userAtribut.prezime}"></h2>
-	<p class="lead" th:text="#{wlk.3}"></p>
+	<p th:if="${userAtribut.jeAktivan}" class="lead" th:text="#{wlk.3}"></p>
 </div>
 
 <hr class="featurette-divider" />
@@ -23,8 +23,7 @@
 
 <div class="container">
 		<div class="row">
-			<div class="col-md-12 text-center"
-				sec:authorize="hasRole('ROLE_USER')">
+			<div class="col-md-12 text-center" sec:authorize="hasRole('ROLE_USER')" th:if="${userAtribut.jeAktivan}">
 
 				<h3 id="tabs" th:text="#{adm.1}">Summary</h3>
 				<ul class="nav nav-tabs">
@@ -162,6 +161,9 @@
 					</div>
 				</div>
 				<!-- /tabbable -->
+			</div>
+			<div class="col-md-12 text-center" sec:authorize="hasRole('ROLE_USER')" th:if="not ${userAtribut.jeAktivan}">
+				<h3 th:text="#{sign.act}">Contact Administrator or Vehicle Management System supervisor</h3>
 			</div>
 		</div>
 	</div>

@@ -3,11 +3,22 @@
   .tiket {
   table-layout:fixed;
 }
-
 .tiket td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.textareaone {
+	overflow: hidden;
+    resize: none;
+    min-height: 20px;
+    height: auto;
+}
+.signin {
+	background-image: url("../img/main-auto.png");
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	background-position: center
 }
 
 @media screen and (min-width: 992px) {

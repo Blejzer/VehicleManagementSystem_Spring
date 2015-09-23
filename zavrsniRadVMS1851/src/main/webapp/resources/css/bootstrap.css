@@ -6808,9 +6808,3 @@ td.visible-print {
     display: none !important;
   }
 }
-.textareaone {
-	overflow: hidden;
-    resize: none;
-    min-height: 20px;
-    height: auto;
-}

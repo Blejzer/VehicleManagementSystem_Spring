@@ -19,11 +19,24 @@
 	</th:block>
     
 	<div class="featurette">
-		<h2 class="featurette-heading" th:text="#{title.msg}">Vehicle management system</h2>
-	    <p class="lead"></p>
+		<h2 class="featurette-heading center" th:text="#{title.msg}">Vehicle management system</h2>
 	</div>
   
-	<form class="form-narrow form-horizontal" th:action="@{/j_spring_security_check}" method="post">
+
+  <hr class="featurette-divider" />
+
+  <!-- /END THE FEATURETTES -->
+  
+  <!-- Three columns of text below the carousel -->
+  <div class="row signin">
+    <div class="col-md-4 text-center">
+      <h2></h2>
+      <p></p>
+    </div>
+    <div class="col-md-4 center">
+    
+      <h2 th:text="#{title.ttl}"></h2>
+      <form class="form-narrow form-horizontal" th:action="@{/j_spring_security_check}" method="post">
 		<div th:if="${param['error']}" class="alert alert-error">
 			<span th:text="${param['error.message']}"></span><span th:text="#{sign.err}"></span>
 		</div>
@@ -60,7 +73,15 @@
             </div>
         </div>
 	</form>
-
+      <p></p>
+    </div>
+    <div class="col-md-4 text-center">
+      <h2></h2>
+      <p></p>
+    </div>
+    
+  </div><!-- /.row -->
+	
 <div th:include="dodaci/sabloni :: footerFragment"></div>
 
 </div><!-- /.container -->

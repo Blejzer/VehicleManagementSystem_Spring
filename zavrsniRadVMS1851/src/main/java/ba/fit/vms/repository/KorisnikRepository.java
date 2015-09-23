@@ -17,9 +17,11 @@ public interface KorisnikRepository extends PagingAndSortingRepository<Korisnik,
 	@Query("select k from Korisnik k where k.email = :email")
     public Korisnik find(@Param("email") String email);
 	
+	public Page<Korisnik> findByJeAktivan(Boolean jeAktivan, Pageable pageable);
 	public Page<Korisnik> findByJeAktivanTrue(Pageable pageable);
 	public Page<Korisnik> findByJeAktivanFalse(Pageable pageable);
-	public Page<Korisnik> findByImeOrPrezimeLikeAndJeAktivanTrue(String ime, String prezime, Pageable pageable);
-	public Page<Korisnik> findByImeOrPrezimeLikeAndJeAktivanFalse(String ime, String prezime, Pageable pageable);
-	public Page<Korisnik> findByImeOrPrezimeLike(String ime, String prezime, Pageable pageable);
+	public Page<Korisnik> findByImeLikeOrPrezimeLikeAndJeAktivanTrue(String ime, String prezime, Pageable pageable);
+	public Page<Korisnik> findByImeLikeOrPrezimeLikeAndJeAktivanFalse(String ime, String prezime, Pageable pageable);
+	public Page<Korisnik> findByImeLikeOrPrezimeLike(String ime, String prezime, Pageable pageable);
+	public Page<Korisnik> findByImeLikeOrPrezimeLikeAndJeAktivan(String ime, String prezime, Boolean jeAktivan, Pageable pageable);
 }
