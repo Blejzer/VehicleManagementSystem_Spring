@@ -40,7 +40,7 @@
      </div>
     </div>
   
-  <table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
+  <table th:if="${pager.totalElements}>0" class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
         <th th:text="#{vs.id}">Identifikacijski broj</th>
@@ -59,9 +59,9 @@
 		</tr>
     </tbody>
   </table>
-   
+  <span th:if="${pager.totalElements}==0" th:text="#{vs.ne}"></span>
   <div class="col-lg-12 center">
-	<ul class="pagination">
+	<ul th:if="${pager.totalPages}>1" class="pagination">
 		<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
 		<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
 		<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">

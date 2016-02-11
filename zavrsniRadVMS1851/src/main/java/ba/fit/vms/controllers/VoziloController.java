@@ -65,6 +65,7 @@ public class VoziloController {
 		model.addAttribute("pager", voziloRepository.findAll(pageable));
 		model.addAttribute("rAtribut", voziloRepository.getRegistrovanaVozila());
 		model.addAttribute("vAtribut", kvRepository.findAllAssignedV());
+		System.out.println("pager status: "+ voziloRepository.findAll(pageable).getTotalElements());
 		System.out.println("broj vozila koja nisu dodijeljena je:"+kvRepository.findAllAssignedV().size() );
 		return "/admin/vozila/lista";
 	}

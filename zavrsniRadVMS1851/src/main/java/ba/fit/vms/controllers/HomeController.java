@@ -175,7 +175,10 @@ public class HomeController {
 				try {
 					Page<Tiket2> pages = tRepository.findByRijesenDatumIsNullOrderByTiketDatumDesc(pageable);
 					model.addAttribute("tAtribut", pages);
-					atributi.set(5, true);
+					if(pages.getNumberOfElements()>0){
+						atributi.set(5, true);
+					}
+					
 				} catch (Exception e) {
 					System.out.println("Poruka o gresci: "+e.getMessage());
 				}
