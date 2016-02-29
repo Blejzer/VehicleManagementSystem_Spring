@@ -102,7 +102,7 @@ public class Tiket2Controller {
 		System.out.println("kid = "+kid);
 		String link;
 		if(kid!=null){
-			link = "korisnik/"+kid.toString()+"/tiketi/";
+			link = "korisnik/tiket/novi"; //korisnik/"+kid.toString()+"/tiketi/novi
 		}else{
 			link = "korisnik/tiketi/";
 		}

@@ -34,39 +34,11 @@ dodati kilometrazu  - RIJESENO
 izmijeniti kilometrazu  - RIJESENO
 potvrditi uradjen servis  - NIJE RIJESENO
 
+dodavanje nove poruke nekada izbrise prethodno upisane poruke
 
 
-KORISNIK VOZILO
-Srediti zaduzivanje i razduzivanje vozila, problemi sa datumima!
-
-  
-  // KILOMETRAZA TAB
-				Date lastDayOfThisMonth = new DateTime().dayOfMonth().withMaximumValue().toDate();
-				
-				LinkedHashMap<Registracija, List<LokacijaKilometraza>> kilometraza = new LinkedHashMap<Registracija, List<LokacijaKilometraza>>();
-				for (Registracija regVozilo : regRepository.findAllByJeAktivnoTrueOrderByRegDoDesc()) {
-					try {
-						List<LokacijaKilometraza> vozila = new ArrayList<LokacijaKilometraza>();
-						LokacijaKilometraza temp = new LokacijaKilometraza();
-						temp = lokiRepository.getMaxKilo2(regVozilo.getVozilo().getVin(), lastDayOfThisMonth);
-						Integer k = 0;
-						k = temp.getKilometraza().intValue();
-						vozila.add(temp);
-						
-						try {
-							Date lastDayOfPreviousMonth = new DateTime(temp.getDatum()).minusMonths(1).dayOfMonth().withMaximumValue().toDate();
-							temp = lokiRepository.getMaxKilo2(regVozilo.getVozilo().getVin(), lastDayOfPreviousMonth);
-							temp.setKilometraza(Long.valueOf(k-temp.getKilometraza().intValue()));
-							vozila.add(temp);
-						} catch (Exception e) {
-							temp.setKilometraza(Long.valueOf(k));
-							vozila.add(temp);
-						}
-						if(vozila.size()>1){
-							kilometraza.put(regVozilo, vozila);
-						}
-					} catch (Exception e) {
-						System.out.println(e.getMessage());
-					}
-				}
-				// KRAJ KILOMETRAZA TAB
+http://localhost:8080/suvp-1.0-BETA/korisnik/{kid}/tiket/{tid}/poruka
+Popraviti link za vozila stoji sada!@!!!
+http://localhost:8080/suvp-1.0-BETA/korisnik/{kid}/tiketi/novi
+Greska na post novi tiket
+Odustani dugme link vodi ko zna gdje
