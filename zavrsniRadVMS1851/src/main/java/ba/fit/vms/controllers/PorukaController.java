@@ -88,17 +88,24 @@ public class PorukaController {
 	
 	
 	@RequestMapping(value={"/korisnik/{kid}/tiket/{tid}/novi"}, method = RequestMethod.POST)
-	public String postNovaPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, @ModelAttribute("pAtribut") @Valid Poruka poruka, HttpServletRequest request,  BindingResult porukaRezultat, Principal principal, Model model ){
+	public String postNovaPoruka(@PathVariable("kid") Long kid, @PathVariable("tid") Long tid, @ModelAttribute("pAtribut") @Valid Poruka poruka, BindingResult porukaRezultat, HttpServletRequest request, Principal principal, Model model ){
 	
-		System.out.println("POST: prethodni id = "+poruka.getPrethodni().getId());
-		System.out.println("POST: poruka id = "+poruka.getId());
-		
 		if(porukaRezultat.hasErrors()){
 			System.out.println("POST: poruka greske: " + porukaRezultat.toString());
-			model.addAttribute("tAtribut", tRepository.findOne(tid));
+			Tiket2 t2 = tRepository.findOne(tid);
+			List<Poruka> lista = t2.getPoruke();
+			Collections.sort(lista, Collections.reverseOrder());
+			PagedListHolder<Poruka> poruke = new PagedListHolder<Poruka>(lista);
+			poruke.setPageSize(10);
+			request.getSession().setAttribute("Tiket2Controller_poruke", poruke);
+			model.addAttribute("tAtribut", t2);
+			model.addAttribute("pager", poruke);
+			model.addAttribute("kvAtribut", kvRepository.findByKorisnik_EmailAndVracenoNull(korisnikRepository.findOne(kid).getEmail()));
 
-			return "/korisnik/tiket/poruka/novi";
+			return "/korisnik/tiket/poruka/list";
 		}
+		System.out.println("POST: prethodni id = "+poruka.getPrethodni().getId());
+		System.out.println("POST: poruka id = "+poruka.getId());
 		try {
 			Tiket2 t2 = tRepository.findOne(tid);
 			List<Poruka> poruke = new ArrayList<Poruka>();

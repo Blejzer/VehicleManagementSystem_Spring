@@ -1,4 +1,18 @@
 Za uraditi:
+- dodavanje nove poruke nekada izbrise prethodno upisane poruke u tiketu
+- link na izmjenu unesene kilometraze za korisnika ne radi (404)
+- uslovi koristenja, Politika privatnosti, Pomoc dodati stranice i neki tekst!
+
+- 500 returned for /suvp-1.0-BETA/admin/korisnici/ with message EL1007E:(pos 0): Field or property 'email' cannot be found on null
+nakon login timeout-a. 
+
+Ovo je greska:
+2016-02-29 14:31:21.450 [tomcat-http--22] ERROR org.thymeleaf.TemplateEngine - [THYMELEAF][tomcat-http--22] Exception processing template "/admin/korisnik/lista": 
+Exception evaluating SpringEL expression: "userAtribut.email" (dodaci/sabloni:78)
+
+
+
+RIJESENO:
 - Srediti UTF-8 - RIJESENO ( u @Bean(name = "messageSource") dodao messageSource.setDefaultEncoding("UTF-8"); )
 - Frontpage
   - kilometraza - RIJESENO
@@ -33,12 +47,3 @@ Welcome page tabela  - RIJESENO
 dodati kilometrazu  - RIJESENO
 izmijeniti kilometrazu  - RIJESENO
 potvrditi uradjen servis  - NIJE RIJESENO
-
-dodavanje nove poruke nekada izbrise prethodno upisane poruke
-
-
-http://localhost:8080/suvp-1.0-BETA/korisnik/{kid}/tiket/{tid}/poruka
-Popraviti link za vozila stoji sada!@!!!
-http://localhost:8080/suvp-1.0-BETA/korisnik/{kid}/tiketi/novi
-Greska na post novi tiket
-Odustani dugme link vodi ko zna gdje

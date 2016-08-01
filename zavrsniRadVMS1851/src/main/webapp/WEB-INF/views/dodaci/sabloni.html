@@ -74,7 +74,7 @@
 							<ul class="nav navbar-nav">
 								<li th:if="${#authorization.expression('!isAuthenticated()')}"><a
 									href="/signin" th:href="@{/signin}" th:text="#{mn.7}">Sign in</a></li>
-								<li th:if="${#authorization.expression('isAuthenticated()')}"><a
+								<li th:if="${#authorization.expression('isAuthenticated()')} and ${userAtribut}!=null"><a
 									href="/logout" th:href="@{/logout}" th:text="#{mn.8(${userAtribut.email})}">Logout</a></li>
 							</ul>
 							</li>

@@ -14,18 +14,7 @@
 <section id="tables">
 
 <script src="/resources/bootstrap/js/bootbox.min.js" th:src="@{/resources/js/bootbox.min.js}"></script>
-		
-<script th:inline="javascript">
- 	function deleteObject(id) {
-		bootbox.confirm("Are you sure?", function(result) {
-			if (result) {
-				var url = /*[[ @{'/admin/dodjeljivanje/izbrisi?id='} ]]*/ "genericUrl";
-				url = url+id;
-				document.location = url;
-			}
-		}); 
-	};
-</script>
+
 <p th:if="${#lists.isEmpty(pager)}" th:text="'Nemate kreiranih tiketa!'" class="label label-success"/>
   <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -36,52 +25,52 @@
      </div>
     </div>
     <div th:if="${(pager.totalElements==0)}">
-				<h1 th:text="#{tk.no}"></h1>
-				</div>
-			<div th:if="${(pager.totalElements>0)}">
-				<table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
-					<thead>
-				    	<tr>
-					        <th class="center" th:text="#{tk.da}">Ticket Date</th>
-					        <th class="center" th:text="#{tk.na}">Title</th>
-					        <th class="center" th:text="#{tk.za}">isActive</th>
-					        <th class="center" th:text="#{tk.bp}">Number of Messages</th>
-					        <th class="center" th:text="#{tk.zp}">Last msg</th>
-					        <th class="center" th:text="#{rad.na}">Actions</th>
-				    	</tr>
-				    </thead>
-				    <tbody>
-						<tr th:each="tiket : ${pager}">
-					    	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
-					    	<td th:text="${tiket.naslov}">Ticket title</td>
-					    	<td class="center" th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
-					        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
-								<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
-					        </td>
-					    	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#lists.size(tiket.poruke)}: 'Nema poruka'">Doe</td>
-					    	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#dates.format(tiket.poruke[__(${#lists.size(tiket.poruke)}-1)__].datum,'dd MM yyyy HH:mm')} : 'PRAZNO'">Last msg date</td>
-				
-							<td>
-								<!-- <a class="btn btn-danger btn-sm delete" th:href="@{/vehicles/delete(id=${vehicle.vin})}"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>  -->
-								<a class="btn btn-info btn-sm" th:href="@{/korisnik/{kid}/tiket/{tid}/poruka(kid=${tiket.korisnik.id}, tid=${tiket.id})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
-							</td>
-						</tr>
-				    </tbody>
-				</table>
-				   
-				<div class="col-lg-12 center">
-					<ul th:if="${pager.totalPages}>1" class="pagination">
-						<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
-						<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
-						<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
-					        <a th:href="@{''(name=${name},letter=${letter},isActive=${isActive},page=${item}-1)}"><span th:text='${item}'>PageNo</span></a> 
-							<!--	<a th:href="@{${page='?page='+(item-1)}}">  -->
-					     </li>
-					    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
-						<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
-					</ul>
-				</div>
-			</div>  
+		<h1 th:text="#{tk.no}"></h1>
+	</div>
+	<div th:if="${(pager.totalElements>0)}">
+		<table th:if="${not #lists.isEmpty(pager)}" class="table table-bordered table-striped table-hover">
+			<thead>
+		    	<tr>
+			        <th class="center" th:text="#{tk.da}">Ticket Date</th>
+			        <th class="center" th:text="#{tk.na}">Title</th>
+			        <th class="center" th:text="#{tk.za}">isActive</th>
+			        <th class="center" th:text="#{tk.bp}">Number of Messages</th>
+			        <th class="center" th:text="#{tk.zp}">Last msg</th>
+			        <th class="center" th:text="#{rad.na}">Actions</th>
+		    	</tr>
+		    </thead>
+		    <tbody>
+				<tr th:each="tiket : ${pager}">
+			    	<td th:text="${#dates.format(tiket.tiketDatum,'dd.MM.yyyy HH:mm')}">999</td>
+			    	<td th:text="${tiket.naslov}">Ticket title</td>
+			    	<td class="center" th:switch="${tiket.rijesenDatum!=null} ? ${true} : ${false}">
+			        	<span th:case="${true}"><i class="glyphicon glyphicon-ok"></i></span>
+						<span th:case="${false}"><i class="glyphicon glyphicon-ban-circle"></i></span>
+			        </td>
+			    	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#lists.size(tiket.poruke)}: 'Nema poruka'">Doe</td>
+			    	<td th:text="${not #lists.isEmpty(tiket.poruke)} ? ${#dates.format(tiket.poruke[__(${#lists.size(tiket.poruke)}-1)__].datum,'dd MM yyyy HH:mm')} : 'PRAZNO'">Last msg date</td>
+		
+					<td>
+						<!-- <a class="btn btn-danger btn-sm delete" th:href="@{/vehicles/delete(id=${vehicle.vin})}"><i class="glyphicon glyphicon-remove"></i> <span th:text="#{rad.obr}">Delete action</span></a>  -->
+						<a class="btn btn-info btn-sm" th:href="@{/korisnik/{kid}/tiket/{tid}/poruka(kid=${tiket.korisnik.id}, tid=${tiket.id})}"><i class="glyphicon glyphicon-list-alt"></i> <span th:text="#{rad.prk}">Show action</span></a>
+					</td>
+				</tr>
+		    </tbody>
+		</table>
+		   
+		<div class="col-lg-12 center">
+			<ul th:if="${pager.totalPages}>1" class="pagination">
+				<li th:if="${pager.firstPage}" class="disabled"><a href="#">«</a></li>
+				<li th:if="${not pager.firstPage}"><a th:href="@{${page='?page='+(pager.number-1)}}">«</a></li>
+				<li th:each="item : ${#numbers.sequence(1,pager.totalPages)}" th:class="${pager.number == item-1} ? 'active' : ''">
+			        <a th:href="@{''(name=${name},letter=${letter},isActive=${isActive},page=${item}-1)}"><span th:text='${item}'>PageNo</span></a> 
+					<!--	<a th:href="@{${page='?page='+(item-1)}}">  -->
+			     </li>
+			    <li th:if="${pager.lastPage}" class="disabled"><a href="#">»</a></li>
+				<li th:if="${not pager.lastPage}"><a th:href="@{${page='?page='+(pager.number+1)}}">»</a></li>
+			</ul>
+		</div>
+	</div>  
 </section>
 
 <div class="row right">
