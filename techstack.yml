@@ -2,7 +2,7 @@ repo_name: Blejzer/VehicleManagementSystem_Spring
 report_id: caa452f4390a1227e08534991e2adfc2
 version: 0.1
 repo_type: Public
-timestamp: '2024-02-01T07:41:42+00:00'
+timestamp: '2024-02-29T19:48:58+00:00'
 requested_by: Blejzer
 provider: github
 branch: master
@@ -587,6 +587,13 @@ tools:
   detection_source: zavrsniRadVMS1851/pom.xml
   last_updated_by: dependabot[bot]
   last_updated_on: 2022-03-31 20:26:45.000000000 Z
+  vulnerabilities:
+  - name: Improper handling of case sensitivity in Spring Framework
+    cve_id: CVE-2022-22968
+    cve_url: https://github.com/advisories/GHSA-g5mm-vmx4-3rg7
+    detected_date: Feb 3
+    severity: high
+    first_patched: 5.3.19
 - name: org.springframework:spring-jdbc
   description: Spring JDBC
   version: 5.3.18
