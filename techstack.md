@@ -4,18 +4,18 @@
 Blejzer/VehicleManagementSystem_Spring is built on the following main stack:
 
 - [Java](https://www.java.com) – Languages
-- [MySQL](http://www.mysql.com) – Databases
-- [Redis](http://redis.io/) – In-Memory Databases
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
-- [Hibernate](http://hibernate.org/) – Object Relational Mapper (ORM)
-- [JUnit](http://junit.org/) – Testing Frameworks
-- [Mockito](https://site.mockito.org/) – Testing Frameworks
-- [Log4j](https://logging.apache.org/log4j/2.x/) – Logging Tools
-- [SLF4J](http://slf4j.org/) – Log Management
-- [Logback](https://logback.qos.ch/) – Log Management
 - [guava](https://github.com/google/guava) – Java Tools
 - [HSQLDB](http://hsqldb.org) – Databases
+- [Hibernate](http://hibernate.org/) – Object Relational Mapper (ORM)
+- [MySQL](http://www.mysql.com) – Databases
+- [Redis](http://redis.io/) – In-Memory Databases
 - [Spring Data](https://spring.io/projects/spring-data) – Database Tools
+- [JUnit](http://junit.org/) – Testing Frameworks
+- [Log4j](https://logging.apache.org/log4j/2.x/) – Logging Tools
+- [Logback](https://logback.qos.ch/) – Log Management
+- [Mockito](https://site.mockito.org/) – Testing Frameworks
+- [SLF4J](http://slf4j.org/) – Log Management
 
 Full tech stack [here](/techstack.md)
 
@@ -26,18 +26,18 @@ Full tech stack [here](/techstack.md)
 Blejzer/VehicleManagementSystem_Spring is built on the following main stack:
 
 - <img width='25' height='25' src='https://img.stackshare.io/service/995/K85ZWV2F.png' alt='Java'/> [Java](https://www.java.com) – Languages
-- <img width='25' height='25' src='https://img.stackshare.io/service/1025/logo-mysql-170x170.png' alt='MySQL'/> [MySQL](http://www.mysql.com) – Databases
-- <img width='25' height='25' src='https://img.stackshare.io/service/1031/default_cbce472cd134adc6688572f999e9122b9657d4ba.png' alt='Redis'/> [Redis](http://redis.io/) – In-Memory Databases
 - <img width='25' height='25' src='https://img.stackshare.io/service/1209/javascript.jpeg' alt='JavaScript'/> [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
-- <img width='25' height='25' src='https://img.stackshare.io/service/1756/1uNl_IZX.png' alt='Hibernate'/> [Hibernate](http://hibernate.org/) – Object Relational Mapper (ORM)
-- <img width='25' height='25' src='https://img.stackshare.io/service/2020/874086.png' alt='JUnit'/> [JUnit](http://junit.org/) – Testing Frameworks
-- <img width='25' height='25' src='https://img.stackshare.io/service/2021/4y634TJm_400x400.jpg' alt='Mockito'/> [Mockito](https://site.mockito.org/) – Testing Frameworks
-- <img width='25' height='25' src='https://img.stackshare.io/service/2804/Coralogix-log4j-integration.jpg' alt='Log4j'/> [Log4j](https://logging.apache.org/log4j/2.x/) – Logging Tools
-- <img width='25' height='25' src='https://img.stackshare.io/service/2805/05518ecaa42841e834421e9d6987b04f_400x400.png' alt='SLF4J'/> [SLF4J](http://slf4j.org/) – Log Management
-- <img width='25' height='25' src='https://img.stackshare.io/service/2923/05518ecaa42841e834421e9d6987b04f_400x400.png' alt='Logback'/> [Logback](https://logback.qos.ch/) – Log Management
 - <img width='25' height='25' src='https://img.stackshare.io/service/2970/wBjKn0ol.png' alt='guava'/> [guava](https://github.com/google/guava) – Java Tools
 - <img width='25' height='25' src='https://img.stackshare.io/service/6958/yQ4763oZ_400x400.jpg' alt='HSQLDB'/> [HSQLDB](http://hsqldb.org) – Databases
+- <img width='25' height='25' src='https://img.stackshare.io/service/1756/1uNl_IZX.png' alt='Hibernate'/> [Hibernate](http://hibernate.org/) – Object Relational Mapper (ORM)
+- <img width='25' height='25' src='https://img.stackshare.io/service/1025/logo-mysql-170x170.png' alt='MySQL'/> [MySQL](http://www.mysql.com) – Databases
+- <img width='25' height='25' src='https://img.stackshare.io/service/1031/default_cbce472cd134adc6688572f999e9122b9657d4ba.png' alt='Redis'/> [Redis](http://redis.io/) – In-Memory Databases
 - <img width='25' height='25' src='https://img.stackshare.io/service/7624/IG6D4Ro2_400x400.png' alt='Spring Data'/> [Spring Data](https://spring.io/projects/spring-data) – Database Tools
+- <img width='25' height='25' src='https://img.stackshare.io/service/2020/874086.png' alt='JUnit'/> [JUnit](http://junit.org/) – Testing Frameworks
+- <img width='25' height='25' src='https://img.stackshare.io/service/2804/Coralogix-log4j-integration.jpg' alt='Log4j'/> [Log4j](https://logging.apache.org/log4j/2.x/) – Logging Tools
+- <img width='25' height='25' src='https://img.stackshare.io/service/2923/05518ecaa42841e834421e9d6987b04f_400x400.png' alt='Logback'/> [Logback](https://logback.qos.ch/) – Log Management
+- <img width='25' height='25' src='https://img.stackshare.io/service/2021/4y634TJm_400x400.jpg' alt='Mockito'/> [Mockito](https://site.mockito.org/) – Testing Frameworks
+- <img width='25' height='25' src='https://img.stackshare.io/service/2805/05518ecaa42841e834421e9d6987b04f_400x400.png' alt='SLF4J'/> [SLF4J](http://slf4j.org/) – Log Management
 
 Full tech stack [here](/techstack.md)
 
@@ -48,7 +48,7 @@ Full tech stack [here](/techstack.md)
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [Blejzer/VehicleManagementSystem_Spring](https://github.com/Blejzer/VehicleManagementSystem_Spring)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|48<br/>Tools used|02/01/24 <br/>Report generated|
+|48<br/>Tools used|02/29/24 <br/>Report generated|
 |------|------|
 </div>
 
@@ -224,7 +224,7 @@ Full tech stack [here](/techstack.md)
 |[org.springframework.security:spring-security-taglibs](http://spring.io/spring-security)|N/A|03/31/22|dependabot[bot] |Apache-2.0|N/A|
 |[org.springframework.security:spring-security-web](http://spring.io/spring-security)|N/A|03/31/22|dependabot[bot] |Apache-2.0|N/A|
 |[org.springframework.webflow:spring-js](https://github.com/spring-projects/spring-webflow)|N/A|03/31/22|dependabot[bot] |Apache-2.0|N/A|
-|[org.springframework:spring-context](https://github.com/spring-projects/spring-framework)|v5.3.18|03/31/22|dependabot[bot] |Apache-2.0|N/A|
+|[org.springframework:spring-context](https://github.com/spring-projects/spring-framework)|v5.3.18|03/31/22|dependabot[bot] |Apache-2.0|[CVE-2022-22968](https://github.com/advisories/GHSA-g5mm-vmx4-3rg7) (High)|
 |[org.springframework:spring-jdbc](https://github.com/spring-projects/spring-framework)|v5.3.18|03/31/22|dependabot[bot] |Apache-2.0|N/A|
 |[org.springframework:spring-orm](https://github.com/spring-projects/spring-framework)|v5.3.18|03/31/22|dependabot[bot] |Apache-2.0|N/A|
 |[org.springframework:spring-test](https://github.com/spring-projects/spring-framework)|v5.3.18|03/31/22|dependabot[bot] |Apache-2.0|N/A|
